@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.dreamwalker.knu2018.dteacher.SignUpActivity6">
+    <com.shuhart.stepview.StepView
+        android:id="@+id/step_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:padding="16dp"
+        app:animationType="Line"
+        app:doneCircleColor="@color/fbutton_color_sun_flower"
+        app:doneCircleRadius="12dp"
+        app:doneStepLineColor="@color/fbutton_color_sun_flower"
+        app:doneStepMarkColor="@color/fbutton_color_midnight_blue"
+        app:nextStepLineColor="@color/colorAccent"
+        app:nextTextColor="@color/colorAccent"
+        app:selectedCircleColor="@color/fbutton_color_sun_flower"
+        app:selectedCircleRadius="12dp"
+        app:selectedStepNumberColor="@color/fbutton_color_midnight_blue"
+        app:selectedTextColor="@color/fbutton_color_sun_flower"
+        app:stepLineWidth="1dp"
+        app:stepNumberTextSize="12sp"
+        app:stepPadding="4dp"
+        app:stepViewStyle="@style/StepView" />
+    <TextView
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/step_view"
+        android:id="@+id/text_title"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:text="현재 투약중인 인슐린이 있다면 선택해주세요."
+        android:textSize="16sp"
+        android:textStyle="bold"/>
+    <ScrollView
+        android:id="@+id/scroll_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/text_title">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+            <!--초속효성 구분 -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="20dp"
+                android:text="@string/rapid"
+                android:textSize="16sp" />
+            <com.google.android.flexbox.FlexboxLayout
+                android:id="@+id/flexbox_rapid"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:alignContent="space_around"
+                app:alignItems="flex_start"
+                app:dividerDrawable="@drawable/div"
+                app:flexWrap="wrap"
+                app:showDivider="middle">
+            </com.google.android.flexbox.FlexboxLayout>
+            <!--속효성 -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="20dp"
+                android:paddingTop="20dp"
+                android:text="@string/rapid2"
+                android:textSize="16sp" />
+            <com.google.android.flexbox.FlexboxLayout
+                android:id="@+id/flexbox_rapid2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:alignContent="space_around"
+                app:alignItems="flex_start"
+                app:dividerDrawable="@drawable/div"
+                app:flexWrap="wrap"
+                app:showDivider="middle" />
+            <!--중간형 -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="20dp"
+                android:paddingTop="20dp"
+                android:text="@string/netural"
+                android:textSize="16sp" />
+            <com.google.android.flexbox.FlexboxLayout
+                android:id="@+id/flexbox_neutral"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:alignContent="space_around"
+                app:alignItems="flex_start"
+                app:dividerDrawable="@drawable/div"
+                app:flexWrap="wrap"
+                app:showDivider="middle" />
+            <!--지속 -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="20dp"
+                android:paddingTop="20dp"
+                android:text="@string/longtime"
+                android:textSize="16sp" />
+            <com.google.android.flexbox.FlexboxLayout
+                android:id="@+id/flexbox_longtime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:alignContent="space_around"
+                app:alignItems="flex_start"
+                app:dividerDrawable="@drawable/div"
+                app:flexWrap="wrap"
+                app:showDivider="middle" />
+            <!--혼합-->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="20dp"
+                android:paddingTop="20dp"
+                android:text="@string/mixed"
+                android:textSize="16sp" />
+            <com.google.android.flexbox.FlexboxLayout
+                android:id="@+id/flexbox_mixed"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:alignContent="space_around"
+                app:alignItems="flex_start"
+                app:dividerDrawable="@drawable/div"
+                app:flexWrap="wrap"
+                app:showDivider="middle" />
+
+            <info.hoang8f.widget.FButton
+                android:layout_marginTop="12dp"
+                android:id="@+id/nextButton"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|center_vertical|center_horizontal"
+                android:gravity="center|center_vertical|center_horizontal"
+                android:text="완료" />
+
+            <!--<com.robertlevonyan.views.chip.Chip-->
+            <!--android:id="@+id/chip5"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_margin="4dp"-->
+            <!--app:mcv_chipIcon="@drawable/fix_syringe"-->
+            <!--app:mcv_chipText="노보믹스70"-->
+            <!--app:mcv_closable="false"-->
+            <!--app:mcv_hasIcon="true"-->
+            <!--app:mcv_selectable="true"-->
+            <!--app:mcv_selectedBackgroundColor="#ddaa00" />-->
+
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>
+

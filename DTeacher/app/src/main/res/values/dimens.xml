@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+
+    <!--스텝 뷰를위한 것 -->
+    <dimen name="dp14">14dp</dimen>
+    <dimen name="dp1">1dp</dimen>
+    <dimen name="sp14">14sp</dimen>
+    <dimen name="sp16">16sp</dimen>
+
+    <!--넘버 픽커를위한 것 -->
+    <dimen name="text_size">30dp</dimen>
+    <dimen name="selected_text_size">35dp</dimen>
+</resources>

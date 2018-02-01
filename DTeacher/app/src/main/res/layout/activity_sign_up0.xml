@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SignUpActivity0">
+
+    <com.shuhart.stepview.StepView
+        android:layout_alignParentTop="true"
+        android:layout_centerInParent="true"
+        android:id="@+id/step_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        app:selectedCircleColor="@color/fbutton_color_sun_flower"
+        app:selectedTextColor="@color/fbutton_color_sun_flower"
+        app:stepLineWidth="1dp"
+        app:stepPadding="4dp"
+        app:nextTextColor="@color/colorAccent"
+        app:nextStepLineColor="@color/colorAccent"
+        app:doneCircleColor="@color/fbutton_color_sun_flower"
+        app:doneStepLineColor="@color/fbutton_color_sun_flower"
+        app:doneCircleRadius="12dp"
+        app:selectedCircleRadius="12dp"
+        app:selectedStepNumberColor="@color/fbutton_color_midnight_blue"
+        app:stepViewStyle="@style/StepView"
+        app:doneStepMarkColor="@color/fbutton_color_midnight_blue"
+        app:stepNumberTextSize="12sp"
+        app:animationType="Line"/>
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:layout_centerInParent="true"
+        android:id="@+id/animation_view"
+        android:layout_width="wrap_content"
+        android:layout_height="200dp"
+        android:layout_below="@id/step_view"
+        app:lottie_autoPlay="true"
+        app:lottie_fileName="loading_animation.json"
+        app:lottie_loop="true" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/animation_view"
+        android:layout_centerInParent="true"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="horizontal">
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_layout_address"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dp">
+
+                <EditText
+                    android:id="@+id/userName"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/ic_assignment_ind_black_24dp"
+                    android:drawableStart="@drawable/ic_assignment_ind_black_24dp"
+                    android:hint="Username"
+                    android:inputType="textPersonName" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <info.hoang8f.widget.FButton
+                android:id="@+id/vaildateButton"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:shadowColor="@color/fbutton_color_asbestos"
+                android:text="vaildate"
+                android:textColor="@android:color/white"
+                android:textSize="10sp"
+                android:textStyle="bold"
+                app:fButtonColor="@color/fbutton_color_alizarin" />
+
+        </LinearLayout>
+
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/input_layout_port"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp">
+
+            <EditText
+                android:id="@+id/password"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:drawableLeft="@drawable/ic_lock_outline_black_24dp"
+                android:drawableStart="@drawable/ic_lock_outline_black_24dp"
+                android:hint="Password"
+                android:inputType="textPassword" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/input_layout_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp">
+
+            <EditText
+                android:id="@+id/email"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:drawableLeft="@drawable/ic_email_black_24dp"
+                android:drawableStart="@drawable/ic_email_black_24dp"
+                android:hint="E-mail"
+                android:inputType="textEmailAddress" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="8dp"
+            android:orientation="vertical">
+
+            <info.hoang8f.widget.FButton
+                android:id="@+id/registerButton"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:shadowColor="@color/fbutton_color_asbestos"
+                android:text="SIGN UP"
+                android:textColor="@android:color/white"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:fButtonColor="@color/fbutton_color_alizarin" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Do you have Social Account?"
+                    android:textColor="@color/fbutton_color_turquoise"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/otherLogin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="  Other Login"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>

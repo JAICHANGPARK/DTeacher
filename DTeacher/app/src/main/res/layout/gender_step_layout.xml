@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_height="match_parent">
+
+    <!--<io.ghyeok.stickyswitch.widget.StickySwitch-->
+        <!--android:id="@+id/sticky_switch"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_centerInParent="true"-->
+        <!--app:ss_animationDuration="600"-->
+        <!--app:ss_iconPadding="18dp"-->
+        <!--app:ss_iconSize="22dp"-->
+        <!--app:ss_leftIcon="@drawable/ic_male"-->
+        <!--app:ss_leftText="Male"-->
+        <!--app:ss_rightIcon="@drawable/ic_female"-->
+        <!--app:ss_rightText="Female"-->
+        <!--app:ss_selectedTextSize="14sp"-->
+        <!--app:ss_sliderBackgroundColor="@color/colorSliderBackground"-->
+        <!--app:ss_switchColor="@color/colorSwitchColor"-->
+        <!--app:ss_textColor="@color/colorTextColor"-->
+        <!--app:ss_textSize="12sp"-->
+        <!--app:ss_animationType="line"/>-->
+    <EditText
+        android:id="@+id/gender"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:hint="input your Gender"
+        android:paddingRight="24dp"
+        android:paddingEnd="24dp"
+        android:textSize="24sp"
+        android:clickable="true" />
+</LinearLayout>
