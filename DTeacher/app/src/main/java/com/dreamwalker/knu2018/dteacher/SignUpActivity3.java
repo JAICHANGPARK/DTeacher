@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
+import com.dreamwalker.knu2018.dteacher.Const.IntentConst;
 import com.dreamwalker.knu2018.dteacher.UIViews.RangeSliderWithNumber;
 import com.dreamwalker.knu2018.dteacher.UIViews.SeekBarWithNumber;
 import com.eminayar.panter.PanterDialog;
@@ -17,6 +18,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import cn.refactor.lib.colordialog.PromptDialog;
 import co.ceryle.radiorealbutton.RadioRealButton;
 import co.ceryle.radiorealbutton.RadioRealButtonGroup;
 import info.hoang8f.widget.FButton;
@@ -34,9 +36,12 @@ public class SignUpActivity3 extends AppCompatActivity {
     @BindView(R.id.radioRealButtonGroup)
     RadioRealButtonGroup diabetesTypeGroup;
 
-    List<String> stepLabel;
+    //List<String> stepLabel;
 
     PanterDialog panterDialog;
+
+    String userDiabetesType;
+    ArrayList<String> userSignUpInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +50,9 @@ public class SignUpActivity3 extends AppCompatActivity {
         setTitle("Sign Up");
 
         ButterKnife.bind(this);
+
+        userSignUpInfo = new ArrayList<>();
+        userSignUpInfo = getIntent().getStringArrayListExtra(IntentConst.SIGNUP_EXTRA_DATA_2);
 
         setpview.getState()
                 .selectedTextColor(ContextCompat.getColor(this, R.color.fbutton_color_midnight_blue))
@@ -76,8 +84,29 @@ public class SignUpActivity3 extends AppCompatActivity {
             @Override
             public void onPositionChanged(RadioRealButton button, int currentPosition, int lastPosition) {
 
-                Snackbar.make(getWindow().getDecorView().getRootView(), "Clicked! Position: " + currentPosition, Snackbar.LENGTH_SHORT)
-                        .setAction("Action", null).show();
+                userDiabetesType = String.valueOf(currentPosition);
+
+                switch (currentPosition) {
+                    case 0:
+                        Snackbar.make(getWindow().getDecorView().getRootView(), "제 1형 당뇨병" + currentPosition, Snackbar.LENGTH_SHORT)
+                                .setAction("Action", null).show();
+                        //Toast.makeText(SignUpActivity3.this, "제 1형 당뇨병", Toast.LENGTH_SHORT).show();
+                        break;
+                    case 1:
+                        Snackbar.make(getWindow().getDecorView().getRootView(), "제 2형 당뇨병" + currentPosition, Snackbar.LENGTH_SHORT)
+                                .setAction("Action", null).show();
+                        break;
+                    case 2:
+                        Snackbar.make(getWindow().getDecorView().getRootView(), "임신성 당뇨병" + currentPosition, Snackbar.LENGTH_SHORT)
+                                .setAction("Action", null).show();
+                        //Toast.makeText(SignUpActivity3.this, "임신성 당뇨병", Toast.LENGTH_SHORT).show();
+                        break;
+                    case 3:
+                        Snackbar.make(getWindow().getDecorView().getRootView(), "기타" + currentPosition, Snackbar.LENGTH_SHORT)
+                                .setAction("Action", null).show();
+                        //Toast.makeText(SignUpActivity3.this, "기타 당뇨병", Toast.LENGTH_SHORT).show();
+                        break;
+                }
 
                 //Toast.makeText(SignUpActivity3.this, "Clicked! Position: " + currentPosition, Toast.LENGTH_SHORT).show();
             }
@@ -118,7 +147,22 @@ public class SignUpActivity3 extends AppCompatActivity {
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (userSignUpInfo.equals("")){
+                    new PromptDialog(SignUpActivity3.this)
+                            .setDialogType(PromptDialog.DIALOG_TYPE_WRONG)
+                            .setAnimationEnable(true)
+                            .setTitleText("경고")
+                            .setContentText("당신의 당뇨 유형을 선택해주세요 ")
+                            .setPositiveListener("알겠어", new PromptDialog.OnPositiveListener() {
+                                @Override
+                                public void onClick(PromptDialog dialog) {
+                                    dialog.dismiss();
+                                }
+                            }).show();
+                }
+                userSignUpInfo.add(userDiabetesType);
                 Intent intent = new Intent(getApplicationContext(), SignUpActivity4.class);
+                intent.putStringArrayListExtra(IntentConst.SIGNUP_EXTRA_DATA_3,userSignUpInfo);
                 startActivity(intent);
                 finish();
             }

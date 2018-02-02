@@ -64,7 +64,7 @@
                     android:layout_height="wrap_content"
                     android:drawableLeft="@drawable/ic_assignment_ind_black_24dp"
                     android:drawableStart="@drawable/ic_assignment_ind_black_24dp"
-                    android:hint="Username"
+                    android:hint="input ID"
                     android:inputType="textPersonName" />
 
             </android.support.design.widget.TextInputLayout>

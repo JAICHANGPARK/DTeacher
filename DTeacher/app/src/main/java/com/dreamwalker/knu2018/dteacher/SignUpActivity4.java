@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
+import com.dreamwalker.knu2018.dteacher.Const.IntentConst;
 import com.eminayar.panter.PanterDialog;
 import com.shawnlin.numberpicker.NumberPicker;
 import com.shuhart.stepview.StepView;
@@ -33,12 +34,17 @@ public class SignUpActivity4 extends AppCompatActivity {
     @BindView(R.id.number_picker)
     NumberPicker numberPicker;
 
+    ArrayList<String> userSignUpInfo;
+    String userOccurDate;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up4);
-
         ButterKnife.bind(this);
+
+        userSignUpInfo = new ArrayList<>();
+        userSignUpInfo = getIntent().getStringArrayListExtra(IntentConst.SIGNUP_EXTRA_DATA_3);
 
         setpview.getState()
                 .selectedTextColor(ContextCompat.getColor(this, R.color.fbutton_color_midnight_blue))
@@ -70,45 +76,35 @@ public class SignUpActivity4 extends AppCompatActivity {
         // Set divider color
         numberPicker.setDividerColor(ContextCompat.getColor(this, R.color.colorPrimary));
         numberPicker.setDividerColorResource(R.color.colorPrimary);
-
         // Set formatter
         numberPicker.setFormatter(getString(R.string.number_picker_formatter));
         numberPicker.setFormatter(R.string.number_picker_formatter);
-
         // Set selected text color
         numberPicker.setSelectedTextColor(ContextCompat.getColor(this, R.color.colorPrimary));
         numberPicker.setSelectedTextColorResource(R.color.colorPrimary);
-
         // Set selected text size
         numberPicker.setSelectedTextSize(getResources().getDimension(R.dimen.selected_text_size));
         numberPicker.setSelectedTextSize(R.dimen.selected_text_size);
-
         // Set text color
         numberPicker.setTextColor(ContextCompat.getColor(this, R.color.dark_grey));
         numberPicker.setTextColorResource(R.color.dark_grey);
-
         // Set text size
         numberPicker.setTextSize(getResources().getDimension(R.dimen.text_size));
         numberPicker.setTextSize(R.dimen.text_size);
-
         // Set typeface
         numberPicker.setTypeface(Typeface.create(getString(R.string.roboto_light), Typeface.NORMAL));
         numberPicker.setTypeface(getString(R.string.roboto_light), Typeface.NORMAL);
         numberPicker.setTypeface(getString(R.string.roboto_light));
         numberPicker.setTypeface(R.string.roboto_light, Typeface.NORMAL);
         numberPicker.setTypeface(R.string.roboto_light);
-
         //Set value
         numberPicker.setMaxValue(2040);
         numberPicker.setMinValue(1980);
         numberPicker.setValue(2018);
-
         // Set fading edge enabled
         numberPicker.setFadingEdgeEnabled(true);
-
         // Set scroller enabled
         numberPicker.setScrollerEnabled(true);
-
         // Set wrap selector wheel
         numberPicker.setWrapSelectorWheel(true);
 
@@ -125,13 +121,17 @@ public class SignUpActivity4 extends AppCompatActivity {
             @Override
             public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
                 Log.d(TAG, String.format(Locale.US, "oldVal: %d, newVal: %d", oldVal, newVal));
+                userOccurDate = String.valueOf(newVal);
             }
         });
 
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                userSignUpInfo.add(userOccurDate);
                 Intent intent = new Intent(getApplicationContext(), SignUpActivity5.class);
+                intent.putStringArrayListExtra(IntentConst.SIGNUP_EXTRA_DATA_4, userSignUpInfo);
                 startActivity(intent);
                 finish();
             }
