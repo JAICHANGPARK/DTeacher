@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,4 +8,23 @@
     tools:context="com.dreamwalker.knu2018.dteacher.HomeActivity"
     tools:showIn="@layout/activity_home">
 
-</android.support.constraint.ConstraintLayout>
+    <com.gjiazhe.multichoicescirclebutton.MultiChoicesCircleButton
+        android:layout_marginBottom="50dp"
+        android:id="@+id/multiChoicesCircleButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:mccb_collapseRadius="50dp"
+        app:mccb_expandRadius="140dp"
+        app:mccb_icon="@drawable/ic_add_black_24dp"
+        app:mccb_text="Choose"
+        app:mccb_buttonColor="@color/colorAccent"
+        app:layout_behavior="@string/multi_choices_circle_button_behavior"/>
+
+    <com.aurelhubert.ahbottomnavigation.AHBottomNavigation
+        android:layout_alignParentBottom="true"
+        android:id="@+id/bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom" />
+
+</RelativeLayout>

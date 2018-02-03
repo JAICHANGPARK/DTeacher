@@ -19,6 +19,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.dreamwalker.knu2018.dteacher.Const.IntentConst;
 import com.eminayar.panter.PanterDialog;
 import com.google.android.flexbox.FlexboxLayout;
 import com.robertlevonyan.views.chip.Chip;
@@ -41,6 +42,7 @@ import io.ghyeok.stickyswitch.widget.StickySwitch;
 
 public class SignUpActivity6 extends AppCompatActivity {
     private static final String TAG = "SignUpActivity6";
+    private static final int DRUG_TOTAL = 25;
 
     @BindView(R.id.step_view)
     StepView setpview;
@@ -48,8 +50,7 @@ public class SignUpActivity6 extends AppCompatActivity {
     FButton nextButton;
 
     List<String> selectDrug;
-
-    private static final int DRUG_TOTAL = 25;
+    ArrayList<String> userSignUpInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +61,9 @@ public class SignUpActivity6 extends AppCompatActivity {
         setContentView(R.layout.activity_sign_up6);
 
         ButterKnife.bind(this);
+
+        userSignUpInfo = new ArrayList<>();
+        userSignUpInfo = getIntent().getStringArrayListExtra(IntentConst.SIGNUP_EXTRA_DATA_5);
 
         init_chips();
 
@@ -98,14 +102,19 @@ public class SignUpActivity6 extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 StringBuilder stringBuilder = new StringBuilder();
+                // TODO: 2018-02-03 내가 짜도 참 괜찮은 코드
                 for (int i = 0; i < selectDrug.size(); i++){
                     if (!selectDrug.get(i).contains("null")){
                         stringBuilder.append(selectDrug.get(i));
                         stringBuilder.append(",");
                     }
                 }
+
+                userSignUpInfo.add(stringBuilder.toString());
                 Toast.makeText(SignUpActivity6.this, "Result " + stringBuilder.toString(), Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getApplicationContext(), SignUpDoneActivity.class);
+                intent.putStringArrayListExtra(IntentConst.SIGNUP_EXTRA_DATA_6,userSignUpInfo);
+                intent.putExtra(IntentConst.SIGNUP_REGISTER_TYPE, 1);
                 startActivity(intent);
                 finish();
             }

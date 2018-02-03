@@ -6,6 +6,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
+import com.dreamwalker.knu2018.dteacher.Const.IntentConst;
 import com.dreamwalker.knu2018.dteacher.UIViews.RangeSliderWithNumber;
 import com.dreamwalker.knu2018.dteacher.UIViews.SeekBarWithNumber;
 import com.eminayar.panter.PanterDialog;
@@ -34,6 +35,9 @@ public class SignUpActivity5 extends AppCompatActivity {
     @BindView(R.id.sbn)
     SeekBarWithNumber dangerSeekBar;
 
+    ArrayList<String> userSignUpInfo;
+    String userMax, userMin, userDanger;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,6 +46,13 @@ public class SignUpActivity5 extends AppCompatActivity {
         setTitle("Sign Up");
 
         ButterKnife.bind(this);
+
+        userSignUpInfo = new ArrayList<>();
+        userSignUpInfo = getIntent().getStringArrayListExtra(IntentConst.SIGNUP_EXTRA_DATA_4);
+
+        userMax = "200"; //default
+        userMin = "50"; // default
+        userDanger = "50"; // default
 
         setpview.getState()
                 .selectedTextColor(ContextCompat.getColor(this, R.color.fbutton_color_midnight_blue))
@@ -73,12 +84,12 @@ public class SignUpActivity5 extends AppCompatActivity {
         aimRangeNumber.setRangeSliderListener(new RangeSliderWithNumber.RangeSliderListener() {
             @Override
             public void onMaxChanged(int newValue) {
-
+                userMax = String.valueOf(newValue);
             }
 
             @Override
             public void onMinChanged(int newValue) {
-
+                userMin = String.valueOf(newValue);
             }
         });
         // TODO: 2018-01-31 위험 당수치 변화 리스너
@@ -86,14 +97,18 @@ public class SignUpActivity5 extends AppCompatActivity {
         dangerSeekBar.setRangeSliderListener(new SeekBarWithNumber.NumberChangeListener() {
             @Override
             public void onNumberChange(int newValue) {
-
+                userDanger = String.valueOf(newValue);
             }
         });
 
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                userSignUpInfo.add(userMax);
+                userSignUpInfo.add(userMin);
+                userSignUpInfo.add(userDanger);
                 Intent intent = new Intent(getApplicationContext(), SignUpActivity6.class);
+                intent.putStringArrayListExtra(IntentConst.SIGNUP_EXTRA_DATA_5, userSignUpInfo);
                 startActivity(intent);
                 finish();
             }

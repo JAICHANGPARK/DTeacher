@@ -25,12 +25,28 @@ import java.util.regex.Pattern;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import cn.refactor.lib.colordialog.PromptDialog;
 import info.hoang8f.widget.FButton;
 import io.ghyeok.stickyswitch.widget.StickySwitch;
 
 
 // TODO: 2018-01-31 기본 정보 등록 화면
 
+/**
+ *
+ *  전 엑티비티에서 받아오는 데이터
+ *  1. 사용자 아이디
+ *  2. 사용자 비밀번호
+ *  3. 사용자 이메일
+ *
+ *  처리되는 데이터
+ *  1. 사용자 이름
+ *  2. 성별 ( default : male)
+ *  3. 전화번호
+ *  4. 생년월일
+ *  5. 나이
+ *
+ */
 public class SignUpActivity1 extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
 
     private static final String TAG = "SignUpActivity1";
@@ -45,16 +61,13 @@ public class SignUpActivity1 extends AppCompatActivity implements DatePickerDial
 
     @BindView(R.id.userName)
     EditText userNameEdt;
-
     @BindView(R.id.userBirth)
     EditText userBirthEdt;
-
     @BindView(R.id.userPhone)
     EditText userPhoneEdt;
 
     @BindView(R.id.sticky_switch)
     StickySwitch stickySwitch;
-
     @BindView(R.id.bubbleSeekBar)
     BubbleSeekBar bubbleSeekBar;
 
@@ -62,7 +75,7 @@ public class SignUpActivity1 extends AppCompatActivity implements DatePickerDial
     DatePickerDialog datePickerDialog;
     String userNameString, userPhoneString, userBirthString, userAgeString, userGenderString;
 
-    ArrayList<String> userSignUpInfo;
+    ArrayList<String> userSignUpInfo;  //유저 필수 정보를 받는 리스트 자료구조
 
 
     @Override
@@ -75,6 +88,7 @@ public class SignUpActivity1 extends AppCompatActivity implements DatePickerDial
         setContentView(R.layout.activity_sign_up1);
         ButterKnife.bind(this);
 
+        // TODO: 2018-02-03 SignUpActivity0 에서 보내온 데이터를 받아야한다.
         userSignUpInfo = new ArrayList<>();
         userSignUpInfo = getIntent().getStringArrayListExtra(IntentConst.SIGNUP_EXTRA_DATA_0);
 
@@ -148,14 +162,27 @@ public class SignUpActivity1 extends AppCompatActivity implements DatePickerDial
                 }
                 if (userPhoneString.equals("")) {
                     userPhoneString = "null";
+                } else {
+                    if (!checkPhoneNumber(userPhoneString)) {
+                        new PromptDialog(SignUpActivity1.this)
+                                .setDialogType(PromptDialog.DIALOG_TYPE_WRONG)
+                                .setAnimationEnable(true)
+                                .setTitleText("경고")
+                                .setContentText("정확한 전화번호를 입력해주세요")
+                                .setPositiveListener("응", new PromptDialog.OnPositiveListener() {
+                                    @Override
+                                    public void onClick(PromptDialog dialog) {
+                                        dialog.dismiss();
+                                    }
+                                }).show();
+//                        AlertDialog.Builder builder = new AlertDialog.Builder(SignUpActivity1.this);
+//                        dialog = builder.setMessage("정확한 전화번호를 입력해주세요").setNegativeButton("확인", null)
+//                                .create();
+//                        dialog.show();
+                        return;
+                    }
                 }
-                if (!checkPhoneNumber(userPhoneString)) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(SignUpActivity1.this);
-                    dialog = builder.setMessage("정확한 전화번호를 입력해주세요").setNegativeButton("확인", null)
-                            .create();
-                    dialog.show();
-                    return;
-                }
+
                 if (userBirthString.equals("")) {
                     userBirthString = "null";
                 }

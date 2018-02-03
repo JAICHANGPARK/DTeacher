@@ -21,6 +21,24 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import info.hoang8f.widget.FButton;
 
+/**
+ *
+ *  전 엑티비티에서 받아오는 데이터
+ *  1. 사용자 아이디  : index 0
+ *  2. 사용자 비밀번호 : index 1
+ *  3. 사용자 이메일 : index 2
+ *  4. 사용자 이름 : index 3
+ *  5. 성별 ( default : male) : index 4
+ *  6. 전화번호 : index 5
+ *  7. 생년월일 : index 6
+ *  8. 나이 : index 7
+ *
+ *  처리되는 데이터
+ *  1. 사용자 신장(키) (default : 170)
+ *  2. 사용자 몸무게   (default : 60)
+ *
+ */
+
 public class SignUpActivity2 extends AppCompatActivity {
     private static final String TAG = "SignUpActivity2";
 
@@ -59,6 +77,7 @@ public class SignUpActivity2 extends AppCompatActivity {
 
         userSignUpInfo = new ArrayList<>();
         userSignUpInfo = getIntent().getStringArrayListExtra(IntentConst.SIGNUP_EXTRA_DATA_1);
+
         StringBuilder stringBuilder = new StringBuilder();
 
         for (int i = 0; i < userSignUpInfo.size(); i++) {
@@ -67,7 +86,7 @@ public class SignUpActivity2 extends AppCompatActivity {
             Log.e(TAG, "onCreate: " + userSignUpInfo.get(i));
         }
 
-        Toast.makeText(this, "전달받은 데이터" + stringBuilder, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "전달받은 데이터" + stringBuilder, Toast.LENGTH_SHORT).show();
 
         setpview.getState()
                 .selectedTextColor(ContextCompat.getColor(this, R.color.fbutton_color_midnight_blue))
