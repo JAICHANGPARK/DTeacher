@@ -70,6 +70,10 @@ dependencies {
     implementation 'com.github.Yalantis:OfficialFoldingTabBar.Android:v0.9' //OfficialFoldingTabBar
     implementation 'com.aurelhubert:ahbottomnavigation:2.1.0' //ahbottomnavigation BottomNavBar
 
+    implementation 'com.github.MagicMashRoom:SuperCalendar:1.6' //SuperCalendar
+    implementation 'com.github.badoualy:datepicker-timeline:c6dcd05737' //datepicker-timeline
+    implementation 'devs.mulham.horizontalcalendar:horizontalcalendar:1.3.4' // horizontal Timeline Calander
+
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'

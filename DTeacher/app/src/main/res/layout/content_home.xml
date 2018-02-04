@@ -8,23 +8,37 @@
     tools:context="com.dreamwalker.knu2018.dteacher.HomeActivity"
     tools:showIn="@layout/activity_home">
 
+    <devs.mulham.horizontalcalendar.HorizontalCalendarView
+        android:layout_alignParentTop="true"
+        android:id="@+id/calendarView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/primary"
+        app:textColorSelected="@color/accent"/>
+
+    <!--<com.github.badoualy.datepicker.DatePickerTimeline-->
+        <!--android:id="@+id/timeline"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignParentTop="true" />-->
+
     <com.gjiazhe.multichoicescirclebutton.MultiChoicesCircleButton
-        android:layout_marginBottom="50dp"
         android:id="@+id/multiChoicesCircleButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="50dp"
+        app:layout_behavior="@string/multi_choices_circle_button_behavior"
+        app:mccb_buttonColor="@color/colorAccent"
         app:mccb_collapseRadius="50dp"
         app:mccb_expandRadius="140dp"
         app:mccb_icon="@drawable/ic_add_black_24dp"
-        app:mccb_text="Choose"
-        app:mccb_buttonColor="@color/colorAccent"
-        app:layout_behavior="@string/multi_choices_circle_button_behavior"/>
+        app:mccb_text="선택하세요" />
 
     <com.aurelhubert.ahbottomnavigation.AHBottomNavigation
-        android:layout_alignParentBottom="true"
         android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         android:layout_gravity="bottom" />
 
 </RelativeLayout>
