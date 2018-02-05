@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.dreamwalker.knu2018.dteacher.SignUpActivity4">
+    tools:context="com.dreamwalker.knu2018.dteacher.SignUpActivity.SignUpActivity4">
 
     <com.shuhart.stepview.StepView
         android:layout_alignParentTop="true"
