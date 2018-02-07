@@ -3,6 +3,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.dreamwalker.knu2018.dteacher">
 
+    <uses-feature
+        android:name="android.hardware.bluetooth_le"
+        android:required="true" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher3"
@@ -12,28 +21,83 @@
         android:theme="@style/AppTheme"
         tools:replace="android:icon">
         <activity
-            android:name=".LoginActivity"
+            android:name=".Activity.LoginActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Activity.HomeActivity"
+            android:label="@string/title_activity_home"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <!-- 회원가입 액티비티 -->
+        <activity android:name=".SignUpActivity.SignUpActivity1" />
+        <activity android:name=".SignUpActivity.SignUpActivity2" />
+        <activity android:name=".SignUpActivity.SignUpActivity3" />
+        <activity android:name=".SignUpActivity.SignUpActivity6" />
+        <activity android:name=".SignUpActivity.SignUpActivity0" />
+        <activity android:name=".SignUpActivity.SignUpActivity4" />
+        <activity android:name=".SignUpActivity.SignUpActivity5" />
+        <activity android:name=".SignUpActivity.SignUpDoneActivity" />
+        <activity
+            android:name=".Activity.StartKenBurnsActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
+            <meta-data
+                android:name="android.app.shortcuts"
+                android:resource="@xml/shortcuts" />
         </activity>
         <activity
-            android:name=".HomeActivity"
-            android:label="@string/title_activity_home"
+            android:name=".Activity.IntroActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-
-        <!-- 회원가입 액티비티 -->
-        <activity android:name=".SignUpActivity1" />
-        <activity android:name=".SignUpActivity2" />
-        <activity android:name=".SignUpActivity3" />
-        <activity android:name=".SignUpActivity6" />
-        <activity android:name=".SignUpActivity0" />
-        <activity android:name=".SignUpActivity4" />
-        <activity android:name=".SignUpActivity5" />
-        <activity android:name=".SignUpDoneActivity"></activity>
+        <activity android:name=".Activity.DangActivity" />
+        <activity android:name=".Activity.WorkoutActivity" />
+        <activity
+            android:name=".Activity.DiaryActivity"
+            android:label="@string/title_activity_main"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Activity.SettingActivity"
+            android:parentActivityName=".Activity.HomeActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".Activity.HomeActivity" />
+        </activity>
+        <activity
+            android:name=".Activity.AboutDeveloperActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Activity.AboutVersionInfoActivity"
+            android:parentActivityName=".Activity.SettingActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".Activity.SettingActivity" />
+        </activity>
+        <activity
+            android:name=".Activity.AboutOSLActivity"
+            android:parentActivityName=".Activity.SettingActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".Activity.SettingActivity" />
+        </activity>
+        <activity
+            android:name=".Activity.AboutContactActivity"
+            android:parentActivityName=".Activity.SettingActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".Activity.SettingActivity" />
+        </activity>
+        <activity android:name=".Activity.AboutUserActivity" />
+        <activity android:name=".Activity.SyncWearableActivity" />
+        <activity android:name=".Activity.SyncBSMActivity" />
+        <activity android:name=".Activity.SyncFEActivity" />
+        <activity
+            android:name=".Activity.WebActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".Activity.WriteBSActivity"></activity>
     </application>
 
 </manifest>

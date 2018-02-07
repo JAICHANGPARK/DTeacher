@@ -20,6 +20,13 @@
     <color name="colorPrimatyLight">#B2EBF2</color>
 
     <color name="dark_grey">#3b3b3b</color>
+    <color name="Intro_color_01">#f1c40f</color>
+    <color name="Intro_color_02">#303030</color>
+    <color name="Intro_color_03">#463168</color>
+
+    <color name="color_setting_background">#f0f0f0</color>
+    <color name="theme_accent_color">#FF339999</color>
+    <color name="theme_accent_color_light">#44339999</color>
 
     <color name="fbutton_color_turquoise">#1abc9c</color>
     <color name="fbutton_color_green_sea">#16a085</color>
