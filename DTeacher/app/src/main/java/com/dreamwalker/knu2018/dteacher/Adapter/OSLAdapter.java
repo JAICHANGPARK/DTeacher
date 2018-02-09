@@ -16,7 +16,7 @@ import java.util.List;
  */
 
 class OSLViewHolder extends RecyclerView.ViewHolder{
-    TextView licenseText;
+        TextView licenseText;
 
     public OSLViewHolder(View itemView) {
         super(itemView);

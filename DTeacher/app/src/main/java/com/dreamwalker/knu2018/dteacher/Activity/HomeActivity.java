@@ -18,8 +18,11 @@ import android.util.Log;
 import android.view.Display;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.andremion.floatingnavigationview.FloatingNavigationView;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
@@ -57,6 +60,10 @@ public class HomeActivity extends AppCompatActivity {
 
     @BindView(R.id.dbText)
     TextView dbTextView;
+    @BindView(R.id.animation_view)
+    LottieAnimationView lottieAnimationView;
+    @BindView(R.id.animationLayout)
+    LinearLayout animationLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -150,7 +157,17 @@ public class HomeActivity extends AppCompatActivity {
         sequence.start();
 
         String result = homeDBHelper.selectDateAllData(today);
-        dbTextView.setText(result);
+        if (result.equals("null")) {
+            animationLayout.setVisibility(View.VISIBLE);
+            lottieAnimationView.playAnimation();
+            dbTextView.setVisibility(View.GONE);
+        } else {
+            animationLayout.setVisibility(View.GONE);
+            lottieAnimationView.cancelAnimation();
+            dbTextView.setVisibility(View.VISIBLE);
+            dbTextView.setText(result);
+        }
+
 
 /*        TapTargetView.showFor(this,                 // `this` is an Activity
                 TapTarget.forView(findViewById(R.id.floating_navigation_view), "This is a target",
@@ -268,7 +285,14 @@ public class HomeActivity extends AppCompatActivity {
                         startActivity(new Intent(HomeActivity.this, WriteBSActivity.class));
                         break;
                     case 1:
-                        startActivity(new Intent(HomeActivity.this, WorkoutActivity.class));
+                        startActivity(new Intent(HomeActivity.this, WriteFitnessActivity.class));
+                        break;
+                    case 2:
+                        Toast.makeText(HomeActivity.this, "아직 미구현 , 곧 추가할게요", Toast.LENGTH_SHORT).show();
+                        //startActivity(new Intent(HomeActivity.this, WriteDrugActivity.class));
+                        break;
+                    case 3:
+                        startActivity(new Intent(HomeActivity.this, WriteDrugActivity.class));
                         break;
 
                 }
@@ -336,16 +360,29 @@ public class HomeActivity extends AppCompatActivity {
                 String month = String.valueOf(tempMonth);
                 String day = String.valueOf(date.get(Calendar.DAY_OF_MONTH));
                 String selectDate = year + "-" + month + "-" + day;
-                String result = homeDBHelper.selectDateAllData(selectDate);
 
+                // TODO: 2018-02-08 혈당 데이터베이스에서 가져온다.
+                String result = homeDBHelper.selectDateAllData(selectDate);
                 Log.e(TAG, "onDateSelected: result " + result);
 
                 if (result.equals("null")) {
-                    dbTextView.setText("데이터가 없네요 ");
+                    animationLayout.setVisibility(View.VISIBLE);
+                    lottieAnimationView.playAnimation();
+                    dbTextView.setVisibility(View.GONE);
                 } else {
+                    animationLayout.setVisibility(View.GONE);
+                    lottieAnimationView.cancelAnimation();
+                    dbTextView.setVisibility(View.VISIBLE);
                     dbTextView.setText("");
                     dbTextView.setText(result);
                 }
+
+//                if (result.equals("null")) {
+//                    dbTextView.setText("데이터가 없네요 ");
+//                } else {
+//
+//                    dbTextView.setText(result);
+//                }
                 Log.e(TAG, "onDateSelected: " + "Date : " + year + month + day + ", position:  " + month);
             }
 
@@ -419,4 +456,9 @@ public class HomeActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onResume() {
+        // TODO: 2018-02-08 여기서 Adapter Notify하면 되겠네
+        super.onResume();
+    }
 }

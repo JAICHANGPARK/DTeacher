@@ -12,7 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="160dp"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="60dp"
         app:lottie_autoPlay="true"
         app:lottie_fileName="bus.json"
         app:lottie_imageAssetsFolder="images/"

@@ -1,13 +1,18 @@
 package com.dreamwalker.knu2018.dteacher.Fragment;
 
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
+import com.dreamwalker.knu2018.dteacher.DBHelper.BSDBHelper;
+import com.dreamwalker.knu2018.dteacher.DBHelper.FitnessDBHelper;
 import com.dreamwalker.knu2018.dteacher.R;
 
 /**
@@ -19,14 +24,16 @@ import com.dreamwalker.knu2018.dteacher.R;
  * create an instance of this fragment.
  */
 public class DiaryFitnessFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    TextView dbText;
+    private FitnessDBHelper fitnessDBHelper;
+    private SQLiteDatabase db;
 
     private OnFragmentInteractionListener mListener;
 
@@ -34,15 +41,6 @@ public class DiaryFitnessFragment extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment DiaryDangFragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static DiaryFitnessFragment newInstance(String param1, String param2) {
         DiaryFitnessFragment fragment = new DiaryFitnessFragment();
         Bundle args = new Bundle();
@@ -65,7 +63,9 @@ public class DiaryFitnessFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_diary_fitness, container, false);
+        View view = inflater.inflate(R.layout.fragment_diary_fitness, container, false);
+        dbText = (TextView)view.findViewById(R.id.label);
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -75,7 +75,15 @@ public class DiaryFitnessFragment extends Fragment {
         }
     }
 
-/*    @Override
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        fitnessDBHelper = new FitnessDBHelper(getActivity(),"fitness.db", null,1);
+        String dbResult = fitnessDBHelper.selectAllData();
+        dbText.setText(dbResult);
+    }
+
+    /*    @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         if (context instanceof OnFragmentInteractionListener) {

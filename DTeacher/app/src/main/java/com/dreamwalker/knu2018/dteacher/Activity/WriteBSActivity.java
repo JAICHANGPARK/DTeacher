@@ -29,10 +29,12 @@ import java.util.Calendar;
 
 import io.paperdb.Paper;
 
-public class WriteBSActivity extends AppCompatActivity
-        implements StepperLayout.StepperListener,
+public class WriteBSActivity extends AppCompatActivity implements
+        StepperLayout.StepperListener,
         WriteBSTypeFragment.OnTimePickerSetListener,
-        WriteBSValueFragment.OnBSValueSetListener, WriteDateTimeFragment.OnBSDateTimeSetListener {
+        WriteBSValueFragment.OnBSValueSetListener,
+        WriteDateTimeFragment.OnBSDateTimeSetListener {
+
     private static final String TAG = "WriteBSActivity";
     private StepperLayout mStepperLayout;
 
@@ -52,7 +54,6 @@ public class WriteBSActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_write_bs);
         Paper.init(this);
-
 
         mStepperLayout = (StepperLayout) findViewById(R.id.stepperLayout);
         mStepperLayout.setAdapter(new StepSampleAdapter(getSupportFragmentManager(), this));

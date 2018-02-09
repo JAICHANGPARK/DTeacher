@@ -165,6 +165,7 @@ public class WriteDateTimeFragment extends Fragment implements Step, DatePickerD
     public void onDetach() {
         super.onDetach();
         mListener = null;
+        onBSDateTimeSetListener = null;
     }
 
     @Nullable

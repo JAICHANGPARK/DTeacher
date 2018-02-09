@@ -24,6 +24,16 @@
     <color name="Intro_color_02">#303030</color>
     <color name="Intro_color_03">#463168</color>
 
+    <!--Material Fab-->
+    <color name="background_card">#fff</color>
+    <color name="background_snackbar">#323232</color>
+    <color name="theme_accent">#FFEB3B</color>
+    <color name="theme_primary">#00BCD4</color>
+    <color name="theme_primary_dark">#0097A7</color>
+    <color name="theme_primary_dark2">#006064</color>
+    <color name="text_black_87">#de000000</color>
+    <color name="text_white_87">#deFFFFFF</color>
+
     <color name="color_setting_background">#f0f0f0</color>
     <color name="theme_accent_color">#FF339999</color>
     <color name="theme_accent_color_light">#44339999</color>

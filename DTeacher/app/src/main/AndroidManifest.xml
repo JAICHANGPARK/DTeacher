@@ -58,7 +58,7 @@
         <activity
             android:name=".Activity.DiaryActivity"
             android:label="@string/title_activity_main"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/Theme.MaterialSheetFab" />
         <activity
             android:name=".Activity.SettingActivity"
             android:parentActivityName=".Activity.HomeActivity">
@@ -97,7 +97,10 @@
         <activity
             android:name=".Activity.WebActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".Activity.WriteBSActivity"></activity>
+        <activity android:name=".Activity.WriteBSActivity" />
+        <activity android:name=".Activity.WriteFitnessActivity" />
+        <activity android:name=".Activity.WriteDrugActivity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

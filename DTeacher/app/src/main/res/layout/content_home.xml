@@ -24,6 +24,33 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
+    <LinearLayout
+        android:id="@+id/animationLayout"
+        android:layout_marginTop="40dp"
+        android:orientation="vertical"
+        android:layout_below="@id/calendarView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <com.airbnb.lottie.LottieAnimationView
+            android:layout_gravity="center"
+            android:layout_centerInParent="true"
+            android:id="@+id/animation_view"
+            android:layout_width="wrap_content"
+            android:layout_height="200dp"
+            app:lottie_autoPlay="false"
+            app:lottie_fileName="soexcited.json"
+            app:lottie_loop="true" />
+        <TextView
+            android:layout_marginTop="24dp"
+            android:textStyle="bold"
+            android:layout_gravity="center"
+            android:text="저장된 데이터가 없네요"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+
+
     <!--<com.github.badoualy.datepicker.DatePickerTimeline-->
         <!--android:id="@+id/timeline"-->
         <!--android:layout_width="match_parent"-->

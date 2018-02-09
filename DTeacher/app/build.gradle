@@ -1,4 +1,7 @@
 apply plugin: 'com.android.application'
+ext {
+    api_version = '26.1.0'
+}
 
 android {
     compileSdkVersion 26
@@ -7,7 +10,7 @@ android {
         minSdkVersion 21
         targetSdkVersion 26
         versionCode 1
-        versionName "1.0.0"
+        versionName "1.0.5"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
         multiDexEnabled true
@@ -85,7 +88,12 @@ dependencies {
     implementation 'com.github.kimkevin:cachepot:1.0.0' //cachepot
     implementation 'com.github.Kunzisoft:Android-SwitchDateTimePicker:1.9' //cachepot
 
+    implementation 'com.gordonwong:material-sheet-fab:1.2.1' //material-sheet-fab
 
+    implementation 'com.webianks.library:scroll-choice:1.0.1' // scroll-choice
+
+    implementation 'org.greenrobot:eventbus:3.1.1'// eventbus
+    implementation 'com.github.davidpizarro:autolabelui:1.0.1'
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'

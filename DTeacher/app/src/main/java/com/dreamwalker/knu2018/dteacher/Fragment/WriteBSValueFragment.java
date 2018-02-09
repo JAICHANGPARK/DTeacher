@@ -28,7 +28,7 @@ import io.paperdb.Paper;
  * Use the {@link WriteBSValueFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class WriteBSValueFragment extends Fragment implements Step {
+public class WriteBSValueFragment extends Fragment implements Step{
 
     public interface OnBSValueSetListener {
         void onBsValueSet(String value);
@@ -151,6 +151,7 @@ public class WriteBSValueFragment extends Fragment implements Step {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+        onBSValueSetListener = null;
     }
 
     @Nullable
