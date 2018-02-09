@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/Intro_color_01"
+    android:orientation="vertical">
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:layout_marginTop="50dp"
+        android:id="@+id/animation_view"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_gravity="center"
+        app:lottie_autoPlay="true"
+        app:lottie_fileName="springloading.json"
+        app:lottie_loop="true" />
+
+    <LinearLayout
+        android:gravity="center_vertical"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="웨어러블 장비 및"
+            android:textColor="@color/PrimaryDark3"
+            android:textSize="24sp" />
+
+        <TextView
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="혈당계와 데이터"
+            android:textColor="@color/PrimaryDark3"
+            android:textSize="24sp" />
+
+        <TextView
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="동기화도 가능합니다."
+            android:textColor="@color/PrimaryDark3"
+            android:textSize="24sp" />
+    </LinearLayout>
+</LinearLayout>

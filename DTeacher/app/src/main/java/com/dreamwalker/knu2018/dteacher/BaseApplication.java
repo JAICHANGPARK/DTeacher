@@ -5,7 +5,6 @@ import android.content.Context;
 
  import com.dreamwalker.knu2018.dteacher.UIUtils.DrawUtil;
 
-
 /**
  * application
  */

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/fbutton_color_wet_asphalt"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:layout_marginTop="20dp"
+        android:id="@+id/animation_view"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        android:layout_gravity="center"
+        app:lottie_autoPlay="true"
+        app:lottie_fileName="cycle_animation.json"
+        app:lottie_loop="true" />
+
+    <LinearLayout
+        android:gravity="center_vertical"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <TextView
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="이곳에는 당신이 "
+        android:textColor="#ffffff"
+        android:textSize="24sp" />
+
+    <TextView
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="매일 운동한 운동"
+        android:textColor="#ffffff"
+        android:textSize="24sp" />
+
+
+    <TextView
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="기록도 가능합니다"
+        android:textColor="#ffffff"
+        android:textSize="24sp" />
+
+    </LinearLayout>
+
+</LinearLayout>

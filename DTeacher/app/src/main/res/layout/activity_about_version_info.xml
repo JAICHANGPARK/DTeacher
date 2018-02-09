@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.dreamwalker.knu2018.dteacher.Activity.AboutVersionInfoActivity">
+
+    <ImageView
+        android:id="@+id/versionImageView"
+        android:layout_width="wrap_content"
+        android:layout_height="250dp"
+        android:layout_centerHorizontal="true" />
+
+    <LinearLayout
+        android:id="@+id/versionLayer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/versionImageView"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/versionLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="버전 정보 : "
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/versionText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1.0"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <info.hoang8f.widget.FButton
+        android:id="@+id/versionButton"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/versionLayer"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center"
+        android:layout_marginTop="14dp"
+        android:shadowColor="@color/fbutton_color_green_sea"
+        android:text="현재 최신버전입니다."
+        android:textColor="@android:color/white"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:fButtonColor="@color/fbutton_color_emerald" />
+
+
+</RelativeLayout>
