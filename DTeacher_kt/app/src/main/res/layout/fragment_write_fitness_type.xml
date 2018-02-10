@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.dreamwalker.knu2018.dteacher.Fragment.WriteFitnessTypeFragment">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/fbutton_color_sun_flower">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:text="Please select your Fitness"
+            android:textColor="#ffffff"
+            android:textSize="17sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <com.webianks.library.scroll_choice.ScrollChoice
+        android:id="@+id/scroll_choice"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:scroll_background_color="#212121"
+        app:scroll_selected_item_background="#000000"
+        app:scroll_item_text_color="#f5f5f5"
+        app:scroll_atmospheric="true"
+        app:scroll_indicator="true"
+        app:scroll_indicator_color="#000000"
+        app:scroll_item_align="center"
+        app:scroll_selected_item_text_color="@color/fbutton_color_sun_flower" />
+</LinearLayout>

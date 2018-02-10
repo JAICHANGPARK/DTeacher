@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff"
+    tools:context="com.dreamwalker.knu2018.dteacher.SignUpActivity.SignUpActivity2">
+
+
+    <com.shuhart.stepview.StepView
+        android:layout_alignParentTop="true"
+        android:id="@+id/step_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        app:selectedCircleColor="@color/fbutton_color_sun_flower"
+        app:selectedTextColor="@color/fbutton_color_sun_flower"
+        app:stepLineWidth="1dp"
+        app:stepPadding="4dp"
+        app:nextTextColor="@color/colorAccent"
+        app:nextStepLineColor="@color/colorAccent"
+        app:doneCircleColor="@color/fbutton_color_sun_flower"
+        app:doneStepLineColor="@color/fbutton_color_sun_flower"
+        app:doneCircleRadius="12dp"
+        app:selectedCircleRadius="12dp"
+        app:selectedStepNumberColor="@color/fbutton_color_midnight_blue"
+        app:stepViewStyle="@style/StepView"
+        app:doneStepMarkColor="@color/fbutton_color_midnight_blue"
+        app:stepNumberTextSize="12sp"
+        app:animationType="Line"/>
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/step_view"
+        android:id="@+id/animation_view"
+        android:layout_width="wrap_content"
+        android:layout_height="80dp"
+        app:lottie_autoPlay="true"
+        app:lottie_fileName="lazy_night.json"
+        app:lottie_loop="true" />
+    <LinearLayout
+        android:gravity="center_vertical"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_marginTop="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.dreamwalker.knu2018.dteacher.UIViews.ScaleRulerView
+                android:id="@+id/scaleWheelView_height"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_marginTop="30dp"
+                android:background="@android:color/white"
+                android:paddingLeft="30dp"
+                android:paddingRight="30dp" />
+
+            <com.dreamwalker.knu2018.dteacher.UIViews.SlantedTextView
+                android:id="@+id/slant_one"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                app:slantedBackgroundColor="@color/rulerColorAccent"
+                app:slantedLength="28dp"
+                app:slantedMode="left_triangle"
+                app:slantedText="신장"
+                app:slantedTextColor="#ffffff"
+                app:slantedTextSize="14sp" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_below="@+id/scaleWheelView_height"
+                android:layout_marginTop="8dp"
+                android:paddingLeft="30dp"
+                android:paddingRight="30dp">
+
+                <TextView
+                    android:id="@+id/tv_user_height_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:gravity="bottom"
+                    android:text="170"
+                    android:textColor="#333333"
+                    android:textSize="24sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@id/tv_user_height_value"
+                    android:layout_marginLeft="4dp"
+                    android:layout_toRightOf="@id/tv_user_height_value"
+                    android:text="cm"
+                    android:textColor="#999999"
+                    android:textSize="15sp" />
+            </RelativeLayout>
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_marginTop="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.dreamwalker.knu2018.dteacher.UIViews.ScaleRulerView
+                android:id="@+id/scaleWheelView_weight"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_marginTop="30dp"
+                android:background="@android:color/white"
+                android:paddingLeft="30dp"
+                android:paddingRight="30dp" />
+
+            <com.dreamwalker.knu2018.dteacher.UIViews.SlantedTextView
+                android:id="@+id/slant_two"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                app:slantedBackgroundColor="@color/rulerColorAccent"
+                app:slantedLength="28dp"
+                app:slantedMode="left"
+                app:slantedText="체중"
+                app:slantedTextColor="#ffffff"
+                app:slantedTextSize="14sp" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_below="@id/scaleWheelView_weight"
+                android:layout_marginTop="8dp"
+                android:paddingLeft="30dp"
+                android:paddingRight="30dp">
+
+                <TextView
+                    android:id="@+id/tv_user_weight_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:text="65"
+                    android:textColor="#333333"
+                    android:textSize="24sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@id/tv_user_weight_value"
+                    android:layout_marginLeft="4dp"
+                    android:layout_toRightOf="@id/tv_user_weight_value"
+                    android:text="kg"
+                    android:textColor="#999999"
+                    android:textSize="15sp" />
+            </RelativeLayout>
+        </RelativeLayout>
+
+    </LinearLayout>
+
+
+
+
+    <info.hoang8f.widget.FButton
+        android:layout_alignParentBottom="true"
+        android:id="@+id/nextButton"
+        android:text="Next"
+        android:layout_centerHorizontal="true"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content" />
+
+</RelativeLayout>

@@ -1,0 +1,330 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.dreamwalker.knu2018.dteacher.Fragment.WriteBSTypeFragment">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="6dp"
+                android:layout_weight="2"
+                android:orientation="horizontal">
+
+                <android.support.v7.widget.CardView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    android:layout_weight="1"
+                    android:elevation="6dp"
+                    app:cardCornerRadius="6dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@color/PrimaryDark3"
+                            android:gravity="center"
+                            android:text="하루 시작"
+                            android:textColor="#ffffff"
+                            android:textSize="18sp" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_horizontal"
+                            android:orientation="horizontal">
+
+                            <Button
+                                android:id="@+id/typeButton0"
+                                android:layout_width="70dp"
+                                android:layout_height="70dp"
+                                android:layout_margin="6dp"
+                                android:background="@drawable/round_shape_button_uncheck"
+                                android:text="새벽"
+                                android:textSize="16dp" />
+
+                            <Button
+                                android:id="@+id/typeButton1"
+                                android:layout_width="70dp"
+                                android:layout_height="70dp"
+                                android:layout_margin="6dp"
+                                android:background="@drawable/round_shape_button_uncheck"
+                                android:text="공복"
+                                android:textSize="16dp" />
+
+                        </LinearLayout>
+                    </LinearLayout>
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    android:layout_weight="1"
+                    android:elevation="6dp"
+                    app:cardCornerRadius="6dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@color/PrimaryDark3"
+                            android:gravity="center"
+                            android:text="아침"
+                            android:textColor="#ffffff"
+                            android:textSize="18sp" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_horizontal"
+                            android:orientation="horizontal">
+
+                            <Button
+                                android:id="@+id/typeButton2"
+                                android:layout_width="70dp"
+                                android:layout_height="70dp"
+                                android:layout_margin="6dp"
+                                android:background="@drawable/round_shape_button_uncheck"
+                                android:text="아침식전"
+                                android:textSize="16dp" />
+
+                            <Button
+                                android:id="@+id/typeButton3"
+                                android:layout_width="70dp"
+                                android:layout_height="70dp"
+                                android:layout_margin="6dp"
+                                android:background="@drawable/round_shape_button_uncheck"
+                                android:text="아침식후"
+                                android:textSize="16dp" />
+
+                        </LinearLayout>
+                    </LinearLayout>
+                </android.support.v7.widget.CardView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="6dp"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <android.support.v7.widget.CardView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    android:layout_weight="1"
+                    android:elevation="6dp"
+                    app:cardCornerRadius="6dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@color/PrimaryDark3"
+                            android:gravity="center"
+                            android:text="점심"
+                            android:textColor="#ffffff"
+                            android:textSize="18sp" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_horizontal"
+                            android:orientation="horizontal">
+
+                            <Button
+                                android:id="@+id/typeButton4"
+                                android:layout_width="70dp"
+                                android:layout_height="70dp"
+                                android:layout_margin="6dp"
+                                android:background="@drawable/round_shape_button_uncheck"
+                                android:text="점심식전"
+                                android:textSize="16dp" />
+
+                            <Button
+                                android:id="@+id/typeButton5"
+                                android:layout_width="70dp"
+                                android:layout_height="70dp"
+                                android:layout_margin="6dp"
+                                android:background="@drawable/round_shape_button_uncheck"
+                                android:text="점심식후"
+                                android:textSize="16dp" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    android:layout_weight="1"
+                    android:elevation="6dp"
+                    app:cardCornerRadius="6dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@color/PrimaryDark3"
+                            android:gravity="center"
+                            android:text="저녁"
+                            android:textColor="#ffffff"
+                            android:textSize="18sp" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_horizontal"
+                            android:orientation="horizontal">
+
+                            <Button
+                                android:id="@+id/typeButton6"
+                                android:layout_width="70dp"
+                                android:layout_height="70dp"
+                                android:layout_margin="6dp"
+                                android:background="@drawable/round_shape_button_uncheck"
+                                android:text="저녁식전"
+                                android:textSize="16dp" />
+
+                            <Button
+                                android:id="@+id/typeButton7"
+                                android:layout_width="70dp"
+                                android:layout_height="70dp"
+                                android:layout_margin="6dp"
+                                android:background="@drawable/round_shape_button_uncheck"
+                                android:text="저녁식후"
+                                android:textSize="16dp" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </android.support.v7.widget.CardView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="6dp"
+                android:orientation="horizontal">
+
+                <android.support.v7.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    android:elevation="6dp"
+                    app:cardCornerRadius="6dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@color/PrimaryDark3"
+                            android:gravity="center"
+                            android:text="기타"
+                            android:textColor="#ffffff"
+                            android:textSize="18sp" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_horizontal"
+                            android:orientation="horizontal">
+
+                            <Button
+                                android:id="@+id/typeButton8"
+                                android:layout_width="80dp"
+                                android:layout_height="80dp"
+                                android:layout_margin="6dp"
+                                android:background="@drawable/round_shape_button_uncheck"
+                                android:text="운동전"
+                                android:textSize="16dp" />
+
+                            <Button
+                                android:id="@+id/typeButton9"
+                                android:layout_width="80dp"
+                                android:layout_height="80dp"
+                                android:layout_margin="6dp"
+                                android:background="@drawable/round_shape_button_uncheck"
+                                android:text="운동후"
+                                android:textSize="16dp" />
+
+                            <Button
+                                android:id="@+id/typeButton10"
+                                android:layout_width="80dp"
+                                android:layout_height="80dp"
+                                android:layout_margin="6dp"
+                                android:background="@drawable/round_shape_button_uncheck"
+                                android:text="아픈날"
+                                android:textSize="16dp" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </android.support.v7.widget.CardView>
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+
+        <!--<RelativeLayout-->
+        <!--android:id="@+id/topLayout"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent">-->
+
+        <!--&lt;!&ndash; TODO: Update blank fragment layout &ndash;&gt;-->
+        <!--<TextView-->
+        <!--android:id="@+id/largeLabel"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="@string/hello_blank_fragment" />-->
+
+        <!--<EditText-->
+        <!--android:id="@+id/testEdt"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_below="@id/largeLabel"-->
+        <!--android:layout_margin="4dp" />-->
+
+        <!--<Button-->
+        <!--android:id="@+id/button"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_below="@id/testEdt"-->
+        <!--android:layout_margin="4dp"-->
+        <!--android:text="test" />-->
+
+
+        <!--</RelativeLayout>-->
+    </ScrollView>
+</FrameLayout>

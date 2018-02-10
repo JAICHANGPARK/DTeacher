@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.dreamwalker.knu2018.dteacher.Activity.HomeActivity"
+    tools:showIn="@layout/activity_home">
+
+    <devs.mulham.horizontalcalendar.HorizontalCalendarView
+        android:layout_alignParentTop="true"
+        android:id="@+id/calendarView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/primary"
+        app:textColorSelected="@color/accent"/>
+
+    <TextView
+        android:id="@+id/dbText"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_below="@id/calendarView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:id="@+id/animationLayout"
+        android:layout_marginTop="40dp"
+        android:orientation="vertical"
+        android:layout_below="@id/calendarView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <com.airbnb.lottie.LottieAnimationView
+            android:layout_gravity="center"
+            android:layout_centerInParent="true"
+            android:id="@+id/animation_view"
+            android:layout_width="wrap_content"
+            android:layout_height="200dp"
+            app:lottie_autoPlay="false"
+            app:lottie_fileName="soexcited.json"
+            app:lottie_loop="true" />
+        <TextView
+            android:layout_marginTop="24dp"
+            android:textStyle="bold"
+            android:layout_gravity="center"
+            android:text="저장된 데이터가 없네요"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+
+
+    <!--<com.github.badoualy.datepicker.DatePickerTimeline-->
+        <!--android:id="@+id/timeline"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignParentTop="true" />-->
+
+    <com.gjiazhe.multichoicescirclebutton.MultiChoicesCircleButton
+        android:id="@+id/multiChoicesCircleButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="50dp"
+        app:layout_behavior="@string/multi_choices_circle_button_behavior"
+        app:mccb_buttonColor="@color/colorAccent"
+        app:mccb_collapseRadius="50dp"
+        app:mccb_expandRadius="140dp"
+        app:mccb_icon="@drawable/ic_add_black_24dp"
+        app:mccb_text="선택하세요" />
+
+    <com.aurelhubert.ahbottomnavigation.AHBottomNavigation
+        android:id="@+id/bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="bottom" />
+
+</RelativeLayout>

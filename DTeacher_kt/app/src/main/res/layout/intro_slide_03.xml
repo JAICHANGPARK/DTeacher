@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:background="@color/Intro_color_03"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:layout_marginTop="20dp"
+        android:id="@+id/animation_view"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:layout_gravity="center"
+        app:lottie_autoPlay="true"
+        app:lottie_fileName="im_thirsty.json"
+        app:lottie_loop="true" />
+
+    <LinearLayout
+        android:gravity="center_vertical"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <TextView
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="아침, 점심, 저녁"
+        android:textColor="#ffffff"
+        android:textSize="24sp" />
+
+    <TextView
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="당신의 식사기록도"
+        android:textColor="#ffffff"
+        android:textSize="24sp" />
+
+    <TextView
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="이곳에 기록해보세요"
+        android:textColor="#ffffff"
+        android:textSize="24sp" />
+
+    </LinearLayout>
+
+    <!--<info.hoang8f.widget.FButton-->
+        <!--android:id="@+id/settingButton"-->
+        <!--android:layout_marginTop="16dp"-->
+        <!--android:layout_width="250dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_gravity="center"-->
+        <!--android:shadowColor="@color/fbutton_color_green_sea"-->
+        <!--android:text="설정 하기"-->
+        <!--android:textSize="18sp"-->
+        <!--android:textStyle="bold"-->
+        <!--android:textColor="@android:color/white"-->
+        <!--app:fButtonColor="@color/fbutton_color_turquoise"  />-->
+
+</LinearLayout>
