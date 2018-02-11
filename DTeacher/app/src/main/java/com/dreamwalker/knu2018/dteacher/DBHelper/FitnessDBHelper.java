@@ -4,14 +4,22 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 import android.widget.Toast;
+
+import com.dreamwalker.knu2018.dteacher.Model.BloodSugar;
+import com.dreamwalker.knu2018.dteacher.Model.Global;
+
+import java.util.ArrayList;
+
+import javax.microedition.khronos.opengles.GL;
 
 /**
  * Created by KNU2017 on 2018-02-08.
  */
 
 public class FitnessDBHelper extends SQLiteOpenHelper {
-
+    private static final String TAG = "FitnessDBHelper";
     private Context context;
 
     public FitnessDBHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
@@ -84,5 +92,28 @@ public class FitnessDBHelper extends SQLiteOpenHelper {
         }
         Toast.makeText(context, "데이터 가져왔어요", Toast.LENGTH_SHORT).show();
         return dateStringBuiler.toString();
+    }
+
+    public ArrayList<Global> readHomeDate(String date){
+        ArrayList<Global> fitnessList = new ArrayList<>();
+        StringBuffer sb = new StringBuffer();
+        SQLiteDatabase db = getWritableDatabase();
+        String valueType;
+        String value;
+        String timeValue;
+
+        // TODO: 2018-02-11 운동 값 가져오기
+        sb.append(" SELECT TYPE, KCAL, TIME FROM FITNESS");
+        sb.append(" WHERE");
+        sb.append(" DATE='" + date + "'");
+        Cursor cursor = db.rawQuery(sb.toString(), null);
+
+        while (cursor.moveToNext()){
+            valueType = cursor.getString(0);
+            value = cursor.getString(1);
+            timeValue = cursor.getString(2);
+            fitnessList.add(new Global("1",valueType, value,timeValue));
+        }
+        return fitnessList;
     }
 }

@@ -12,6 +12,8 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -26,8 +28,11 @@ import com.airbnb.lottie.LottieAnimationView;
 import com.andremion.floatingnavigationview.FloatingNavigationView;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
+import com.dreamwalker.knu2018.dteacher.Adapter.HomeTimeLineAdapter;
 import com.dreamwalker.knu2018.dteacher.Const.IntentConst;
 import com.dreamwalker.knu2018.dteacher.DBHelper.HomeDBHelper;
+import com.dreamwalker.knu2018.dteacher.Model.BloodSugar;
+import com.dreamwalker.knu2018.dteacher.Model.Global;
 import com.dreamwalker.knu2018.dteacher.R;
 import com.getkeepsafe.taptargetview.TapTarget;
 import com.getkeepsafe.taptargetview.TapTargetSequence;
@@ -36,7 +41,11 @@ import com.gjiazhe.multichoicescirclebutton.MultiChoicesCircleButton;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -58,23 +67,38 @@ public class HomeActivity extends AppCompatActivity {
     @BindView(R.id.toolbar)
     Toolbar toolbar;
 
-    @BindView(R.id.dbText)
-    TextView dbTextView;
+    //    @BindView(R.id.dbText)
+//    TextView dbTextView;
     @BindView(R.id.animation_view)
     LottieAnimationView lottieAnimationView;
     @BindView(R.id.animationLayout)
     LinearLayout animationLayout;
 
+    @BindView(R.id.homeRecyclerView)
+    RecyclerView recyclerView;
+
+    RecyclerView.LayoutManager layoutManager;
+    HomeTimeLineAdapter adapter;
+    ArrayList<Global> bloodSugarArrayList;
+
+    HashMap<String, String> tempMap;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setTitle("당선생");
+        setTitle("당선생");
         setContentView(R.layout.activity_home);
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
         Paper.init(this);
 
         homeDBHelper = new HomeDBHelper(this, "bs.db", null, 1);
+        bloodSugarArrayList = new ArrayList<>();
+        recyclerView.setHasFixedSize(true);
+        layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+
+        tempMap = new HashMap<>();
 
         Calendar now = Calendar.getInstance();
         String year = String.valueOf(now.get(Calendar.YEAR));
@@ -155,19 +179,58 @@ public class HomeActivity extends AppCompatActivity {
                 });
 
         sequence.start();
+// TODO: 2018-02-11 텍스트뷰로 가져온 방법
+//        String result = homeDBHelper.selectDateAllData(today);
+//        if (result.equals("null")) {
+//            animationLayout.setVisibility(View.VISIBLE);
+//            lottieAnimationView.playAnimation();
+//            dbTextView.setVisibility(View.GONE);
+//        } else {
+//            animationLayout.setVisibility(View.GONE);
+//            lottieAnimationView.cancelAnimation();
+//            dbTextView.setVisibility(View.VISIBLE);
+//            dbTextView.setText(result);
+//        }
+        bloodSugarArrayList = homeDBHelper.allReadData(today);
 
-        String result = homeDBHelper.selectDateAllData(today);
-        if (result.equals("null")) {
+        for (int i = 0; i < bloodSugarArrayList.size(); i++) {
+
+            Log.e(TAG, "모든 테이블의 데이터를 가져온값  : " + bloodSugarArrayList.get(i).getHead() + ","
+                    + bloodSugarArrayList.get(i).getType() + "," + bloodSugarArrayList.get(i).getValue());
+        }
+
+//        ArrayList<String> list = new ArrayList<>();
+//        if (!bloodSugarArrayList.isEmpty()) {
+//            for (int i = 0; i < bloodSugarArrayList.size(); i++) {
+//
+//                String times = bloodSugarArrayList.get(i).getTime();
+//                String[] timeArray = times.split(":");
+//                String time = timeArray[0]+timeArray[1];
+//                list.add(time);
+////                tempMap.put("index", String.valueOf(i));
+////                tempMap.put("value", time);
+//            }
+//            Collections.sort(list);
+//        }
+//        for (int k = 0; k < list.size(); k++){
+//            Log.e(TAG, "copy list: " + list.get(k));
+//        }
+        // TODO: 2018-02-11 이제 리사이클러뷰 적용
+        //bloodSugarArrayList = homeDBHelper.selectAll(today);
+        adapter = new HomeTimeLineAdapter(this, bloodSugarArrayList);
+        recyclerView.setAdapter(adapter);
+
+        if (bloodSugarArrayList.get(0).getHead().equals("null")) {
             animationLayout.setVisibility(View.VISIBLE);
             lottieAnimationView.playAnimation();
-            dbTextView.setVisibility(View.GONE);
+            recyclerView.setVisibility(View.GONE);
+            //dbTextView.setVisibility(View.GONE);
         } else {
             animationLayout.setVisibility(View.GONE);
             lottieAnimationView.cancelAnimation();
-            dbTextView.setVisibility(View.VISIBLE);
-            dbTextView.setText(result);
+            recyclerView.setVisibility(View.VISIBLE);
+            //adapter.notifyDataSetChanged();
         }
-
 
 /*        TapTargetView.showFor(this,                 // `this` is an Activity
                 TapTarget.forView(findViewById(R.id.floating_navigation_view), "This is a target",
@@ -361,7 +424,7 @@ public class HomeActivity extends AppCompatActivity {
                 String day = String.valueOf(date.get(Calendar.DAY_OF_MONTH));
                 String selectDate = year + "-" + month + "-" + day;
 
-                // TODO: 2018-02-08 혈당 데이터베이스에서 가져온다.
+              /*  // TODO: 2018-02-08 혈당 데이터베이스에서 가져온다.
                 String result = homeDBHelper.selectDateAllData(selectDate);
                 Log.e(TAG, "onDateSelected: result " + result);
 
@@ -375,7 +438,35 @@ public class HomeActivity extends AppCompatActivity {
                     dbTextView.setVisibility(View.VISIBLE);
                     dbTextView.setText("");
                     dbTextView.setText(result);
+                }*/
+
+                // TODO: 2018-02-11 이제 리사이클러뷰 적용
+                bloodSugarArrayList.clear();
+                bloodSugarArrayList = homeDBHelper.allReadData(selectDate);
+                // TODO: 2018-02-11 혼합된 데이터를 나눠 시간 내림차순으로 정렬해야 한다.
+
+                //bloodSugarArrayList = homeDBHelper.selectAll(selectDate);
+                adapter = new HomeTimeLineAdapter(getApplicationContext(), bloodSugarArrayList);
+                recyclerView.setAdapter(adapter);
+
+                for (int i = 0; i < bloodSugarArrayList.size(); i++) {
+                    Log.e(TAG, "데이터 선택 리턴 값 : " + bloodSugarArrayList.get(i).getType() + ","
+                            + bloodSugarArrayList.get(i).getValue() + "," + bloodSugarArrayList.get(i).getTime());
                 }
+                //adapter.notifyDataSetChanged();
+                if (bloodSugarArrayList.get(0).getHead().equals("null")) {
+                    animationLayout.setVisibility(View.VISIBLE);
+                    lottieAnimationView.playAnimation();
+                    recyclerView.setVisibility(View.GONE);
+                    //dbTextView.setVisibility(View.GONE);
+                } else {
+                    animationLayout.setVisibility(View.GONE);
+                    lottieAnimationView.cancelAnimation();
+                    recyclerView.setVisibility(View.VISIBLE);
+                }
+
+                //recyclerView.setAdapter(adapter);
+                //recyclerView.getAdapter().notifyDataSetChanged();
 
 //                if (result.equals("null")) {
 //                    dbTextView.setText("데이터가 없네요 ");
@@ -383,7 +474,9 @@ public class HomeActivity extends AppCompatActivity {
 //
 //                    dbTextView.setText(result);
 //                }
+
                 Log.e(TAG, "onDateSelected: " + "Date : " + year + month + day + ", position:  " + month);
+
             }
 
             // TODO: 2018-02-04 Optionss
@@ -459,6 +552,7 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         // TODO: 2018-02-08 여기서 Adapter Notify하면 되겠네
+        adapter.notifyDataSetChanged();
         super.onResume();
     }
 }

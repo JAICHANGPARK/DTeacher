@@ -4,7 +4,13 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 import android.widget.Toast;
+
+import com.dreamwalker.knu2018.dteacher.Model.BloodSugar;
+import com.dreamwalker.knu2018.dteacher.Model.Global;
+
+import java.util.ArrayList;
 
 /**
  * Created by KNU2017 on 2018-02-10.
@@ -12,6 +18,7 @@ import android.widget.Toast;
 
 public class DrugDBHelper extends SQLiteOpenHelper {
     private Context context;
+    private static final String TAG = "DrugDBHelper";
 
     public DrugDBHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
@@ -76,5 +83,28 @@ public class DrugDBHelper extends SQLiteOpenHelper {
             dateStringBuiler.append("\n");
         }
         return dateStringBuiler.toString();
+    }
+
+    public ArrayList<Global> readHomeDate(String date) {
+        ArrayList<Global> drugList = new ArrayList<>();
+        StringBuffer sb = new StringBuffer();
+        SQLiteDatabase db = getWritableDatabase();
+        String valueType;
+        String value;
+        String timeValue;
+
+        // TODO: 2018-02-11 혈당 값 가져오기
+        sb.append(" SELECT DRUGNAME, UNIT, TIME FROM DRUG");
+        sb.append(" WHERE");
+        sb.append(" DATE='" + date + "'");
+        Cursor cursor = db.rawQuery(sb.toString(), null);
+
+        while (cursor.moveToNext()) {
+            valueType = cursor.getString(0);
+            value = cursor.getString(1);
+            timeValue = cursor.getString(2);
+            drugList.add(new Global("3", valueType, value, timeValue));
+        }
+        return drugList;
     }
 }

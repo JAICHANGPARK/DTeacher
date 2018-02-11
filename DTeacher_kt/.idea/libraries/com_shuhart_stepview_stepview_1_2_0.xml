@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="com.shuhart.stepview:stepview-1.2.0">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/stepview-1.2.0.aar/82a0248dc9f16d7e797ba1f466a37b5c/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/stepview-1.2.0.aar/82a0248dc9f16d7e797ba1f466a37b5c/res" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.shuhart.stepview/stepview/1.2.0/272f77d9cd41ca94286a2e77ebe61df9fd0b40ee/stepview-1.2.0-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

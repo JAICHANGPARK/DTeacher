@@ -16,13 +16,13 @@
         android:background="@color/primary"
         app:textColorSelected="@color/accent"/>
 
-    <TextView
-        android:id="@+id/dbText"
-        android:textSize="18sp"
-        android:textStyle="bold"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/homeRecyclerView"
+        android:layout_above="@id/bottom_navigation"
         android:layout_below="@id/calendarView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content">
+    </android.support.v7.widget.RecyclerView>
 
     <LinearLayout
         android:id="@+id/animationLayout"

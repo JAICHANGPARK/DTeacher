@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="com.github.davidpizarro:autolabelui-1.0.1">
+    <CLASSES>
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/autolabelui-1.0.1.aar/d0f9a3710fd469a9ac50f1c1e2eb997c/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/autolabelui-1.0.1.aar/d0f9a3710fd469a9ac50f1c1e2eb997c/jars/classes.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.github.davidpizarro/autolabelui/1.0.1/d08c7a6c00bdbfb793bded9a0acfee76b0eccd84/autolabelui-1.0.1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
