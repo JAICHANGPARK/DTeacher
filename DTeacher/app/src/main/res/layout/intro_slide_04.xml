@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:background="@color/fbutton_color_wet_asphalt"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:layout_marginTop="20dp"
+        android:id="@+id/animation_view"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:layout_gravity="center"
+        app:lottie_autoPlay="true"
+        app:lottie_fileName="soda_fix.json"
+        app:lottie_loop="true" />
+
+    <LinearLayout
+        android:gravity="center_vertical"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <TextView
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="투약기록을 꾸준히 \n 당선생을 통해 \n 관리해보세요"
+        android:textColor="#ffffff"
+        android:textSize="24sp" />
+
+    </LinearLayout>
+
+
+    <!--<info.hoang8f.widget.FButton-->
+        <!--android:id="@+id/settingButton"-->
+        <!--android:layout_marginTop="16dp"-->
+        <!--android:layout_width="250dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_gravity="center"-->
+        <!--android:shadowColor="@color/fbutton_color_green_sea"-->
+        <!--android:text="설정 하기"-->
+        <!--android:textSize="18sp"-->
+        <!--android:textStyle="bold"-->
+        <!--android:textColor="@android:color/white"-->
+        <!--app:fButtonColor="@color/fbutton_color_turquoise" />-->
+
+    <!-- 한국어 설정을 진행합니다
+
+
+     <TextView
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="가능한 Wi-Fi를 켜주세요. 请打开可用Wi-Fi \n 否则可能会产生流量费用"
+        android:textColor="#ffffff"
+        android:textSize="28sp" />
+
+    <TextView
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="데이터 요금이 부과될 수 있습니다."
+        android:textColor="#ffffff"
+        android:textSize="28sp" />
+
+    <info.hoang8f.widget.FButton
+        android:id="@+id/settingButton"
+        android:layout_marginTop="16dp"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:shadowColor="@color/fbutton_color_green_sea"
+        android:text="설정 하기 设置"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="@android:color/white"
+        app:buttonColor="@color/fbutton_color_turquoise" />
+
+
+    -->
+
+</LinearLayout>
