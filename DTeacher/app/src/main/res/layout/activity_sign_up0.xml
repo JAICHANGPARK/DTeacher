@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SignUpActivity0">
+    tools:context=".SignUpActivity.SignUpActivity0">
 
     <com.shuhart.stepview.StepView
         android:layout_alignParentTop="true"
@@ -64,7 +64,7 @@
                     android:layout_height="wrap_content"
                     android:drawableLeft="@drawable/ic_assignment_ind_black_24dp"
                     android:drawableStart="@drawable/ic_assignment_ind_black_24dp"
-                    android:hint="Username"
+                    android:hint="input ID"
                     android:inputType="textPersonName" />
 
             </android.support.design.widget.TextInputLayout>

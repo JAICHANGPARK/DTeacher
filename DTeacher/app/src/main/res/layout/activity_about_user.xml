@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.dreamwalker.knu2018.dteacher.Activity.AboutUserActivity">
+
+    <LinearLayout
+        android:id="@+id/my_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:text=""
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/buttonMyInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_ripple"
+            android:drawableLeft="@drawable/ic_person_black_24dp"
+            android:drawableRight="@drawable/ic_chevron_right_black_24dp"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:text="내 정보" />
+        <!--구분자-->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_centerInParent="true"
+            android:background="@color/PrimaryDark3" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_below="@id/my_info"
+        android:id="@+id/add_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:text=""
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/buttonHospital"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_ripple"
+            android:drawableLeft="@drawable/ic_local_hospital_black_24dp"
+            android:drawableRight="@drawable/ic_chevron_right_black_24dp"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:text="병원 등록하기" />
+        <!--구분자-->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_centerInParent="true"
+            android:background="@color/PrimaryDark3" />
+    </LinearLayout>
+
+
+</RelativeLayout>

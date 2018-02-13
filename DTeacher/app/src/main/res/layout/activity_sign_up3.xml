@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/color_signup_background"
-    tools:context="com.dreamwalker.knu2018.dteacher.SignUpActivity3">
+    tools:context="com.dreamwalker.knu2018.dteacher.SignUpActivity.SignUpActivity3">
 
 
     <com.shuhart.stepview.StepView
