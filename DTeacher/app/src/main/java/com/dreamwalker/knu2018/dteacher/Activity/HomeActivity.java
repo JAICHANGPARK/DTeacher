@@ -21,6 +21,7 @@ import android.util.Log;
 import android.view.Display;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -50,6 +51,7 @@ import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import devs.mulham.horizontalcalendar.HorizontalCalendar;
 import devs.mulham.horizontalcalendar.HorizontalCalendarView;
 import devs.mulham.horizontalcalendar.utils.HorizontalCalendarListener;
@@ -82,6 +84,13 @@ public class HomeActivity extends AppCompatActivity {
     @BindView(R.id.homeRecyclerView)
     RecyclerView recyclerView;
 
+    //@BindView(R.id.navImageView)
+    ImageView navImageView;
+    //@BindView(R.id.navUserNameTv)
+    TextView navUserNameTv;
+    //@BindView(R.id.navUserEmailTv)
+    TextView navUserEmailTv;
+
     RecyclerView.LayoutManager layoutManager;
     HomeTimeLineAdapter adapter;
     ArrayList<Global> bloodSugarArrayList;
@@ -98,10 +107,10 @@ public class HomeActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         Paper.init(this);
 
-        sharedPreferences = getSharedPreferences("userinfo",MODE_PRIVATE);
-        userID = sharedPreferences.getString("userID","");
-        userPassword = sharedPreferences.getString("userPassword","");
-        Log.e(TAG, "onCreate: " + userID  + "," + userPassword );
+        sharedPreferences = getSharedPreferences("userinfo", MODE_PRIVATE);
+        userID = sharedPreferences.getString("userID", "");
+        userPassword = sharedPreferences.getString("userPassword", "");
+        Log.e(TAG, "onCreate: " + userID + "," + userPassword);
         homeDBHelper = new HomeDBHelper(this, "bs.db", null, 1);
         bloodSugarArrayList = new ArrayList<>();
         recyclerView.setHasFixedSize(true);
@@ -272,6 +281,18 @@ public class HomeActivity extends AppCompatActivity {
 
     }
 
+//    @OnClick(R.id.navImageView)
+//    public void onNavImageViewClicked(){
+//        sharedPreferences = getSharedPreferences("userinfo", MODE_PRIVATE);
+//        userID = sharedPreferences.getString("userID", "");
+//
+//        if (userID.equals("GUEST")) {
+//            startActivity(new Intent(HomeActivity.this, SignUpCheckActivity.class));
+//        } else {
+//            startActivity(new Intent(HomeActivity.this, AboutUserActivity.class));
+//        }
+//    }
+
     @Override
     public void onBackPressed() {
         if (mFloatingNavigationView.isOpened()) {
@@ -311,11 +332,11 @@ public class HomeActivity extends AppCompatActivity {
                     case 2:
 
                         sharedPreferences = getSharedPreferences("userinfo", MODE_PRIVATE);
-                        userID = sharedPreferences.getString("userID","");
+                        userID = sharedPreferences.getString("userID", "");
 
                         if (userID.equals("GUEST")) {
                             startActivity(new Intent(HomeActivity.this, SignUpCheckActivity.class));
-                        }else {
+                        } else {
                             startActivity(new Intent(HomeActivity.this, AboutUserActivity.class));
                         }
 
@@ -355,6 +376,14 @@ public class HomeActivity extends AppCompatActivity {
         multiChoicesCircleButton = (MultiChoicesCircleButton) findViewById(R.id.multiChoicesCircleButton);
         multiChoicesCircleButton.setButtonItems(buttonItems);
 
+
+//         navImageView.setOnClickListener(new View.OnClickListener() {
+//             @Override
+//             public void onClick(View v) {
+//                 Log.e(TAG, "onClick: " + "clicked " );
+//             }
+//         });
+
         // TODO: 2018-02-04 하단 플로팅 리스너
         multiChoicesCircleButton.setOnSelectedItemListener(new MultiChoicesCircleButton.OnSelectedItemListener() {
             @Override
@@ -389,7 +418,7 @@ public class HomeActivity extends AppCompatActivity {
             public void onHovered(MultiChoicesCircleButton.Item item, int index) {
                 // Do something
                 Log.e(TAG, "onHovered: " + index + ", " + item.getText());
-                //Toast.makeText(HomeActivity.this, "onHovered" + index + item.getText(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(HomeActivity.this, "onHovered" + index + item.getText(), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -565,6 +594,37 @@ public class HomeActivity extends AppCompatActivity {
                 }
                 //Snackbar.make((View) mFloatingNavigationView.getParent(), item.getTitle() + " Selected!" + item.getItemId(), Snackbar.LENGTH_SHORT).show();
                 return true;
+            }
+        });
+
+        View headerView = mFloatingNavigationView.getHeaderView(0);
+        navImageView = (ImageView) headerView.findViewById(R.id.navImageView);
+        navUserNameTv = (TextView) headerView.findViewById(R.id.navUserNameTv);
+        navUserEmailTv = (TextView) headerView.findViewById(R.id.navUserEmailTv);
+
+        sharedPreferences = getSharedPreferences("userinfo", MODE_PRIVATE);
+        userID = sharedPreferences.getString("userID", "");
+
+        if (userID.equals("GUEST")) {
+            navUserNameTv.setText("GUEST");
+            navUserEmailTv.setText("등록된 이메일 없음.");
+        } else {
+            navUserNameTv.setText(userID);
+            navUserEmailTv.setText("공사중");
+        }
+
+        headerView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                sharedPreferences = getSharedPreferences("userinfo", MODE_PRIVATE);
+                userID = sharedPreferences.getString("userID", "");
+
+                if (userID.equals("GUEST")) {
+                    startActivity(new Intent(HomeActivity.this, SignUpCheckActivity.class));
+                } else {
+                    startActivity(new Intent(HomeActivity.this, AboutUserActivity.class));
+                }
             }
         });
     }

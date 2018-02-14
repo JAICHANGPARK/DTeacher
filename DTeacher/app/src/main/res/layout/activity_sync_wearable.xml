@@ -1,9 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.dreamwalker.knu2018.dteacher.Activity.SyncWearableActivity">
 
-</android.support.constraint.ConstraintLayout>
+    <LinearLayout
+        android:id="@+id/my_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:text=""
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/buttonRegister"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_ripple_v2"
+            android:drawableLeft="@drawable/ic_playlist_add_black_24dp"
+            android:drawableRight="@drawable/ic_chevron_right_black_24dp"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:text="장비등록" />
+        <!--구분자-->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_centerInParent="true"
+            android:background="@color/PrimaryDark3" />
+        <Button
+            android:id="@+id/buttonRealTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_ripple_v2"
+            android:drawableLeft="@drawable/ic_timeline_black_24dp"
+            android:drawableRight="@drawable/ic_chevron_right_black_24dp"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:text="실시간 데이터 확인" />
+        <!--구분자-->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_centerInParent="true"
+            android:background="@color/PrimaryDark3" />
+        <Button
+            android:id="@+id/buttonSync"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_ripple_v2"
+            android:drawableLeft="@drawable/ic_sync_black_24dp"
+            android:drawableRight="@drawable/ic_chevron_right_black_24dp"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:text="데이터 동기화" />
+
+    </LinearLayout>
+
+
+</RelativeLayout>

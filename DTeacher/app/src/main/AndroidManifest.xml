@@ -103,7 +103,8 @@
             android:name=".Activity.WriteDrugActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".Activity.WriteDrugUnitActivity" />
-        <activity android:name=".Activity.SignUpCheckActivity"></activity>
+        <activity android:name=".Activity.SignUpCheckActivity" />
+        <activity android:name=".Activity.AboutUserInfoActivity" android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
