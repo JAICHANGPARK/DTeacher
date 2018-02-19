@@ -11,6 +11,7 @@
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
 
     <application
         android:allowBackup="true"
@@ -42,7 +43,6 @@
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
@@ -104,7 +104,16 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".Activity.WriteDrugUnitActivity" />
         <activity android:name=".Activity.SignUpCheckActivity" />
-        <activity android:name=".Activity.AboutUserInfoActivity" android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".Activity.AboutUserInfoActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".WearableSync.SyncWearableDataActivity" />
+        <activity android:name=".WearableSync.SyncWearableResultActivity"></activity>
+        <activity android:name=".BSMSync.SyncBSMDataActivity"/>
+
+        <service
+            android:name=".WearableSync.BluetoothLeService"
+            android:enabled="true" />
     </application>
 
 </manifest>

@@ -100,6 +100,7 @@ dependencies {
     implementation 'com.flaviofaria:kenburnsview:1.0.7' // kenburnsview
     //implementation 'com.github.ozodrukh:CircularReveal:2.0.1@aar'
     implementation 'com.github.asyl.animation:arcanimator:1.0.0'
+    implementation 'me.itangqi.waveloadingview:library:0.3.5' // waveloadingview
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'

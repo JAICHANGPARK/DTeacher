@@ -1,9 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.dreamwalker.knu2018.dteacher.Activity.SyncBSMActivity">
 
-</android.support.constraint.ConstraintLayout>
+    <TextView
+        android:id="@+id/label01"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="6dp"
+        android:text="등록 및 동기화"
+        android:textSize="14sp"
+        android:textStyle="normal" />
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/cardView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/label01"
+        android:layout_margin="6dp"
+        android:elevation="8dp"
+        app:cardCornerRadius="2dp">
+
+        <LinearLayout
+            android:id="@+id/my_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <Button
+                android:id="@+id/buttonRegister"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/button_ripple_v2"
+                android:drawableLeft="@drawable/ic_playlist_add_black_24dp"
+                android:drawableRight="@drawable/ic_chevron_right_black_24dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:text="장비등록" />
+
+            <!--구분자-->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_centerInParent="true"
+                android:background="@color/PrimaryDark3" />
+
+            <Button
+                android:id="@+id/buttonSync"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/button_ripple_v2"
+                android:drawableLeft="@drawable/ic_sync_black_24dp"
+                android:drawableRight="@drawable/ic_chevron_right_black_24dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:text="데이터 동기화" />
+
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+
+
+</RelativeLayout>
+
