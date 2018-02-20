@@ -61,4 +61,8 @@ public class IntentConst {
     //Descriptor
     public final static UUID BLE_DESCRIPTOR_DESCRIPTOR = UUID.fromString("00002902-0000-1000-8000-00805f9b34fb");
 
+
+    public static final String HEXI_AMBILITE_UUID = "00002011-0000-1000-8000-00805f9b34fb";
+    public static final String HEXI_MESSAGES_UUID = "00002032-0000-1000-8000-00805f9b34fb";
+
 }

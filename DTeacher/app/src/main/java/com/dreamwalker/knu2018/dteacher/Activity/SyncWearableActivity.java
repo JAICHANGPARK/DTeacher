@@ -8,6 +8,7 @@ import android.widget.Button;
 
 import com.dreamwalker.knu2018.dteacher.R;
 import com.dreamwalker.knu2018.dteacher.WearableSync.SyncWearableDataActivity;
+import com.dreamwalker.knu2018.dteacher.WearableSync.WearableRealTimeActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -40,7 +41,7 @@ public class SyncWearableActivity extends AppCompatActivity {
 
     @OnClick(R.id.buttonRealTime)
     public void onRealTimeButtonClicked(){
-
+        startActivity(new Intent(SyncWearableActivity.this, WearableRealTimeActivity.class));
     }
 
     @OnClick(R.id.buttonSync)

@@ -30,7 +30,7 @@ public class BSDBHelper extends SQLiteOpenHelper {
 
         // String 보다 StringBuffer가 Query 만들기 편하다.
         StringBuffer sb = new StringBuffer();
-        sb.append(" CREATE TABLE BS ( ");
+        sb.append(" CREATE TABLE IF NOT EXISTS BS ( ");
         sb.append(" _ID INTEGER PRIMARY KEY AUTOINCREMENT, ");
         sb.append(" TYPE TEXT, ");
         sb.append(" VALUE TEXT, ");
@@ -44,31 +44,31 @@ public class BSDBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        String sql = "drop table BS;"; // 테이블 드랍
+        String sql = "drop table if exists BS;"; // 테이블 드랍
         db.execSQL(sql);
         onCreate(db); // 다시 테이블 생성
     }
 
-    public void insertBSData(String type,String value, String date, String time) {
+    public void insertBSData(String type, String value, String date, String time) {
 
         SQLiteDatabase db = getWritableDatabase();
         StringBuffer sb = new StringBuffer();
         sb.append(" INSERT INTO BS ( ");
         sb.append(" TYPE, VALUE, DATE, TIME ) ");
         sb.append(" VALUES ( ?, ?, ? , ? ) ");
-        db.execSQL(sb.toString(), new Object[]{type,value,date,time});
+        db.execSQL(sb.toString(), new Object[]{type, value, date, time});
     }
 
-    public String selectAllData(){
+    public String selectAllData() {
         StringBuffer sb = new StringBuffer();
         StringBuilder dateStringBuiler = new StringBuilder();
 
         sb.append("SELECT _ID, TYPE, VALUE, DATE, TIME FROM BS");
         // 읽기 전용 DB 객체를 만든다.
         SQLiteDatabase db = getReadableDatabase();
-        Cursor cursor = db.rawQuery(sb.toString(),null);
+        Cursor cursor = db.rawQuery(sb.toString(), null);
 
-        while (cursor.moveToNext()){
+        while (cursor.moveToNext()) {
             dateStringBuiler.append("id:");
             dateStringBuiler.append(cursor.getString(0));
             dateStringBuiler.append("type:");
@@ -84,28 +84,29 @@ public class BSDBHelper extends SQLiteOpenHelper {
         return dateStringBuiler.toString();
     }
 
-    public ArrayList<BloodSugar> selectAll(){
+    public ArrayList<BloodSugar> selectAll() {
         ArrayList<BloodSugar> bloodSugars = new ArrayList<>();
         StringBuffer sb = new StringBuffer();
         sb.append("SELECT _ID, TYPE, VALUE, DATE, TIME FROM BS");
         // 읽기 전용 DB 객체를 만든다.
         SQLiteDatabase db = getReadableDatabase();
-        Cursor cursor = db.rawQuery(sb.toString(),null);
+        Cursor cursor = db.rawQuery(sb.toString(), null);
 
         String valueType;
         String value;
         String timeValue;
 
-        while (cursor.moveToNext()){
+        while (cursor.moveToNext()) {
             valueType = cursor.getString(1);
             value = cursor.getString(2);
             timeValue = cursor.getString(4);
-            bloodSugars.add(new BloodSugar(valueType, value,timeValue));
+            bloodSugars.add(new BloodSugar(valueType, value, timeValue));
         }
         return bloodSugars;
     }
 
-    public ArrayList<Global> readHomeDate(String date){
+    public ArrayList<Global> readHomeDate(String date) {
+        Log.e(TAG, "readHomeDate : 입력된 : 날짜 :  " + date);
         ArrayList<Global> bloodSugars = new ArrayList<>();
         StringBuffer sb = new StringBuffer();
         SQLiteDatabase db = getWritableDatabase();
@@ -117,14 +118,23 @@ public class BSDBHelper extends SQLiteOpenHelper {
         sb.append(" SELECT TYPE, VALUE, TIME FROM BS");
         sb.append(" WHERE");
         sb.append(" DATE='" + date + "'");
-        Cursor cursor = db.rawQuery(sb.toString(), null);
 
-        while (cursor.moveToNext()){
+        Log.e(TAG, "BSDBHelper readHomeDate: " + " 쿼리 체크 ");
+        Cursor cursor = db.rawQuery(sb.toString(), null);
+        while (cursor.moveToNext()) {
             valueType = cursor.getString(0);
             value = cursor.getString(1);
             timeValue = cursor.getString(2);
-            bloodSugars.add(new Global("0",valueType, value,timeValue));
+            bloodSugars.add(new Global("0", valueType, value, timeValue));
         }
+
         return bloodSugars;
+
+//        if (bloodSugars != null) {
+//            return bloodSugars;
+//        } else {
+//            bloodSugars.add(new Global("0", "unknown", "unknown", "unknown"));
+//            return bloodSugars;
+//        }
     }
 }

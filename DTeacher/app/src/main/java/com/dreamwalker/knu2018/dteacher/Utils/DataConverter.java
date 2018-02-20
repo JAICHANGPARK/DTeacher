@@ -77,4 +77,11 @@ public class DataConverter {
 //        return String.format("%02x ;%02x ;%02x ", gyroXintVal, gyroYintVal, gyroZintVal);
         return resultString;
     }
+    public static String LightConverter(byte[] data) {
+        float lightValue = (float) data[0] / 100;
+        String resultString = String.valueOf(lightValue);
+        return resultString;
+    }
+
+
 }

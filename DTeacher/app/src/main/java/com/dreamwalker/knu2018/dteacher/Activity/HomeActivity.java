@@ -111,7 +111,7 @@ public class HomeActivity extends AppCompatActivity {
         userID = sharedPreferences.getString("userID", "");
         userPassword = sharedPreferences.getString("userPassword", "");
         Log.e(TAG, "onCreate: " + userID + "," + userPassword);
-        homeDBHelper = new HomeDBHelper(this, "bs.db", null, 1);
+
         bloodSugarArrayList = new ArrayList<>();
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
@@ -128,6 +128,8 @@ public class HomeActivity extends AppCompatActivity {
         String hour = String.valueOf(now.get(Calendar.HOUR));
         String minutes = String.valueOf(now.get(Calendar.MINUTE));
         today = year + "-" + month + "-" + day;
+
+        homeDBHelper = new HomeDBHelper(this, "home.db", null, 1);
 
         // TODO: 2018-02-04 뷰 초기화
         initCalendarView();
@@ -210,6 +212,8 @@ public class HomeActivity extends AppCompatActivity {
 //            dbTextView.setVisibility(View.VISIBLE);
 //            dbTextView.setText(result);
 //        }
+
+        // TODO: 2018-02-20 잠깐 주석처리
         bloodSugarArrayList = homeDBHelper.allReadData(today);
 
         for (int i = 0; i < bloodSugarArrayList.size(); i++) {

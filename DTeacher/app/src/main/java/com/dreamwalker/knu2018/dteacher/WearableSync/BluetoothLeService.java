@@ -32,6 +32,7 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
 
+import com.dreamwalker.knu2018.dteacher.Const.IntentConst;
 import com.dreamwalker.knu2018.dteacher.Utils.DataConverter;
 
 import java.io.UnsupportedEncodingException;
@@ -297,33 +298,36 @@ public class BluetoothLeService extends Service {
 //            intent.putExtra(EXTRA_DATA, String.valueOf(heartRate));
 //        } else {
         // For all other profiles, writes the data formatted in HEX.
-        final byte[] data = characteristic.getValue();
-        if (data != null && data.length > 0) {
-            if (data[0] == 0x02 && data[19] == 0x00) { // TODO: 2018-01-25 데이터 전송 시작 메모리 바이트가 들어오면
-                if (data[1] == data[2]) {
-                    // TODO: 2018-01-25 데이터 1과 데이터가 2가 같지 않을때
-                    // TODO: 2018-01-26 프로토콜에 따라 다시 수정
-                    dataSaveFlag = true;  // 저장 시작 플레그 동작
+
+        // TODO: 2018-02-20 데이터 동기화 처리 부분.
+        if (characteristic.getUuid().toString().equals(IntentConst.HEXI_MESSAGES_UUID)){
+            final byte[] data = characteristic.getValue();
+            if (data != null && data.length > 0) {
+                if (data[0] == 0x02 && data[19] == 0x00) { // TODO: 2018-01-25 데이터 전송 시작 메모리 바이트가 들어오면
+                    if (data[1] == data[2]) {
+                        // TODO: 2018-01-25 데이터 1과 데이터가 2가 같지 않을때
+                        // TODO: 2018-01-26 프로토콜에 따라 다시 수정
+                        dataSaveFlag = true;  // 저장 시작 플레그 동작
 //                  conState = START_CODE;
 //                    if (data[1] == 0x00) { // TODO: 2018-01-25 데이터 1이 0x00 이면
 //                        dataSaveFlag = true;  // 저장 시작 플레그 동작
 //                        conState = START_CODE;
 //                    }
+                    }
+                } else if (data[0] == 0x00 && data[19] == 0x00) {
+                    if (data[1] == data[2]) {
+                        // TODO: 2018-01-25 마지막 들어온것을 한번 전송하고~ 플래그를 종료시켜 버려보자
+                        conState = MID_CODE;
+                    } else {
+                        conState = MID_CODE;
+                    }
+                } else if (data[0] == 0x00 && data[19] == 0x03) {
+                    if (data[1] == data[2]) {
+                        // TODO: 2018-01-25 마지막 들어온것을 한번 전송하고~ 플래그를 종료시켜 버려보자
+                        dataSaveFlag = false;
+                        conState = END_CODE;
+                    }
                 }
-            } else if (data[0] == 0x00 && data[19] == 0x00) {
-                if (data[1] == data[2]) {
-                    // TODO: 2018-01-25 마지막 들어온것을 한번 전송하고~ 플래그를 종료시켜 버려보자
-                    conState = MID_CODE;
-                } else {
-                    conState = MID_CODE;
-                }
-            } else if (data[0] == 0x00 && data[19] == 0x03) {
-                if (data[1] == data[2]) {
-                    // TODO: 2018-01-25 마지막 들어온것을 한번 전송하고~ 플래그를 종료시켜 버려보자
-                    dataSaveFlag = false;
-                    conState = END_CODE;
-                }
-            }
 //            // TODO: 2018-01-18 데이터 크기만큼의 stringBuilder를 만든다.
 //            final StringBuilder stringBuilder = new StringBuilder(data.length);
 //            for (byte byteChar : data) {
@@ -334,51 +338,64 @@ public class BluetoothLeService extends Service {
 //            // TODO: 2018-01-18 String 열로 보내버린다.
 //            //intent.putExtra(EXTRA_DATA, new String(data) + ","+ stringBuilder.toString() + "\n\n");
 //            intent.putExtra(EXTRA_DATA,  stringBuilder.toString() + "\n\n");
-            //intent.putExtra(EXTRA_DATA, new String(data));
-            //intent.putExtra(EXTRA_DATA, new String(data));
-            //sendBroadcast(intent);
-        }
+                //intent.putExtra(EXTRA_DATA, new String(data));
+                //intent.putExtra(EXTRA_DATA, new String(data));
+                //sendBroadcast(intent);
+            }
 
-        // TODO: 2018-01-26 모드에 따라 구분하고자 했는데 이 부분은 이제 필요 없을 꺼같다.
-        if (conState == START_CODE) {
+            // TODO: 2018-01-26 모드에 따라 구분하고자 했는데 이 부분은 이제 필요 없을 꺼같다.
+            if (conState == START_CODE) {
 
-        }else if (conState == MID_CODE){
+            }else if (conState == MID_CODE){
 
-        }else if (conState == END_CODE){
+            }else if (conState == END_CODE){
 
-        }
+            }
 
-        if (dataSaveFlag) {
-            if (data[0] == 0x10){
-                String tmp = DataConverter.PatternDataConverter(data);
-                Log.e(TAG,"Data Save");
-                Log.e(TAG,"Receive Save Data : " + tmp);
-                intent.putExtra(EXTRA_DATA, tmp);
-                intent.putExtra("state", START_CODE);
-                sendBroadcast(intent);
-            }else if(data[0] == 0x20){
-                String tmp = DataConverter.DiabetesDataConverter(data);
-                Log.e(TAG,"Data Save");
-                Log.e(TAG,"Receive Save Data : " + tmp);
-                intent.putExtra(EXTRA_DATA, tmp);
-                intent.putExtra("state", START_CODE);
-                sendBroadcast(intent);
-            }else {
-                String tmp = DataConverter.PatternDataConverter(data);
-                System.out.println("Data Save");
-                System.out.println("Receive Save Data : " + tmp);
-                intent.putExtra(EXTRA_DATA, tmp);
-                intent.putExtra("state", START_CODE);
+            if (dataSaveFlag) {
+                if (data[0] == 0x10){
+                    String tmp = DataConverter.PatternDataConverter(data);
+                    Log.e(TAG,"Data Save");
+                    Log.e(TAG,"Receive Save Data : " + tmp);
+                    intent.putExtra(EXTRA_DATA, tmp);
+                    intent.putExtra("state", START_CODE);
+                    sendBroadcast(intent);
+                }else if(data[0] == 0x20){
+                    String tmp = DataConverter.DiabetesDataConverter(data);
+                    Log.e(TAG,"Data Save");
+                    Log.e(TAG,"Receive Save Data : " + tmp);
+                    intent.putExtra(EXTRA_DATA, tmp);
+                    intent.putExtra("state", START_CODE);
+                    sendBroadcast(intent);
+                }else {
+                    String tmp = DataConverter.PatternDataConverter(data);
+                    System.out.println("Data Save");
+                    System.out.println("Receive Save Data : " + tmp);
+                    intent.putExtra(EXTRA_DATA, tmp);
+                    intent.putExtra("state", START_CODE);
+                    sendBroadcast(intent);
+                }
+            } else {
+                intent.putExtra(EXTRA_DATA, "0,0,0,0"); // TODO: 2018-01-26 전송 끝부터 됬을때 처리되는 핵심 코드.
+                System.out.println("Data Save End ");
                 sendBroadcast(intent);
             }
-        } else {
-            intent.putExtra(EXTRA_DATA, "0,0,0,0"); // TODO: 2018-01-26 전송 끝부터 됬을때 처리되는 핵심 코드.
+        }
+        // TODO: 2018-02-20 TSL2561 값 받는 처리부분
+        else if (characteristic.getUuid().toString().equals(IntentConst.HEXI_AMBILITE_UUID)){
+            final byte[] data = characteristic.getValue();
+            String tempData = DataConverter.LightConverter(data);
+            String amb = null;
+            if (tempData != null){
+                //amb = String.valueOf(data[0]);
+                intent.putExtra(EXTRA_DATA, tempData);
+            }
+            
             System.out.println("Data Save End ");
             sendBroadcast(intent);
         }
     }
-
-
+    
     public class LocalBinder extends Binder {
         BluetoothLeService getService() {
             return BluetoothLeService.this;
@@ -509,12 +526,12 @@ public class BluetoothLeService extends Service {
      *
      * @param characteristic The characteristic to read from.
      */
-    public void readCharacteristic(BluetoothGattCharacteristic characteristic) {
+    public boolean readCharacteristic(BluetoothGattCharacteristic characteristic) {
         if (mBluetoothAdapter == null || mBluetoothGatt == null) {
             Log.w(TAG, "BluetoothAdapter not initialized");
-            return;
+            return true;
         }
-        mBluetoothGatt.readCharacteristic(characteristic);
+       return mBluetoothGatt.readCharacteristic(characteristic);
     }
 
 

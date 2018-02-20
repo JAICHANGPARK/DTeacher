@@ -30,7 +30,7 @@ public class DrugDBHelper extends SQLiteOpenHelper {
 
         // String 보다 StringBuffer가 Query 만들기 편하다.
         StringBuffer sb = new StringBuffer();
-        sb.append(" CREATE TABLE DRUG ( ");
+        sb.append(" CREATE TABLE IF NOT EXISTS DRUG ( ");
         sb.append(" _ID INTEGER PRIMARY KEY AUTOINCREMENT, ");
         sb.append(" DRUGNAME TEXT, ");
         sb.append(" UNIT TEXT, ");
@@ -43,7 +43,7 @@ public class DrugDBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        String sql = "drop table DRUG;"; // 테이블 드랍
+        String sql = "drop table IF EXISTS DRUG;"; // 테이블 드랍
         db.execSQL(sql);
         onCreate(db); // 다시 테이블 생성
     }
@@ -92,12 +92,17 @@ public class DrugDBHelper extends SQLiteOpenHelper {
         String valueType;
         String value;
         String timeValue;
-
+        Cursor cursor = null;
         // TODO: 2018-02-11 혈당 값 가져오기
         sb.append(" SELECT DRUGNAME, UNIT, TIME FROM DRUG");
         sb.append(" WHERE");
         sb.append(" DATE='" + date + "'");
-        Cursor cursor = db.rawQuery(sb.toString(), null);
+
+        if (db.rawQuery(sb.toString(), null) != null) {
+            cursor = db.rawQuery(sb.toString(), null);
+        } else {
+            onCreate(db);
+        }
 
         while (cursor.moveToNext()) {
             valueType = cursor.getString(0);
