@@ -20,6 +20,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    compileOptions {
+        targetCompatibility 1.8
+        sourceCompatibility 1.8
+    }
 }
 
 dependencies {
@@ -101,8 +105,13 @@ dependencies {
     //implementation 'com.github.ozodrukh:CircularReveal:2.0.1@aar'
     implementation 'com.github.asyl.animation:arcanimator:1.0.0'
     implementation 'me.itangqi.waveloadingview:library:0.3.5' // waveloadingview
-
     implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3' //MPAndroidChart
+    implementation 'com.github.zzz40500:AndroidSweetSheet:1.1.0' //AndroidSweetSheet
+    //implementation 'com.github.zzz40500:AndroidSweetSheet:-SNAPSHOT'
+    implementation 'jp.wasabeef:recyclerview-animators:2.3.0' // recyclerview-animators
+    implementation group: 'org.apache.poi', name: 'poi', version: '3.9'
+    implementation 'com.nbsp:library:1.8' //material data pick
+
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'

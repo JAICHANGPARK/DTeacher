@@ -20,7 +20,11 @@
 
 package com.dreamwalker.knu2018.dteacher.Utils;
 
+import android.util.Log;
+
 public class DataConverter {
+
+    private static final String TAG = "DataConverter";
 
 //    private static final String INTEGER = "%d";
 //    private static final String FLOAT = "%.0f";
@@ -77,11 +81,27 @@ public class DataConverter {
 //        return String.format("%02x ;%02x ;%02x ", gyroXintVal, gyroYintVal, gyroZintVal);
         return resultString;
     }
+
     public static String LightConverter(byte[] data) {
-        float lightValue = (float) data[0] / 100;
-        String resultString = String.valueOf(lightValue);
+        int intValue = unsignedByte2Int(data[0]);
+        Log.e(TAG, "LightConverter:  intValue" + intValue);
+        //float lightValue = (float)intValue / 100.0f;
+        //Log.e(TAG, "LightConverter:  lightValue" + lightValue);
+        String resultString = String.valueOf(intValue);
+        Log.e(TAG, "LightConverter:  resultString" + resultString);
         return resultString;
     }
 
+    /**
+     * 바이트 형을 unsigned 값으로 처리하는 메소드
+     * @param byteValue
+     * @return int value
+     *
+     * @author : JAICHANGPARK
+     *
+     */
+    public static int unsignedByte2Int(byte byteValue){
+        return (int) byteValue & 0xFF;
+    }
 
 }

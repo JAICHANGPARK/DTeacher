@@ -128,13 +128,13 @@ public class BSDBHelper extends SQLiteOpenHelper {
             bloodSugars.add(new Global("0", valueType, value, timeValue));
         }
 
-        return bloodSugars;
+        //return bloodSugars;
 
-//        if (bloodSugars != null) {
-//            return bloodSugars;
-//        } else {
-//            bloodSugars.add(new Global("0", "unknown", "unknown", "unknown"));
-//            return bloodSugars;
-//        }
+        if (bloodSugars != null) {
+            return bloodSugars;
+        } else {
+            bloodSugars.add(new Global("0", "unknown", "unknown", "unknown"));
+            return bloodSugars;
+        }
     }
 }

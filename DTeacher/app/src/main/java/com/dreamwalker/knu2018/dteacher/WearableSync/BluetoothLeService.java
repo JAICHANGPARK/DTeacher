@@ -383,14 +383,18 @@ public class BluetoothLeService extends Service {
         }
         // TODO: 2018-02-20 TSL2561 값 받는 처리부분
         else if (characteristic.getUuid().toString().equals(IntentConst.HEXI_AMBILITE_UUID)){
+
             final byte[] data = characteristic.getValue();
+
             String tempData = DataConverter.LightConverter(data);
             String amb = null;
+
             if (tempData != null){
                 //amb = String.valueOf(data[0]);
+                Log.e(TAG, "broadcastUpdate: HEXI_AMBILITE_UUID " + data[0]);
                 intent.putExtra(EXTRA_DATA, tempData);
             }
-            
+
             System.out.println("Data Save End ");
             sendBroadcast(intent);
         }

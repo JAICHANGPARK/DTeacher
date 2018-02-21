@@ -1,11 +1,13 @@
 package com.dreamwalker.knu2018.dteacher.WearableSync;
 
+import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.os.Bundle;
@@ -13,13 +15,27 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.dreamwalker.knu2018.dteacher.Activity.GraphAnalysisActivity;
+import com.dreamwalker.knu2018.dteacher.Model.RealTime;
 import com.dreamwalker.knu2018.dteacher.R;
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.TimerTask;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
+import io.paperdb.Paper;
 
 public class WearableRealTimeActivity extends BleRealTimeLibrary {
 
@@ -29,59 +45,95 @@ public class WearableRealTimeActivity extends BleRealTimeLibrary {
     Button buttonScan;
     @BindView(R.id.buttonSerialSend)
     Button buttonClear;
+    @BindView(R.id.buttonSave)
+    Button buttonSave;
+    @BindView(R.id.buttonGraph)
+    Button buttonGraph;
 
-    @BindView(R.id.serialReveicedText)
-    TextView serialReceivedText;
+//    @BindView(R.id.serialReveicedText)
+//    TextView serialReceivedText;
 
+    @BindView(R.id.line_chart)
+    LineChart lineChart;
+
+    private LineDataSet lineDataSet;
+    private LineData lineData;
+    private ArrayList<Entry> realtimeData;
+    ArrayList<RealTime> loggingArray;
+    ArrayList<String> tempArray;
+
+    private int cnt = 0;
     // TODO: 2018-01-25 Library Service에서 받은 데이터를 처리하기위한 변수
     ArrayList<String> arrayList = new ArrayList<>();
-    String[] tmpString;
-    int tmpIntEnd;
-    int tmpIntStart;
-    float tmpResult;
-    String percent;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wearable_real_time);
         ButterKnife.bind(this);
-        onCreateProcess();                                                        //onCreate Process by BlunoLibrary
+        onCreateProcess();
 
-        //serialBegin(115200);													//set the Uart Baudrate on BLE chip to 115200
+        // TODO: 2018-02-21 임시 저장할 NoSQL 객체  
+        Paper.init(this);
 
-        //serialReceivedText = (TextView) findViewById(R.id.serialReveicedText);    //initial the EditText of the received data
-//        serialSendText = (EditText) findViewById(R.id.serialSendText);            //initial the EditText of the sending data
-//        buttonSerialSend = (Button) findViewById(R.id.buttonSerialSend);        //initial the button for sending the data
-        buttonClear.setOnClickListener(new View.OnClickListener() {
+        realtimeData = new ArrayList<>();
+        tempArray = new ArrayList<>();
+        loggingArray = new ArrayList<>();
 
-            @Override
-            public void onClick(View v) {
-                // TODO Auto-generated method stub
-                serialReceivedText.setText("");
-                //serialSend(serialSendText.getText().toString());                //send the data to the BLUNO
+        // TODO: 2018-02-21 차트 속성 설정.
+        YAxis yAxis = lineChart.getAxisRight();
+        yAxis.setEnabled(false);
+        XAxis xAxis = lineChart.getXAxis();
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+
+        buttonClear.setOnClickListener(v-> Log.e(TAG, "onCreate: 람다 클릭 "));
+        buttonScan.setOnClickListener(v->buttonScanOnClickProcess());
+
+    }
+
+    @OnClick(R.id.buttonSave)
+    public void onButtonSaveClicked() {
+        if (realtimeData.size() == 0) { //실시간 데이터가 없으면
+            Toast.makeText(WearableRealTimeActivity.this, "저장할 데이터가 없어요 ㅠㅠ", Toast.LENGTH_SHORT).show();
+        } else { // 축적된 실시간 데이터가 있다면
+            if (Paper.book("realtime").read("data") == null) { // 만약 sql에 데이터가 없다면
+                Paper.book("realtime").write("data", realtimeData); // 데이터를 저장한다.
+                Paper.book("realtime").write("logging", loggingArray);
+
+                Toast.makeText(WearableRealTimeActivity.this, "데이터가 없어 저장했어요", Toast.LENGTH_SHORT).show();
+                buttonSave.setText("저장완료:)");
+                buttonSave.setEnabled(false);
+                buttonGraph.setVisibility(View.VISIBLE);
+
+            } else { // 그렇지 않고 데이터가 있다면
+                Paper.book("realtime").delete("data"); //세로운 데이터를 저장하기 위해 기존 것을 다 지운다.
+                Paper.book("realtime").write("data", realtimeData); // 세로운 데이터를 다시 넣는다.
+                Paper.book("realtime").delete("logging");
+                Paper.book("realtime").write("logging", loggingArray);
+                Toast.makeText(WearableRealTimeActivity.this, "기존 데이터를 지우고 다시 저장했어요", Toast.LENGTH_SHORT).show();
+                buttonSave.setText("저장완료:)");
+                buttonSave.setEnabled(false);
+                buttonGraph.setVisibility(View.VISIBLE);
             }
-        });
+        }
+    }
 
-        buttonScan = (Button) findViewById(R.id.buttonScan);                    //initial the button for scanning the BLE device
-        buttonScan.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                // TODO Auto-generated method stub
-                buttonScanOnClickProcess();                                        //Alert Dialog for selecting the BLE device
+    @OnClick(R.id.buttonGraph)
+    public void onButtonGraphClicked() {
+        if (realtimeData.size() == 0) {
+            Toast.makeText(WearableRealTimeActivity.this, "데이터가 없네요?", Toast.LENGTH_SHORT).show();
+        } else {
+            for (int i = 0; i < realtimeData.size(); i++) {
+                float st = realtimeData.get(i).getY();
+                String stt = String.valueOf(st);
+                tempArray.add(stt);
+                Log.e(TAG, "tempArray: " + tempArray.get(i));
             }
-        });
-
-//        buttonClear = (Button) findViewById(R.id.buttonClear);
-//        buttonClear.setOnClickListener(new OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                serialReceivedText.setText("");
-//            }
-//        });
-
+            Intent intent = new Intent(getBaseContext(), GraphAnalysisActivity.class);
+            intent.putExtra("realdata", tempArray);
+            intent.putExtra("page", 0);
+            startActivity(intent);
+        }
     }
 
     protected void onResume() {
@@ -148,19 +200,38 @@ public class WearableRealTimeActivity extends BleRealTimeLibrary {
     @Override
     public void onSerialReceived(String theString) {                            //Once connection data received, this function will be called
         // TODO Auto-generated method stub
+        String receiveValue;
+        float floatValue;
         //Intent intent = new Intent(this, SyncWearableResultActivity.class);
+        if (theString != null) {
+            receiveValue = theString;
 
-        if (theString == null) {
-            serialReceivedText.append("");
+            //serialReceivedText.append("");
         } else {
-            serialReceivedText.append(theString + "\n");
+            receiveValue = "";
+            //serialReceivedText.append(theString + "\n");
         }
-        //append the text into the EditText
-        //The Serial data from the BLUNO may be sub-packaged, so using a buffer to hold the String is a good choice.
-        //((ScrollView) serialReceivedText.getParent()).fullScroll(View.FOCUS_DOWN);
+        floatValue = Float.parseFloat(receiveValue);
+        // TODO: 2018-02-21 호출될때 마다 시간 갱신
+        String datetime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(System.currentTimeMillis()));
+        // TODO: 2018-02-21 line데이터 그리기 위한 변수  
+        realtimeData.add(new Entry(cnt, floatValue));
+        // TODO: 2018-02-21 데이터 로깅용 리스트
+        loggingArray.add(new RealTime(String.valueOf(floatValue), datetime));
+        Log.e(TAG, "realtimeData: " + realtimeData.get(cnt));
+        Log.e(TAG, "loggingArray: " + loggingArray.get(cnt).getDatetime() + ", " + loggingArray.get(cnt).getValue());
+        lineDataSet = new LineDataSet(realtimeData, "실시간 데이터");
+        lineDataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
+        lineDataSet.setCubicIntensity(0.2f);
+        lineDataSet.setColor(Color.RED);
+        lineData = new LineData(lineDataSet);
+        lineChart.setData(lineData);
+        // TODO: 2017-11-17 실시간 그래프를 그리는 핵심 코드.
+        lineChart.moveViewToX(lineData.getEntryCount());
+        lineChart.notifyDataSetChanged();
+        ++cnt;
 
     }
-
 
 
 }

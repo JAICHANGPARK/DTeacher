@@ -229,6 +229,7 @@ public abstract class BleRealTimeLibrary extends Activity {
     public void onDestroyProcess() {
         mainContext.unbindService(mServiceConnection);
         mBluetoothLeService = null;
+        readCharStop();
     }
 
     public void onActivityResultProcess(int requestCode, int resultCode, Intent data) {
@@ -512,8 +513,11 @@ public abstract class BleRealTimeLibrary extends Activity {
      */
     public void readCharStop() {
         // TODO: 2018-02-13 NUll 예외 처리
-        readTimerTask.cancel();
-        Log.e(TAG, "readCharStop: scheduledExecutionTime ." + readTimerTask.scheduledExecutionTime());
+        if (readTimerTask != null){
+            readTimerTask.cancel();
+            Log.e(TAG, "readCharStop: scheduledExecutionTime ." + readTimerTask.scheduledExecutionTime());
+        }
+
     }
 
     /**

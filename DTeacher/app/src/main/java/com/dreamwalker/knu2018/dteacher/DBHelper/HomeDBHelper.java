@@ -31,16 +31,20 @@ public class HomeDBHelper extends SQLiteOpenHelper {
     public HomeDBHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
         this.mContext = context;
+
+        Log.e(TAG, "HomeDBHelper:  생성자 호출 됭서요 "  );
         homeList = new ArrayList<>();
         drugList = new ArrayList<>();
         fitnessList = new ArrayList<>();
+
+        bsdbHelper = new BSDBHelper(mContext, "bs.db", null, 1);
+        drugDBHelper = new DrugDBHelper(mContext, "drug.db", null, 1);
+        fitnessDBHelper = new FitnessDBHelper(mContext, "fitness.db", null, 1);
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        bsdbHelper = new BSDBHelper(mContext, "bs.db", null, 1);
-        drugDBHelper = new DrugDBHelper(mContext, "drug.db", null, 1);
-        fitnessDBHelper = new FitnessDBHelper(mContext, "fitness.db", null, 1);
+        Log.e(TAG, "HomeDBHelper: onCreate 호출 됬어요 "  );
     }
 
     @Override

@@ -107,6 +107,8 @@ public class HomeActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         Paper.init(this);
 
+        homeDBHelper = new HomeDBHelper(this, "home.db", null, 1);
+
         sharedPreferences = getSharedPreferences("userinfo", MODE_PRIVATE);
         userID = sharedPreferences.getString("userID", "");
         userPassword = sharedPreferences.getString("userPassword", "");
@@ -129,7 +131,6 @@ public class HomeActivity extends AppCompatActivity {
         String minutes = String.valueOf(now.get(Calendar.MINUTE));
         today = year + "-" + month + "-" + day;
 
-        homeDBHelper = new HomeDBHelper(this, "home.db", null, 1);
 
         // TODO: 2018-02-04 뷰 초기화
         initCalendarView();
