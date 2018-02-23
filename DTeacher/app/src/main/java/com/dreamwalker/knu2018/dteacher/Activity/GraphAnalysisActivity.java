@@ -15,6 +15,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -85,6 +86,8 @@ public class GraphAnalysisActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_graph_analysis);
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(myToolbar);
         setTitle("Detail Graph");
         ButterKnife.bind(this);
 
@@ -120,15 +123,41 @@ public class GraphAnalysisActivity extends AppCompatActivity {
     }
 
     private void dataProcessing() {
+        XAxis xAxis;
         switch (pageNumber) {
             case 0:
+
                 monitoringDataList = getIntent().getStringArrayListExtra("realdata");
+
                 for (int i = 0; i < monitoringDataList.size(); i++) {
                     Log.e(TAG, i + " " + monitoringDataList.get(i));
                     float hr = Float.parseFloat(monitoringDataList.get(i));
                     yValue.add(new Entry(i, hr));
                 }
-                XAxis xAxis = lineChart.getXAxis();
+
+                xAxis = lineChart.getXAxis();
+                xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+                lineDataSet = new LineDataSet(yValue, "전체 데이터");
+                lineDataSet.setColor(Color.RED);
+                lineDataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
+                lineDataSet.setCubicIntensity(0.1f);
+                dataSets = new ArrayList<>();
+                dataSets.add(lineDataSet);
+                lineData = new LineData(dataSets);
+
+                lineChart.setData(lineData);
+                lineChart.animateX(1000);
+                lineChart.getAxisRight().setEnabled(false);
+                break;
+            case 10:
+                realTimeArrayList = Paper.book("filePicked").read("data");
+                for (int i = 0; i < realTimeArrayList.size(); i++) {
+                    Log.e(TAG, i + " " + realTimeArrayList.get(i));
+                    float hr = Float.parseFloat(realTimeArrayList.get(i).getValue());
+                    yValue.add(new Entry(i, hr));
+                }
+
+                xAxis = lineChart.getXAxis();
                 xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
                 lineDataSet = new LineDataSet(yValue, "전체 데이터");
                 lineDataSet.setColor(Color.RED);
@@ -139,7 +168,6 @@ public class GraphAnalysisActivity extends AppCompatActivity {
                 lineChart.setData(lineData);
                 lineChart.animateX(1000);
                 lineChart.getAxisRight().setEnabled(false);
-
                 break;
             default:
                 break;
@@ -168,10 +196,19 @@ public class GraphAnalysisActivity extends AppCompatActivity {
         MenuEntity menuEntity3 = new MenuEntity();
         menuEntity3.iconId = R.drawable.ic_menu_share;
         menuEntity3.title = "SHARE";
+        switch (pageNumber) {
+            case 0:
+                list.add(menuEntity1);
+                list.add(menuEntity2);
+                list.add(menuEntity3);
+                break;
+            case 10:
+                list.add(menuEntity3);
+                break;
+            default:
+                break;
+        }
 
-        list.add(menuEntity1);
-        list.add(menuEntity2);
-        list.add(menuEntity3);
         // SweetSheet 控件,根据 rl 确认位置
         mSweetSheet = new SweetSheet(coordinator);
         //设置数据源 (数据源支持设置 list 数组,也支持从菜单中获取)
@@ -188,13 +225,31 @@ public class GraphAnalysisActivity extends AppCompatActivity {
 //                list.get(position).titleColor = 0xff5823ff;
 //                ((RecyclerViewDelegate) mSweetSheet.getDelegate()).notifyDataSetChanged();
             //根据返回值, true 会关闭 SweetSheet ,false 则不会.
-            switch (position) {
-                case 0:
-                    saveExcel();
-                    break;
-                case 1:
-                    startActivity(new Intent(GraphAnalysisActivity.this, DetailListActivity.class));
+            if (pageNumber == 0){
+                switch (position) {
+                    case 0:
+                        saveExcel();
+                        break;
+                    case 1:
+                        startActivity(new Intent(GraphAnalysisActivity.this, DetailListActivity.class));
+                }
+            }else if (pageNumber == 10){
+                switch (position) {
+                    case 0:
+                        String filePath = getIntent().getStringExtra("filepath");
+                        // TODO: 2018-02-22 SyncWearable -> filePickedAtivity -> this 
+                        String fileName = getIntent().getStringExtra("filename");
+                        File xlsFile = new File(getExternalFilesDir(null), fileName);
+                        Uri path = Uri.fromFile(xlsFile);
+                        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                        shareIntent.setType("application/excel");
+                        shareIntent.putExtra(Intent.EXTRA_STREAM, path);
+                        startActivity(Intent.createChooser(shareIntent, "로그파일 공유하기"));
+                        //Snackbar.make(getWindow().getDecorView().getRootView(),"공유하기",Snackbar.LENGTH_SHORT).show();
+                        break;
+                }
             }
+
             //Toast.makeText(GraphAnalysisActivity.this, menuEntity1.title + "  " + position, Toast.LENGTH_SHORT).show();
             return false;
         });
@@ -203,12 +258,12 @@ public class GraphAnalysisActivity extends AppCompatActivity {
     private void saveExcel() {
 
         String datetime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(System.currentTimeMillis()));
-        String file_name = "loggine" + "_" + datetime + ".xls";
+        String file_name = "log" + "_" + datetime + ".xls";
 
-        if (Paper.book("realtime").read("data") != null){
+        if (Paper.book("realtime").read("data") != null) {
             realTimeArrayList = Paper.book("realtime").read("logging");
-        }else {
-            Snackbar.make(getWindow().getDecorView().getRootView(),"저장된 데이터가 없습니다.",Snackbar.LENGTH_SHORT).show();
+        } else {
+            Snackbar.make(getWindow().getDecorView().getRootView(), "저장된 데이터가 없습니다.", Snackbar.LENGTH_SHORT).show();
         }
         workbook = new HSSFWorkbook();
         sheet = workbook.createSheet("LogSheet"); // 새로운 시트 생성

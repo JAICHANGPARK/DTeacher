@@ -25,8 +25,6 @@ public class AboutUserActivity extends AppCompatActivity {
 
     @OnClick(R.id.buttonMyInfo)
     public void onMyInfoButtonClicked(){
-
         startActivity(new Intent(AboutUserActivity.this, AboutUserInfoActivity.class));
-
     }
 }

@@ -116,14 +116,20 @@
             android:name=".WearableSync.WearableRealTimeActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".BSMSync.SyncBSMDataActivity" />
-        <activity android:name=".Activity.GraphAnalysisActivity" />
+        <activity android:name=".Activity.GraphAnalysisActivity" android:theme="@style/AppTheme.NoActionBar" />
 
         <service
             android:name=".WearableSync.BluetoothLeService"
             android:enabled="true" />
 
         <activity android:name=".Activity.DetailListActivity" />
-        <activity android:name=".Activity.FilePickedActivity"></activity>
+
+        <activity android:name=".Activity.FilePickedActivity"
+            android:parentActivityName=".Activity.SyncWearableActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".Activity.SyncWearableActivity" />
+        </activity>
     </application>
 
 </manifest>

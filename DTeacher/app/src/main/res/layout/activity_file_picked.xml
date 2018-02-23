@@ -1,9 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.dreamwalker.knu2018.dteacher.Activity.FilePickedActivity">
 
-</android.support.constraint.ConstraintLayout>
+    <RelativeLayout
+        android:id="@+id/relative"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <com.db.chart.view.LineChartView
+            android:id="@+id/chart"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:layout_margin="16dp"
+            app:chart_axis="false"
+            app:chart_axisBorderSpacing="15dp"
+            app:chart_labelColor="#6a84c3" />
+
+        <!--<com.jonas.jgraph.graph.JcoolGraph-->
+        <!--android:layout_margin="6dp"-->
+        <!--android:id="@+id/sug_recode_line"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="150dp"-->
+        <!--android:clickable="true"-->
+        <!--app:graphstyle="line"-->
+        <!--app:showymsg="true" />-->
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/filepick_recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/chart" />
+    </RelativeLayout>
+
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/fab_margin"
+        android:backgroundTint="@color/accent"
+        android:clickable="true"
+        android:src="@drawable/ic_show_chart_black_24dp"
+        app:elevation="6dp"
+        app:layout_anchor="@+id/relative"
+        app:layout_anchorGravity="bottom|end"
+        app:rippleColor="@color/primary" />
+
+
+    <!--<android.support.v7.widget.RecyclerView-->
+    <!--android:id="@+id/filepick_recyclerview"-->
+    <!--android:layoutAnimation="@anim/layout_animation_fall_down"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent">-->
+    <!--</android.support.v7.widget.RecyclerView>-->
+</android.support.design.widget.CoordinatorLayout>

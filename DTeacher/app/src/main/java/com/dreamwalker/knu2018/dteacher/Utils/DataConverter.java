@@ -92,6 +92,17 @@ public class DataConverter {
         return resultString;
     }
 
+    public static String PressureConverter(byte[] data) {
+        int intValue = ((int) data[0] << 8) | (data[1] & 0xff);
+        float value = (float) intValue / 100;
+        Log.e(TAG, "PressureConverter:  intValue" + intValue);
+        //float lightValue = (float)intValue / 100.0f;
+        Log.e(TAG, "PressureConverter:  lightValue" + value);
+        String resultString = String.valueOf(value);
+        Log.e(TAG, "PressureConverter:  resultString" + resultString);
+        return resultString;
+    }
+
     /**
      * 바이트 형을 unsigned 값으로 처리하는 메소드
      * @param byteValue

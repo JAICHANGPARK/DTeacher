@@ -398,6 +398,23 @@ public class BluetoothLeService extends Service {
             System.out.println("Data Save End ");
             sendBroadcast(intent);
         }
+
+        else if (characteristic.getUuid().toString().equals(IntentConst.HEXI_PRESSURE_UUID)){
+
+            final byte[] data = characteristic.getValue();
+
+            String tempData = DataConverter.PressureConverter(data);
+            String amb = null;
+
+            if (tempData != null){
+                //amb = String.valueOf(data[0]);
+                Log.e(TAG, "broadcastUpdate: HEXI_PRESSURE_UUID " + data[0] + "," + data[1]);
+                intent.putExtra(EXTRA_DATA, tempData);
+            }
+
+            System.out.println("Data Save End ");
+            sendBroadcast(intent);
+        }
     }
     
     public class LocalBinder extends Binder {

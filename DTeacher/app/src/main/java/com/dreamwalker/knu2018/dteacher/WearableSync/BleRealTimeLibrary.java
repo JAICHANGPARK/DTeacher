@@ -61,6 +61,7 @@ public abstract class BleRealTimeLibrary extends Activity {
     private static BluetoothGattCharacteristic mSCharacteristic, mModelNumberCharacteristic, mSerialPortCharacteristic, mCommandCharacteristic;
     private static BluetoothGattCharacteristic mHexiCharacteristic, mHexiStartCharacteristic;
     private static BluetoothGattCharacteristic mHexiLightCharacteristic;
+    private static BluetoothGattCharacteristic mHexiPressureCharacteristic;
     BluetoothLeService mBluetoothLeService;
     private ArrayList<ArrayList<BluetoothGattCharacteristic>> mGattCharacteristics = new ArrayList<ArrayList<BluetoothGattCharacteristic>>();
     private LeDeviceListAdapter mLeDeviceListAdapter = null;
@@ -121,7 +122,7 @@ public abstract class BleRealTimeLibrary extends Activity {
 
         Intent gattServiceIntent = new Intent(this, BluetoothLeService.class);
         bindService(gattServiceIntent, mServiceConnection, Context.BIND_AUTO_CREATE);
-
+        mainContext.registerReceiver(mGattUpdateReceiver, makeGattUpdateIntentFilter());
         // Initializes list view adapter.
         mLeDeviceListAdapter = new LeDeviceListAdapter();
         // Initializes and show the scan Device Dialog
@@ -185,15 +186,13 @@ public abstract class BleRealTimeLibrary extends Activity {
         // permission to enable it.
         if (!mBluetoothAdapter.isEnabled()) {
             if (!mBluetoothAdapter.isEnabled()) {
-                Intent enableBtIntent = new Intent(
-                        BluetoothAdapter.ACTION_REQUEST_ENABLE);
+                Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
                 ((Activity) mainContext).startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
             }
         }
 
-
-        mainContext.registerReceiver(mGattUpdateReceiver, makeGattUpdateIntentFilter());
-
+        // TODO: 2018-02-23 원래 이쪽에서 등록함 --> 온크리트로
+        //mainContext.registerReceiver(mGattUpdateReceiver, makeGattUpdateIntentFilter());
     }
 
     public void onPauseProcess() {
@@ -303,10 +302,17 @@ public abstract class BleRealTimeLibrary extends Activity {
                     mBluetoothLeService.setCharacteristicNotification(mSCharacteristic, true);
                     String tmpString = intent.getStringExtra(BluetoothLeService.EXTRA_DATA);
                     onSerialReceived(tmpString);
+                }
 
+                
+                if (mSCharacteristic == mHexiPressureCharacteristic){
+                    mConnectionState = connectionStateEnum.isConnected;
+                    onConectionStateChange(mConnectionState);
+                    mBluetoothLeService.setCharacteristicNotification(mSCharacteristic, true);
+                    String tmpString = intent.getStringExtra(BluetoothLeService.EXTRA_DATA);
+                    onSerialReceived(tmpString);
                 }
                 System.out.println("displayData " + intent.getStringExtra(BluetoothLeService.EXTRA_DATA));
-
             }
         }
     };
@@ -403,6 +409,7 @@ public abstract class BleRealTimeLibrary extends Activity {
         }
     };
 
+    // TODO: 2018-02-23 서비스 특성을 하나식 분해해 변수에 넣는 부분 중요.
     private void getGattServices(List<BluetoothGattService> gattServices) {
         if (gattServices == null) return;
         String uuid = null;
@@ -414,6 +421,7 @@ public abstract class BleRealTimeLibrary extends Activity {
         mHexiCharacteristic = null;
         mHexiStartCharacteristic = null;
         mHexiLightCharacteristic = null;
+        mHexiPressureCharacteristic = null;
 
         // Loops through available GATT Services.
         for (BluetoothGattService gattService : gattServices) {
@@ -443,7 +451,13 @@ public abstract class BleRealTimeLibrary extends Activity {
                 else if (uuid.equals(IntentConst.HEXI_AMBILITE_UUID)) {
                     mHexiLightCharacteristic = gattCharacteristic;
                     System.out.println("HexiStartCharacteristic  " + mHexiLightCharacteristic.getUuid().toString());
-                } else if (uuid.equals(HexiStartUUID)) {
+                }
+                else if (uuid.equals(IntentConst.HEXI_PRESSURE_UUID)){
+                    mHexiPressureCharacteristic = gattCharacteristic;
+                    Log.e(TAG, "getGattServices:  mHexiPressureCharacteristic - " +  mHexiPressureCharacteristic.getUuid().toString());
+                }
+
+                else if (uuid.equals(HexiStartUUID)) {
                     mHexiStartCharacteristic = gattCharacteristic;
                     System.out.println("HexiStartCharacteristic  " + mHexiStartCharacteristic.getUuid().toString());
 //                    updateConnectionState(R.string.comm_establish);
@@ -464,9 +478,19 @@ public abstract class BleRealTimeLibrary extends Activity {
             mSCharacteristic = mHexiLightCharacteristic;
             //mBluetoothLeService.setCharacteristicNotification(mSCharacteristic, true);
             mBluetoothLeService.readCharacteristic(mSCharacteristic);
+            //readCharStart(1000, mSCharacteristic);
+        }
 
-            readCharStart(1000, mSCharacteristic);
-
+        if (mHexiPressureCharacteristic != null){
+            mSCharacteristic = mHexiPressureCharacteristic;
+            //mBluetoothLeService.setCharacteristicNotification(mSCharacteristic, true);
+            mBluetoothLeService.readCharacteristic(mSCharacteristic);
+            // TODO: 2018-02-23 관성계의 경우 인터벌 짤ㅂ게 해야 100ms
+            readCharStart(200, mSCharacteristic);
+        }else {
+            Toast.makeText(mainContext, "Please select wearable devices", Toast.LENGTH_SHORT).show();
+            mConnectionState = connectionStateEnum.isToScan;
+            onConectionStateChange(mConnectionState);
         }
     }
 
@@ -495,8 +519,15 @@ public abstract class BleRealTimeLibrary extends Activity {
 
     // TODO: 2018-02-20 서비스가 발견되면 타이머 스케쥴링.
     public void readCharStart(long interval, BluetoothGattCharacteristic bluetoothGattCharacteristic) {
-        if (mSCharacteristic == null) {
+//        if (mSCharacteristic == null) {
+//            mSCharacteristic = mHexiLightCharacteristic;
+//        }
+        if (mHexiLightCharacteristic != null){
             mSCharacteristic = mHexiLightCharacteristic;
+        }
+
+        if (mHexiPressureCharacteristic != null){
+            mSCharacteristic = mHexiPressureCharacteristic;
         }
         //myTimer = new Timer();
         readTimerTask = timerTaskMaker(bluetoothGattCharacteristic);

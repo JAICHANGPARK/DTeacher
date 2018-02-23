@@ -20,6 +20,8 @@ import com.dreamwalker.knu2018.dteacher.WearableSync.WearableRealTimeActivity;
 import com.nbsp.materialfilepicker.MaterialFilePicker;
 import com.nbsp.materialfilepicker.ui.*;
 
+import java.io.File;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -123,12 +125,16 @@ public class SyncWearableActivity extends AppCompatActivity {
 
         if (requestCode == FILE_PICKER_REQUEST_CODE && resultCode == RESULT_OK) {
             String path = data.getStringExtra(FilePickerActivity.RESULT_FILE_PATH);
+            String filename = new File(path).getName();
+            Log.e(TAG, "onActivityResult: " + filename);
 
             if (path != null) {
                 Log.e("Path: ", path);
+
                 Toast.makeText(this, "Picked file: " + path, Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(SyncWearableActivity.this, FilePickedActivity.class);
-                intent.putExtra("path",path);
+                intent.putExtra("path", path);
+                intent.putExtra("filename",filename);
                 startActivity(intent);
             }
         }

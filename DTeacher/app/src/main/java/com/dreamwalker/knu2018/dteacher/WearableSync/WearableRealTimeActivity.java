@@ -11,6 +11,7 @@ import android.graphics.Color;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -27,6 +28,7 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 
+import java.security.KeyStore;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -71,6 +73,8 @@ public class WearableRealTimeActivity extends BleRealTimeLibrary {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wearable_real_time);
         ButterKnife.bind(this);
+
+
         onCreateProcess();
 
         // TODO: 2018-02-21 임시 저장할 NoSQL 객체  
@@ -93,6 +97,10 @@ public class WearableRealTimeActivity extends BleRealTimeLibrary {
 
     @OnClick(R.id.buttonSave)
     public void onButtonSaveClicked() {
+
+        onStopProcess();
+        onPauseProcess();
+
         if (realtimeData.size() == 0) { //실시간 데이터가 없으면
             Toast.makeText(WearableRealTimeActivity.this, "저장할 데이터가 없어요 ㅠㅠ", Toast.LENGTH_SHORT).show();
         } else { // 축적된 실시간 데이터가 있다면
@@ -136,37 +144,13 @@ public class WearableRealTimeActivity extends BleRealTimeLibrary {
         }
     }
 
-    protected void onResume() {
-        super.onResume();
-        System.out.println("BlUNOActivity onResume");
-        onResumeProcess();                                                        //onResume Process by BlunoLibrary
-        // TODO: 2018-01-26 액티비티가 다시 실행되면 0으로 초기화
-        arrayList.clear();
-    }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         onActivityResultProcess(requestCode, resultCode, data);                    //onActivityResult Process by BlunoLibrary
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        onPauseProcess();                                                        //onPause Process by BlunoLibrary
-    }
 
-    protected void onStop() {
-        super.onStop();
-        onStopProcess();                                                        //onStop Process by BlunoLibrary
-        arrayList.clear();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        onDestroyProcess();                                                        //onDestroy Process by BlunoLibrary
-    }
 
     @Override
     public void onConectionStateChange(connectionStateEnum theConnectionState) {//Once connection state changes, this function will be called
@@ -182,6 +166,9 @@ public class WearableRealTimeActivity extends BleRealTimeLibrary {
                 break;
             case isScanning:
                 buttonScan.setText("Scanning");
+
+                buttonSave.setText("저장하기");
+                buttonSave.setEnabled(true);
                 break;
             case isDisconnecting:
                 buttonScan.setText("isDisconnecting");
@@ -190,7 +177,6 @@ public class WearableRealTimeActivity extends BleRealTimeLibrary {
                 break;
         }
     }
-
     @Override
     public void onSerialTrans(String theString) {
         //System.out.println("realData : " + theString);
@@ -205,7 +191,6 @@ public class WearableRealTimeActivity extends BleRealTimeLibrary {
         //Intent intent = new Intent(this, SyncWearableResultActivity.class);
         if (theString != null) {
             receiveValue = theString;
-
             //serialReceivedText.append("");
         } else {
             receiveValue = "";
@@ -222,6 +207,8 @@ public class WearableRealTimeActivity extends BleRealTimeLibrary {
         Log.e(TAG, "loggingArray: " + loggingArray.get(cnt).getDatetime() + ", " + loggingArray.get(cnt).getValue());
         lineDataSet = new LineDataSet(realtimeData, "실시간 데이터");
         lineDataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
+        lineDataSet.setDrawCircles(false);
+        lineDataSet.setDrawValues(false);
         lineDataSet.setCubicIntensity(0.2f);
         lineDataSet.setColor(Color.RED);
         lineData = new LineData(lineDataSet);
@@ -230,8 +217,48 @@ public class WearableRealTimeActivity extends BleRealTimeLibrary {
         lineChart.moveViewToX(lineData.getEntryCount());
         lineChart.notifyDataSetChanged();
         ++cnt;
-
     }
 
+    protected void onResume() {
+        super.onResume();
+        Log.e(TAG, "RealtimeActivity onResume");
+        onResumeProcess();                                                        //onResume Process by BlunoLibrary
+        // TODO: 2018-01-26 액티비티가 다시 실행되면 0으로 초기화
+        //arrayList.clear();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.e(TAG, "RealtimeActivity onPause");
+        //onPauseProcess();                                                        //onPause Process by BlunoLibrary
+    }
+
+    protected void onStop() {
+        super.onStop();
+        Log.e(TAG, "RealtimeActivity onStop");
+        //onStopProcess();                                                        //onStop Process by BlunoLibrary
+        //arrayList.clear();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        onDestroyProcess();                                                        //onDestroy Process by BlunoLibrary
+    }
+
+    // TODO: 2018-02-23 두번 눌러 종료하기
+    private long lastTimeBackPressed;
+    @Override
+    public void onBackPressed() {
+
+        if (System.currentTimeMillis() - lastTimeBackPressed < 1500) {
+            finish();
+            return;
+        }
+        Snackbar.make(getWindow().getDecorView().getRootView(), "'뒤로' 버튼을 한번 더 눌러 종료합니다.", Snackbar.LENGTH_SHORT).show();
+        //Toast.makeText(this, "'뒤로' 버튼을 한번 더 눌러 종료합니다.", Toast.LENGTH_SHORT).show();
+        lastTimeBackPressed = System.currentTimeMillis();
+    }
 
 }
