@@ -77,46 +77,44 @@ public class WriteDrugActivity extends AppCompatActivity {
         }
         bus.register(this);
 
-        doneTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(WriteDrugActivity.this, WriteDrugUnitActivity.class);
-                StringBuilder stringBuilder = new StringBuilder();
-                // TODO: 2018-02-03 내가 짜도 참 괜찮은 코드
-                for (int i = 0; i < rrapid.size(); i++) {
-                    if (!rrapid.get(i).contains("unknown")) {
-                        stringBuilder.append(rrapid.get(i));
-                        stringBuilder.append(",");
-                    }
+        doneTextView.setOnClickListener(v -> {
+            Intent intent = new Intent(WriteDrugActivity.this, WriteDrugUnitActivity.class);
+            StringBuilder stringBuilder = new StringBuilder();
+            // TODO: 2018-02-03 내가 짜도 참 괜찮은 코드
+            for (int i = 0; i < rrapid.size(); i++) {
+                if (!rrapid.get(i).contains("unknown")) {
+                    stringBuilder.append(rrapid.get(i));
+                    stringBuilder.append(",");
                 }
-                for (int i = 0; i < rapid.size(); i++) {
-                    if (!rapid.get(i).contains("unknown")) {
-                        stringBuilder.append(rapid.get(i));
-                        stringBuilder.append(",");
-                    }
-                }
-                for (int i = 0; i < neutral.size(); i++) {
-                    if (!neutral.get(i).contains("unknown")) {
-                        stringBuilder.append(neutral.get(i));
-                        stringBuilder.append(",");
-                    }
-                }
-                for (int i = 0; i < longtime.size(); i++) {
-                    if (!longtime.get(i).contains("unknown")) {
-                        stringBuilder.append(longtime.get(i));
-                        stringBuilder.append(",");
-                    }
-                }
-                for (int i = 0; i < mixed.size(); i++) {
-                    if (!mixed.get(i).contains("unknown")) {
-                        stringBuilder.append(mixed.get(i));
-                        stringBuilder.append(",");
-                    }
-                }
-                Log.e(TAG, "onClick: result" + stringBuilder.toString() );
-                intent.putExtra("WRITE_DRUG_TYPE", stringBuilder.toString());
-                startActivity(intent);
             }
+            for (int i = 0; i < rapid.size(); i++) {
+                if (!rapid.get(i).contains("unknown")) {
+                    stringBuilder.append(rapid.get(i));
+                    stringBuilder.append(",");
+                }
+            }
+            for (int i = 0; i < neutral.size(); i++) {
+                if (!neutral.get(i).contains("unknown")) {
+                    stringBuilder.append(neutral.get(i));
+                    stringBuilder.append(",");
+                }
+            }
+            for (int i = 0; i < longtime.size(); i++) {
+                if (!longtime.get(i).contains("unknown")) {
+                    stringBuilder.append(longtime.get(i));
+                    stringBuilder.append(",");
+                }
+            }
+            for (int i = 0; i < mixed.size(); i++) {
+                if (!mixed.get(i).contains("unknown")) {
+                    stringBuilder.append(mixed.get(i));
+                    stringBuilder.append(",");
+                }
+            }
+            Log.e(TAG, "onClick: result" + stringBuilder.toString() );
+            intent.putExtra("WRITE_DRUG_TYPE", stringBuilder.toString());
+            startActivity(intent);
+            finish();
         });
     }
 

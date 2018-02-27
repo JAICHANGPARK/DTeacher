@@ -64,7 +64,7 @@ public class DiaryDangFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_diary_dang, container, false);
-        dbResult = (TextView)view.findViewById(R.id.label);
+        dbResult = (TextView) view.findViewById(R.id.label);
         return view;
     }
 
@@ -79,7 +79,7 @@ public class DiaryDangFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        bsdbHelper = new BSDBHelper(getActivity(),"bs.db", null,1);
+        bsdbHelper = new BSDBHelper(getActivity(), "bs.db", null, 1);
         String dbText = bsdbHelper.selectAllData();
         dbResult.setText(dbText);
     }

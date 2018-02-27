@@ -70,7 +70,7 @@ public class WriteDrugUnitActivity extends AppCompatActivity implements DatePick
 
         ButterKnife.bind(this);
         bus.register(this);
-        drugDBHelper = new DrugDBHelper(this, dbName, null, dbVersion);
+        drugDBHelper = new DrugDBHelper(this, dbName, null, dbVersion); //db 객체 생성
 
         myList = new ArrayList<>();
         drugArrayList = new ArrayList<>();
@@ -81,7 +81,7 @@ public class WriteDrugUnitActivity extends AppCompatActivity implements DatePick
 
         for (int i = 0; i < drugNames.length; i++) {
             myList.add(drugNames[i]);
-            drugArrayList.add(new Drug("0", "unknown"));
+            drugArrayList.add(new Drug("1", drugNames[i]));
         }
 
         layoutManager = new LinearLayoutManager(this);
@@ -123,35 +123,25 @@ public class WriteDrugUnitActivity extends AppCompatActivity implements DatePick
                 datePickerDialog.show(getFragmentManager(), "fit_date");
             }
         });
-        timeTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.e(TAG, "onClick: dateValueText ");
-                timePickerDialog.show(getFragmentManager(), "fit_time");
-            }
+        timeTextView.setOnClickListener(v -> {
+            Log.e(TAG, "onClick: dateValueText ");
+            timePickerDialog.show(getFragmentManager(), "fit_time");
         });
-        doneTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new PromptDialog(WriteDrugUnitActivity.this)
-                        .setDialogType(PromptDialog.DIALOG_TYPE_INFO)
-                        .setAnimationEnable(true)
-                        .setTitleText("알림")
-                        .setContentText("기록하시겠어요?")
-                        .setPositiveListener("응", new PromptDialog.OnPositiveListener() {
-                            @Override
-                            public void onClick(PromptDialog dialog) {
-                                for (int i = 0; i < drugArrayList.size(); i++) {
-                                    if (!drugArrayList.isEmpty()) {
-                                        drugDBHelper.insertDrugData(drugArrayList.get(i).getDrugName(), drugArrayList.get(i).getValueUnit(), dateValue, timeValue);
-                                    }
-                                }
-                                dialog.dismiss();
-                                finish();
-                            }
-                        }).show();
-            }
-        });
+
+        doneTextView.setOnClickListener(v -> new PromptDialog(WriteDrugUnitActivity.this)
+                .setDialogType(PromptDialog.DIALOG_TYPE_INFO)
+                .setAnimationEnable(true)
+                .setTitleText("알림")
+                .setContentText("기록하시겠어요?")
+                .setPositiveListener("응", dialog -> {
+                    for (int i = 0; i < drugArrayList.size(); i++) {
+                        if (!drugArrayList.isEmpty()) {
+                            drugDBHelper.insertDrugData(drugArrayList.get(i).getDrugName(), drugArrayList.get(i).getValueUnit(), dateValue, timeValue);
+                        }
+                    }
+                    dialog.dismiss();
+                    finish();
+                }).show());
     }
 
     @Override
@@ -168,6 +158,10 @@ public class WriteDrugUnitActivity extends AppCompatActivity implements DatePick
         timeValue = time;
     }
 
+    /**
+     * EventBus 이벤트를 받아오는 부분.
+     * @param event
+     */
     @Subscribe
     public void onEvent(DrugWriteEvent event) {
         String valueString;
