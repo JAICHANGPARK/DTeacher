@@ -328,45 +328,39 @@ public class HomeActivity extends AppCompatActivity {
         bottomNavigation.addItem(bitem3);
 
         // Set listeners
-        bottomNavigation.setOnTabSelectedListener(new AHBottomNavigation.OnTabSelectedListener() {
-            @Override
-            public boolean onTabSelected(int position, boolean wasSelected) {
-                // Do something cool here...
-                Intent intent;
-                switch (position) {
-                    case 0:
-                        break;
-                    case 1:
-                        intent = new Intent(HomeActivity.this, DiaryActivity.class);
-                        intent.putExtra(IntentConst.DIARY_PAGE_FRAGMENT_NUM, 0);
-                        startActivity(intent);
-                        break;
-                    case 2:
+        bottomNavigation.setOnTabSelectedListener((position, wasSelected) -> {
+            // Do something cool here...
+            Intent intent;
+            switch (position) {
+                case 0:
+                    break;
+                case 1:
+                    intent = new Intent(HomeActivity.this, DiaryActivity.class);
+                    intent.putExtra(IntentConst.DIARY_PAGE_FRAGMENT_NUM, 0);
+                    startActivity(intent);
+                    break;
+                case 2:
 
-                        sharedPreferences = getSharedPreferences("userinfo", MODE_PRIVATE);
-                        userID = sharedPreferences.getString("userID", "");
+                    sharedPreferences = getSharedPreferences("userinfo", MODE_PRIVATE);
+                    userID = sharedPreferences.getString("userID", "");
 
-                        if (userID.equals("GUEST")) {
-                            startActivity(new Intent(HomeActivity.this, SignUpCheckActivity.class));
-                        } else {
-                            startActivity(new Intent(HomeActivity.this, AboutUserActivity.class));
-                        }
+                    if (userID.equals("GUEST")) {
+                        startActivity(new Intent(HomeActivity.this, SignUpCheckActivity.class));
+                    } else {
+                        startActivity(new Intent(HomeActivity.this, AboutUserActivity.class));
+                    }
 
-                        break;
+                    break;
 
-                }
-                Log.e(TAG, "bottomNavigation : onTabSelected: " + position + ", " + wasSelected);
-                return true;
             }
+            Log.e(TAG, "bottomNavigation : onTabSelected: " + position + ", " + wasSelected);
+            return true;
         });
 
-        bottomNavigation.setOnNavigationPositionListener(new AHBottomNavigation.OnNavigationPositionListener() {
-            @Override
-            public void onPositionChange(int y) {
-                // Manage the new y position
-                Log.e(TAG, "bottomNavigation : onPositionChange: " + y);
+        bottomNavigation.setOnNavigationPositionListener(y -> {
+            // Manage the new y position
+            Log.e(TAG, "bottomNavigation : onPositionChange: " + y);
 
-            }
         });
 
     }
@@ -567,57 +561,49 @@ public class HomeActivity extends AppCompatActivity {
         //mFloatingNavigationView.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.green_A200)));
 
         // TODO: 2018-02-04  mFloatingNavigationView 상단 네비게이션 드로우 리스너 
-        mFloatingNavigationView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mFloatingNavigationView.open();
-            }
-        });
-        mFloatingNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(MenuItem item) {
-                Intent intent;
-                switch (item.getItemId()) {
-                    case R.id.nav_diabetes:
-                        mFloatingNavigationView.close();
-                        intent = new Intent(HomeActivity.this, DiaryActivity.class);
-                        intent.putExtra(IntentConst.DIARY_PAGE_FRAGMENT_NUM, 0);
-                        startActivity(intent);
-                        break;
-                    case R.id.nav_workout:
-                        mFloatingNavigationView.close();
-                        intent = new Intent(HomeActivity.this, DiaryActivity.class);
-                        intent.putExtra(IntentConst.DIARY_PAGE_FRAGMENT_NUM, 1);
-                        startActivity(intent);
-                        break;
-                    case R.id.nav_food:
-                        mFloatingNavigationView.close();
-                        intent = new Intent(HomeActivity.this, DiaryActivity.class);
-                        intent.putExtra(IntentConst.DIARY_PAGE_FRAGMENT_NUM, 2);
-                        startActivity(intent);
-                        break;
-                    case R.id.nav_drug:
-                        mFloatingNavigationView.close();
-                        intent = new Intent(HomeActivity.this, DiaryActivity.class);
-                        intent.putExtra(IntentConst.DIARY_PAGE_FRAGMENT_NUM, 3);
-                        startActivity(intent);
-                        break;
+        mFloatingNavigationView.setOnClickListener(view -> mFloatingNavigationView.open());
+        mFloatingNavigationView.setNavigationItemSelectedListener(item -> {
+            Intent intent;
+            switch (item.getItemId()) {
+                case R.id.nav_diabetes:
+                    mFloatingNavigationView.close();
+                    intent = new Intent(HomeActivity.this, DiaryActivity.class);
+                    intent.putExtra(IntentConst.DIARY_PAGE_FRAGMENT_NUM, 0);
+                    startActivity(intent);
+                    break;
+                case R.id.nav_workout:
+                    mFloatingNavigationView.close();
+                    intent = new Intent(HomeActivity.this, DiaryActivity.class);
+                    intent.putExtra(IntentConst.DIARY_PAGE_FRAGMENT_NUM, 1);
+                    startActivity(intent);
+                    break;
+                case R.id.nav_food:
+                    mFloatingNavigationView.close();
+                    intent = new Intent(HomeActivity.this, DiaryActivity.class);
+                    intent.putExtra(IntentConst.DIARY_PAGE_FRAGMENT_NUM, 2);
+                    startActivity(intent);
+                    break;
+                case R.id.nav_drug:
+                    mFloatingNavigationView.close();
+                    intent = new Intent(HomeActivity.this, DiaryActivity.class);
+                    intent.putExtra(IntentConst.DIARY_PAGE_FRAGMENT_NUM, 3);
+                    startActivity(intent);
+                    break;
 
-                    case R.id.nav_setting:
-                        mFloatingNavigationView.close();
-                        intent = new Intent(HomeActivity.this, SettingActivity.class);
-                        startActivity(intent);
-                        break;
-                    case R.id.nav_about:
-                        // TODO: 2018-02-28 임시 확인을 위한 인텐트  
-                        mFloatingNavigationView.close();
-                        intent = new Intent(HomeActivity.this, AnalysisBSActivity.class);
-                        startActivity(intent);
-                        break;
-                }
-                //Snackbar.make((View) mFloatingNavigationView.getParent(), item.getTitle() + " Selected!" + item.getItemId(), Snackbar.LENGTH_SHORT).show();
-                return true;
+                case R.id.nav_setting:
+                    mFloatingNavigationView.close();
+                    intent = new Intent(HomeActivity.this, SettingActivity.class);
+                    startActivity(intent);
+                    break;
+                case R.id.nav_about:
+                    // TODO: 2018-02-28 임시 확인을 위한 인텐트
+                    mFloatingNavigationView.close();
+                    intent = new Intent(HomeActivity.this, AnalysisBSActivity.class);
+                    startActivity(intent);
+                    break;
             }
+            //Snackbar.make((View) mFloatingNavigationView.getParent(), item.getTitle() + " Selected!" + item.getItemId(), Snackbar.LENGTH_SHORT).show();
+            return true;
         });
 
         View headerView = mFloatingNavigationView.getHeaderView(0);
@@ -636,18 +622,15 @@ public class HomeActivity extends AppCompatActivity {
             navUserEmailTv.setText("공사중");
         }
 
-        headerView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        headerView.setOnClickListener(v -> {
 
-                sharedPreferences = getSharedPreferences("userinfo", MODE_PRIVATE);
-                userID = sharedPreferences.getString("userID", "");
+            sharedPreferences = getSharedPreferences("userinfo", MODE_PRIVATE);
+            userID = sharedPreferences.getString("userID", "");
 
-                if (userID.equals("GUEST")) {
-                    startActivity(new Intent(HomeActivity.this, SignUpCheckActivity.class));
-                } else {
-                    startActivity(new Intent(HomeActivity.this, AboutUserActivity.class));
-                }
+            if (userID.equals("GUEST")) {
+                startActivity(new Intent(HomeActivity.this, SignUpCheckActivity.class));
+            } else {
+                startActivity(new Intent(HomeActivity.this, AboutUserActivity.class));
             }
         });
     }

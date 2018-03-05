@@ -66,10 +66,17 @@ public class WriteBSActivity extends AppCompatActivity implements
         tempMonth = tempMonth + 1;
         // TODO: 2018-02-28 월 표기 처리하는 곳.
         String month;
+        String dayOfMonth;
         if (tempMonth < 10) {
             month = "0" + String.valueOf(tempMonth);
         } else {
             month = String.valueOf(tempMonth);
+        }
+        int iDayofMonth = now.get(Calendar.DAY_OF_MONTH);
+        if (iDayofMonth < 10) {
+            dayOfMonth = "0" + String.valueOf(iDayofMonth);
+        } else {
+            dayOfMonth = String.valueOf(iDayofMonth);
         }
         String day = String.valueOf(now.get(Calendar.DAY_OF_MONTH));
         String hour = String.valueOf(now.get(Calendar.HOUR));
@@ -78,7 +85,8 @@ public class WriteBSActivity extends AppCompatActivity implements
         // TODO: 2018-02-07 각 기록 값 default 입력
         pageTypeValue = "UNKNOWN";
         pageBSValue = "80";
-        pageDateValue = year + "-" + month + "-" + day;
+        //pageDateValue = year + "-" + month + "-" + day;
+        pageDateValue = year + "-" + month + "-" + dayOfMonth;
         pageTimeValue = hour + ":" + minutes;
 
         bsdbHelper = new BSDBHelper(this, dbName, null, dbVersion);
