@@ -106,7 +106,12 @@ public class WriteDrugUnitActivity extends AppCompatActivity implements DatePick
         String year = String.valueOf(now.get(Calendar.YEAR));
         int tempMonth = now.get(Calendar.MONTH);
         tempMonth = tempMonth + 1;
-        String month = String.valueOf(tempMonth);
+        String month;
+        if (tempMonth < 10) {
+            month = "0" + String.valueOf(tempMonth);
+        } else {
+            month = String.valueOf(tempMonth);
+        }
         String day = String.valueOf(now.get(Calendar.DAY_OF_MONTH));
         String hour = String.valueOf(now.get(Calendar.HOUR));
         String minutes = String.valueOf(now.get(Calendar.MINUTE));
@@ -116,12 +121,9 @@ public class WriteDrugUnitActivity extends AppCompatActivity implements DatePick
         dateTextView.setText(dateValue);
         timeTextView.setText(timeValue);
 
-        dateTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.e(TAG, "onClick: dateValueText ");
-                datePickerDialog.show(getFragmentManager(), "fit_date");
-            }
+        dateTextView.setOnClickListener(v -> {
+            Log.e(TAG, "onClick: dateValueText ");
+            datePickerDialog.show(getFragmentManager(), "fit_date");
         });
         timeTextView.setOnClickListener(v -> {
             Log.e(TAG, "onClick: dateValueText ");
@@ -146,7 +148,15 @@ public class WriteDrugUnitActivity extends AppCompatActivity implements DatePick
 
     @Override
     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
-        String date = year + "-" + (monthOfYear + 1) + "-" + dayOfMonth;
+        int tempMonth = monthOfYear + 1;
+        String month;
+        if (tempMonth < 10) {
+            month = "0" + String.valueOf(tempMonth);
+        } else {
+            month = String.valueOf(tempMonth);
+        }
+        //String date = year + "-" + (monthOfYear + 1) + "-" + dayOfMonth;
+        String date = year + "-" + month + "-" + dayOfMonth;
         dateValue = date;
         dateTextView.setText(date);
     }
@@ -160,7 +170,9 @@ public class WriteDrugUnitActivity extends AppCompatActivity implements DatePick
 
     /**
      * EventBus 이벤트를 받아오는 부분.
+     * Unit Value는 Adapter에서 받아 옴.
      * @param event
+     * @Author JAICHANGPARK
      */
     @Subscribe
     public void onEvent(DrugWriteEvent event) {

@@ -64,7 +64,13 @@ public class WriteBSActivity extends AppCompatActivity implements
         String year = String.valueOf(now.get(Calendar.YEAR));
         int tempMonth = now.get(Calendar.MONTH);
         tempMonth = tempMonth + 1;
-        String month = String.valueOf(tempMonth);
+        // TODO: 2018-02-28 월 표기 처리하는 곳.
+        String month;
+        if (tempMonth < 10) {
+            month = "0" + String.valueOf(tempMonth);
+        } else {
+            month = String.valueOf(tempMonth);
+        }
         String day = String.valueOf(now.get(Calendar.DAY_OF_MONTH));
         String hour = String.valueOf(now.get(Calendar.HOUR));
         String minutes = String.valueOf(now.get(Calendar.MINUTE));
@@ -93,11 +99,18 @@ public class WriteBSActivity extends AppCompatActivity implements
         }
     }
 
+    /**
+     * 저장 버튼을 눌렀을때 발생하는 콜백 리스너
+     *
+     * @param completeButton
+     * @Author JAICHANGPARK
+     */
+
     @Override
     public void onCompleted(View completeButton) {
         Toast.makeText(this, "onCompleted!", Toast.LENGTH_SHORT).show();
         bsdbHelper.insertBSData(pageTypeValue, pageBSValue, pageDateValue, pageTimeValue);
-        Log.e(TAG, "onCompleted: " + "DB 입력 완료 " );
+        Log.e(TAG, "onCompleted: " + "DB 입력 완료 ");
         finish();
     }
 

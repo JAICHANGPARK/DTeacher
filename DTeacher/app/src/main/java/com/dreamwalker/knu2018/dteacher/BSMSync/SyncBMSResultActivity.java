@@ -1,9 +1,13 @@
 package com.dreamwalker.knu2018.dteacher.BSMSync;
 
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.net.Uri;
+import android.os.AsyncTask;
+import android.os.Environment;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -12,10 +16,18 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
+import com.airbnb.lottie.LottieAnimationView;
+import com.dreamwalker.knu2018.dteacher.Activity.AnalysisBSActivity;
 import com.dreamwalker.knu2018.dteacher.Activity.DetailListActivity;
+import com.dreamwalker.knu2018.dteacher.Activity.FilePickedActivity;
 import com.dreamwalker.knu2018.dteacher.Activity.GraphAnalysisActivity;
 import com.dreamwalker.knu2018.dteacher.Adapter.BSMSyncAdapter;
 import com.dreamwalker.knu2018.dteacher.DBHelper.BSDBHelper;
@@ -31,6 +43,9 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,9 +60,16 @@ public class SyncBMSResultActivity extends AppCompatActivity {
 
     @BindView(R.id.bsm_recycler_view)
     RecyclerView recyclerView;
-
     @BindView(R.id.fab)
     FloatingActionButton fab;
+    @BindView(R.id.coordinator)
+    RelativeLayout coordinator;
+    @BindView(R.id.toolbar)
+    Toolbar myToolbar;
+    @BindView(R.id.animation_view)
+    LottieAnimationView lottieAnimationView;
+    @BindView(R.id.animationLayout)
+    LinearLayout animationLayout;
 
 //    @BindView(R.id.tapBarMenu)
 //    TapBarMenu tapBarMenu;
@@ -56,43 +78,52 @@ public class SyncBMSResultActivity extends AppCompatActivity {
     RecyclerView.LayoutManager layoutManager;
     BSMSyncAdapter adapter;
 
-    @BindView(R.id.coordinator)
-    RelativeLayout coordinator;
-
-    @BindView(R.id.toolbar)
-    Toolbar myToolbar;
-
     //Bottom Sheet
-    private SweetSheet mSweetSheet;
+    SweetSheet mSweetSheet;
     Workbook workbook;
     Sheet sheet; // 새로운 시트 생성
 
-    private BSDBHelper bsdbHelper;
-    private SQLiteDatabase db;
+    BSDBHelper bsdbHelper;
+    SQLiteDatabase db;
     String dbName = "bs.db";
     int dbVersion = 1; // 데이터베이스 버전
+
+    int newIndex;
+    int oldIndex = 0;
+    int subIndex;
+
+    String[] date;
+    String[] time;
+    ArrayList<BloodSugar> subList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sync_bmsresult);
-        setSupportActionBar(myToolbar);
-        setTitle("동기화 결과");
-        Paper.init(this);
         ButterKnife.bind(this);
+        Paper.init(this);
+        setSupportActionBar(myToolbar);
+        myToolbar.inflateMenu(R.menu.sync_bsm_menu);
+        myToolbar.setOnMenuItemClickListener(item -> {
+            switch (item.getItemId()){
+                case R.id.save:
+                    Snackbar.make(getWindow().getDecorView().getRootView(),"툴바저장버튼", Snackbar.LENGTH_SHORT).show();
+                    return false;
+                case R.id.analysis:
+                    startActivity(new Intent(SyncBMSResultActivity.this, AnalysisBSActivity.class));
+                    //Snackbar.make(getWindow().getDecorView().getRootView(),"툴바분석", Snackbar.LENGTH_SHORT).show();
+                    return false;
+            }
+            return false;
+        });
+        //getSupportActionBar().setDisplayShowTitleEnabled(false);
+        //setTitle("동기화 결과");
+
         init();
         setupRecyclerView();
         bsdbHelper = new BSDBHelper(this, dbName, null, dbVersion);
         try {
-//         // 데이터베이스 객체를 얻어오는 다른 간단한 방법
-//         db = openOrCreateDatabase(dbName,  // 데이터베이스파일 이름
-//                          Context.MODE_PRIVATE, // 파일 모드
-//                          null);    // 커서 팩토리
-//
-//         String sql = "create table mytable(id integer primary key autoincrement, name text);";
-//        db.execSQL(sql);
             db = bsdbHelper.getWritableDatabase(); // 읽고 쓸수 있는 DB
-            //db = helper.getReadableDatabase(); // 읽기 전용 DB select문
         } catch (SQLiteException e) {
             e.printStackTrace();
             Log.e(TAG, "데이터베이스를 얻어올 수 없음");
@@ -133,6 +164,10 @@ public class SyncBMSResultActivity extends AppCompatActivity {
     public void init() {
 
         mBSList = new ArrayList<>();
+        recyclerView.setHasFixedSize(true);
+        layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+
         if (Paper.book("syncBms").read("data") == null) {
             Snackbar.make(getWindow().getDecorView().getRootView(), "데이터가 없어요", Snackbar.LENGTH_SHORT).show();
         } else {
@@ -140,55 +175,82 @@ public class SyncBMSResultActivity extends AppCompatActivity {
             mBSList = Paper.book("syncBms").read("data");
         }
 
-        int newIndex = mBSList.size(); //받아온 최신 데이터 사이즈
+        date = new String[mBSList.size()];
+        time = new String[mBSList.size()];
+
+        newIndex = mBSList.size(); //받아온 최신 데이터 사이즈
         Log.e(TAG, "init: newIndex -  " + newIndex);
-        int oldIndex = 0;
+        oldIndex = 0;
         // TODO: 2018-02-27 기존의 인덱스와 최신 인덱스 비교 저장이 가능해야함.
-        if (Paper.book("syncBms").read("index") == null) {
-            Paper.book("syncBms").write("index", newIndex);
+        if (Paper.book("syncBms").read("ptr") == null) {
+            //Paper.book("syncBms").write("index", newIndex);
+            Paper.book("syncBms").write("ptr", 0);
         } else {
-            oldIndex = Paper.book("syncBms").read("index"); // 기존의 데이터 사이즈
+            oldIndex = Paper.book("syncBms").read("ptr"); // 기존의 데이터 사이즈
             Log.e(TAG, "init: oldIndex -  " + oldIndex);
         }
 
-        int subIndex = newIndex - oldIndex;
+        subIndex = newIndex - oldIndex;
         Log.e(TAG, "init: subIndex -  " + subIndex);
         if (subIndex == 0) {
+
+            animationLayout.setVisibility(View.VISIBLE);
+            lottieAnimationView.playAnimation();
+            fab.setVisibility(View.GONE);
+            recyclerView.setVisibility(View.GONE);
+            //dbTextView.setVisibility(View.GONE);
             // TODO: 2018-02-27 같은 데이터 양이라면
-            Log.e(TAG, "init: 같은 데이터 양이라면");
+//            Log.e(TAG, "init: 같은 데이터 양이라면");
+//            subList = new ArrayList<>(mBSList.subList(oldIndex, newIndex));
+//            for (int i = 0; i < subList.size(); i++) {
+//                Log.e(TAG, "subList - " + subList.get(i).getBsValue());
+//            }
+//            for (int i = 0; i < subList.size(); i++) {
+//                date[i] = subList.get(i).getBsTime().split(",")[0];
+//                time[i] = subList.get(i).getBsTime().split(",")[1];
+//                Log.e(TAG, "init: mBSList - " + subList.get(i).getBsValue() + subList.get(i).getBsTime());
+//            }
+//            adapter = new BSMSyncAdapter(this, subList);
+//            recyclerView.setAdapter(adapter);
             //추가할 데이터가 없어요
         } else if (subIndex > 0) {
+            animationLayout.setVisibility(View.GONE);
+            lottieAnimationView.cancelAnimation();
+            fab.setVisibility(View.VISIBLE);
+            recyclerView.setVisibility(View.VISIBLE);
             // TODO: 2018-02-27 새로운 데이터가 더 많다면
             Log.e(TAG, "새로운 데이터가 더 많다면");
             //List<BloodSugar> subList =  mBSList.subList(oldIndex, newIndex);
-            ArrayList<BloodSugar> subList = new ArrayList<>(mBSList.subList(oldIndex, newIndex));
-            subList.add(mBSList.get(mBSList.size() - 1));
+            subList = new ArrayList<>(mBSList.subList(oldIndex, newIndex));
+           // subList.add(mBSList.get(mBSList.size() - 1));
             for (int i = 0; i < subList.size(); i++) {
                 Log.e(TAG, "subList - " + subList.get(i).getBsValue());
             }
+
+            for (int i = 0; i < subList.size(); i++) {
+                date[i] = subList.get(i).getBsTime().split(",")[0];
+                time[i] = subList.get(i).getBsTime().split(",")[1];
+                Log.e(TAG, "init: mBSList - " + subList.get(i).getBsValue() + subList.get(i).getBsTime());
+            }
+
+            adapter = new BSMSyncAdapter(this, subList);
+            recyclerView.setAdapter(adapter);
 
         } else if (subIndex < 0) {
             // TODO: 2018-02-27 기존 데이터가 더 많다면 ( 경우가 없을 듯)
         }
 
-        String[] date = new String[mBSList.size()];
-        String[] time = new String[mBSList.size()];
+        // TODO: 2018-02-28 데이터베이스 추가를 위한 처리  
 
-        for (int i = 0; i < mBSList.size(); i++) {
-            date[i] = mBSList.get(i).getBsTime().split(",")[0];
-            time[i] = mBSList.get(i).getBsTime().split(",")[1];
-            Log.e(TAG, "init: mBSList - " + mBSList.get(i).getBsTime());
-        }
+//        for (int i = 0; i < mBSList.size(); i++) {
+//            date[i] = mBSList.get(i).getBsTime().split(",")[0];
+//            time[i] = mBSList.get(i).getBsTime().split(",")[1];
+//            Log.e(TAG, "init: mBSList - " + mBSList.get(i).getBsValue() + mBSList.get(i).getBsTime());
+//        }
 
         for (int i = 0; i < date.length; i++) {
             Log.e(TAG, "init: date - " + date[i] + ", " + time[i]);
         }
-
-        recyclerView.setHasFixedSize(true);
-        layoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(layoutManager);
-        adapter = new BSMSyncAdapter(this, mBSList);
-        recyclerView.setAdapter(adapter);
 
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -222,40 +284,77 @@ public class SyncBMSResultActivity extends AppCompatActivity {
     private void setupRecyclerView() {
 
         ArrayList<MenuEntity> list = new ArrayList<>();
-        //添加假数据
         MenuEntity menuEntity1 = new MenuEntity();
         menuEntity1.iconId = R.drawable.ic_save_black_24dp;
         menuEntity1.title = "SAVE";
         MenuEntity menuEntity2 = new MenuEntity();
-        menuEntity2.iconId = R.drawable.ic_menu_share;
-        menuEntity2.title = "SHARE";
+        menuEntity2.iconId = R.drawable.ic_bubble_chart_black_24dp;
+        menuEntity2.title = "Analysis";
+        MenuEntity menuEntity3 = new MenuEntity();
+        menuEntity3.iconId = R.drawable.ic_menu_share;
+        menuEntity3.title = "SHARE";
+        MenuEntity menuEntity4 = new MenuEntity();
+        menuEntity4.iconId = R.drawable.ic_golf_course_black_24dp;
+        menuEntity4.title = "DBEXPORT";
 
         list.add(menuEntity1);
         list.add(menuEntity2);
-
-        // SweetSheet 控件,根据 rl 确认位置
+        list.add(menuEntity3);
+        list.add(menuEntity4);
         mSweetSheet = new SweetSheet(coordinator);
-        //设置数据源 (数据源支持设置 list 数组,也支持从菜单中获取)
         mSweetSheet.setMenuList(list);
-        //根据设置不同的 Delegate 来显示不同的风格.
         mSweetSheet.setDelegate(new RecyclerViewDelegate(true));
-        //根据设置不同Effect 来显示背景效果BlurEffect:模糊效果.DimEffect 变暗效果
         mSweetSheet.setBackgroundEffect(new BlurEffect(14));
-        //设置点击事件
         mSweetSheet.setOnMenuItemClickListener((position, menuEntity11) ->
         {
-            //即时改变当前项的颜色
-//                list.get(position).titleColor = 0xff5823ff;
-//                ((RecyclerViewDelegate) mSweetSheet.getDelegate()).notifyDataSetChanged();
-            //根据返回值, true 会关闭 SweetSheet ,false 则不会.
             switch (position) {
                 case 0:
+                   /* for (int k = 0; k < subList.size(); k++) {
+                        if (subList.get(k).getTypeValue() == 0) {
+                            bsdbHelper.insertBSData("Unknown", subList.get(k).getBsValue(), date[k], time[k]);
+                        } else if (subList.get(k).getTypeValue() == 1) {
+                            bsdbHelper.insertBSData("식전", subList.get(k).getBsValue(), date[k], time[k]);
+                        } else if (subList.get(k).getTypeValue() == 2) {
+                            bsdbHelper.insertBSData("식후", subList.get(k).getBsValue(), date[k], time[k]);
+                        } else if (subList.get(k).getTypeValue() == 3) {
+                            bsdbHelper.insertBSData("공복", subList.get(k).getBsValue(), date[k], time[k]);
+                        }
+                    }*/
+                   new BackgroundTask().execute();
+                    Paper.book("syncBms").write("ptr", newIndex);
+                   // Snackbar.make(getWindow().getDecorView().getRootView(),"저장완료", Snackbar.LENGTH_SHORT).show();
+                    mSweetSheet.dismiss();
                     break;
                 case 1:
+                    startActivity(new Intent(SyncBMSResultActivity.this, AnalysisBSActivity.class));
+                    break;
+                case 2:
+                    break;
+                case 3:
+                    sqliteExport();
+                    break;
             }
-            //Toast.makeText(GraphAnalysisActivity.this, menuEntity1.title + "  " + position, Toast.LENGTH_SHORT).show();
             return false;
         });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.sync_bsm_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.save:
+                return true;
+            case R.id.analysis:
+                return true;
+            default:
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -267,5 +366,84 @@ public class SyncBMSResultActivity extends AppCompatActivity {
         }
     }
 
+    public void sqliteExport(){
+        //Context ctx = this; // for Activity, or Service. Otherwise simply get the context.
+        //String dbname = "mydb.db";
+        // dbpath = ctx.getDatabasePath(dbname);
+        try {
+            File sd = Environment.getExternalStorageDirectory();
+            File data = Environment.getDataDirectory();
+
+            Log.e(TAG, "getDataDirectory:  - " + data.toString());
+            Log.e(TAG, "getExternalStorageDirectory:  - " + sd.toString());
+
+            if (sd.canWrite()) {
+                String currentDBPath = "/data/com.dreamwalker.knu2018.dteacher/databases/bs.db";
+                String backupDBPath = "contacts.sqlite";
+                File currentDB = new File(data, currentDBPath);
+                File backupDB = new File(sd, backupDBPath);
+
+                if (currentDB.exists()) {
+                    FileChannel src = new FileInputStream(currentDB).getChannel();
+                    FileChannel dst = new FileOutputStream(backupDB).getChannel();
+                    dst.transferFrom(src, 0, src.size());
+                    src.close();
+                    dst.close();
+                }
+                if(backupDB.exists()){
+                    Toast.makeText(this, "DB Export Complete!!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     // TODO: 2018-02-27 저장했을 경우와 저장 안했을 경우를 생각해야함
+
+    class BackgroundTask extends AsyncTask<Void,Void,Void>{
+
+        ProgressDialog progressDialog;
+
+
+        @Override
+        protected void onPreExecute() {
+
+            progressDialog = new ProgressDialog(SyncBMSResultActivity.this);
+            progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            //progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            progressDialog.setMessage("파일 저장중...");
+            progressDialog.setCancelable(false);
+            progressDialog.show();
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+
+            for (int k = 0; k < subList.size(); k++) {
+                if (subList.get(k).getTypeValue() == 0) {
+                    bsdbHelper.insertBSData("Unknown", subList.get(k).getBsValue(), date[k], time[k]);
+                } else if (subList.get(k).getTypeValue() == 1) {
+                    bsdbHelper.insertBSData("식전", subList.get(k).getBsValue(), date[k], time[k]);
+                } else if (subList.get(k).getTypeValue() == 2) {
+                    bsdbHelper.insertBSData("식후", subList.get(k).getBsValue(), date[k], time[k]);
+                } else if (subList.get(k).getTypeValue() == 3) {
+                    bsdbHelper.insertBSData("공복", subList.get(k).getBsValue(), date[k], time[k]);
+                }
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            progressDialog.dismiss();
+            Toast.makeText(SyncBMSResultActivity.this, "저장완료", Toast.LENGTH_SHORT).show();
+            finish();
+            super.onPostExecute(aVoid);
+        }
+    }
+
+
+
 }

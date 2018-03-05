@@ -34,12 +34,9 @@ public class StartKenBurnsActivity extends AppCompatActivity {
 
         initializeKenBurnsView();
         nextButton = (Button) findViewById(R.id.nextButton);
-        nextButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(StartKenBurnsActivity.this, LoginActivity.class));
-                finish();
-            }
+        nextButton.setOnClickListener(v -> {
+            startActivity(new Intent(StartKenBurnsActivity.this, LoginActivity.class));
+            finish();
         });
     }
 

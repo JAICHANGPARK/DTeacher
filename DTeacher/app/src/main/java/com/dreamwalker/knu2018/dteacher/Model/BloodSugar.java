@@ -11,6 +11,16 @@ public class BloodSugar {
     String bsTime;
     int typeValue;
 
+    /**
+     *
+     * @Author JAICHANGPARK
+     * 혈당계 데이터 동기화 모델
+     * @param bsValue
+     * @param bsTime
+     * @param typeValue
+     *
+     */
+
     public BloodSugar(String bsValue, String bsTime, int typeValue) {
         this.bsValue = bsValue;
         this.bsTime = bsTime;

@@ -278,6 +278,7 @@ public class SyncBSMDataActivity extends AppCompatActivity {
     public void onDestroy() {
         super.onDestroy();
         unregisterReceiver(mGattUpdateReceiver); //ble
+        //등록되지 않은 리시버라는데 어떻게 처리해야 좋을까?
         unregisterReceiver(mBondingBroadcastReceiver);
         Log.d("-- close", " -- destroy");
         close();

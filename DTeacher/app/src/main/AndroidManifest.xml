@@ -100,7 +100,7 @@
             android:parentActivityName=".Activity.SettingActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".Activity.SettingActivity"></meta-data>
+                android:value=".Activity.SettingActivity" />
         </activity>
         <activity android:name=".Activity.SyncFEActivity" />
         <activity
@@ -144,13 +144,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".Activity.SyncWearableActivity" />
         </activity>
-        <activity android:name=".BSMSync.SyncBMSResultActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:parentActivityName=".BSMSync.SyncBSMDataActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".BSMSync.SyncBSMDataActivity" />
-        </activity>
+        <activity
+            android:name=".BSMSync.SyncBMSResultActivity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".Activity.AnalysisBSActivity"></activity>
     </application>
 
 </manifest>

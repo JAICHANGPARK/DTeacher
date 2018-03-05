@@ -41,12 +41,14 @@ import com.getkeepsafe.taptargetview.TapTargetSequence;
 import com.getkeepsafe.taptargetview.TapTargetView;
 import com.gjiazhe.multichoicescirclebutton.MultiChoicesCircleButton;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import butterknife.BindView;
@@ -97,7 +99,7 @@ public class HomeActivity extends AppCompatActivity {
 
     HashMap<String, String> tempMap;
     String today;
-
+    String strToday;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -122,6 +124,10 @@ public class HomeActivity extends AppCompatActivity {
         tempMap = new HashMap<>();
 
         Calendar now = Calendar.getInstance();
+        Log.e(TAG, "onCreate: " + now.getTime().toString());
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()); // HH=24h, hh=12h
+        strToday = df.format(now.getTime());
+        Log.e(TAG, "onCreate: " + strToday);
         String year = String.valueOf(now.get(Calendar.YEAR));
         int tempMonth = now.get(Calendar.MONTH);
         tempMonth = tempMonth + 1;
@@ -215,7 +221,8 @@ public class HomeActivity extends AppCompatActivity {
 //        }
 
         // TODO: 2018-02-20 잠깐 주석처리
-        bloodSugarArrayList = homeDBHelper.allReadData(today);
+        //bloodSugarArrayList = homeDBHelper.allReadData(today);
+        bloodSugarArrayList = homeDBHelper.allReadData(strToday);
 
         for (int i = 0; i < bloodSugarArrayList.size(); i++) {
 
@@ -472,6 +479,10 @@ public class HomeActivity extends AppCompatActivity {
             public void onDateSelected(Calendar date, int position) {
                 // TODO: 2018-02-04 데이터가 처리됬을때 데이터 값을받아 하단에 표기할 처리 메소드가 들어가면됨.
 
+                SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()); // HH=24h, hh=12h
+                String selectStringDate = df.format(date.getTime());
+                Log.e(TAG, "onDateSelected: " + selectStringDate);
+
                 String year = String.valueOf(date.get(Calendar.YEAR));
                 int tempMonth = date.get(Calendar.MONTH) + 1;
                 String month = String.valueOf(tempMonth);
@@ -496,7 +507,8 @@ public class HomeActivity extends AppCompatActivity {
 
                 // TODO: 2018-02-11 이제 리사이클러뷰 적용
                 bloodSugarArrayList.clear();
-                bloodSugarArrayList = homeDBHelper.allReadData(selectDate);
+                //bloodSugarArrayList = homeDBHelper.allReadData(selectDate);
+                bloodSugarArrayList = homeDBHelper.allReadData(selectStringDate);
                 // TODO: 2018-02-11 혼합된 데이터를 나눠 시간 내림차순으로 정렬해야 한다.
 
                 //bloodSugarArrayList = homeDBHelper.selectAll(selectDate);
@@ -596,6 +608,12 @@ public class HomeActivity extends AppCompatActivity {
                         intent = new Intent(HomeActivity.this, SettingActivity.class);
                         startActivity(intent);
                         break;
+                    case R.id.nav_about:
+                        // TODO: 2018-02-28 임시 확인을 위한 인텐트  
+                        mFloatingNavigationView.close();
+                        intent = new Intent(HomeActivity.this, AnalysisBSActivity.class);
+                        startActivity(intent);
+                        break;
                 }
                 //Snackbar.make((View) mFloatingNavigationView.getParent(), item.getTitle() + " Selected!" + item.getItemId(), Snackbar.LENGTH_SHORT).show();
                 return true;
@@ -641,7 +659,7 @@ public class HomeActivity extends AppCompatActivity {
 
         // TODO: 2018-02-11 이제 리사이클러뷰 적용
         bloodSugarArrayList.clear();
-        bloodSugarArrayList = homeDBHelper.allReadData(today);
+        bloodSugarArrayList = homeDBHelper.allReadData(strToday);
         // TODO: 2018-02-11 혼합된 데이터를 나눠 시간 내림차순으로 정렬해야 한다.
 
         //bloodSugarArrayList = homeDBHelper.selectAll(selectDate);
