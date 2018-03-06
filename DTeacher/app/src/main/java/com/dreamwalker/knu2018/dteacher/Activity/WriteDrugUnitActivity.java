@@ -1,21 +1,16 @@
 package com.dreamwalker.knu2018.dteacher.Activity;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.View;
 import android.widget.TextView;
 
 import com.dreamwalker.knu2018.dteacher.Adapter.WriteDrugUnitAdapter;
 import com.dreamwalker.knu2018.dteacher.DBHelper.DrugDBHelper;
-import com.dreamwalker.knu2018.dteacher.DBHelper.FitnessDBHelper;
 import com.dreamwalker.knu2018.dteacher.Model.Drug;
 import com.dreamwalker.knu2018.dteacher.R;
-
-import com.dreamwalker.knu2018.dteacher.SignUpActivity.SignUpActivity1;
-import com.dreamwalker.knu2018.dteacher.Utils.DrugDataEvent;
 import com.dreamwalker.knu2018.dteacher.Utils.DrugWriteEvent;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
@@ -70,7 +65,7 @@ public class WriteDrugUnitActivity extends AppCompatActivity implements DatePick
 
         ButterKnife.bind(this);
         bus.register(this);
-        drugDBHelper = new DrugDBHelper(this, dbName, null, dbVersion);
+        drugDBHelper = new DrugDBHelper(this, dbName, null, dbVersion); //db 객체 생성
 
         myList = new ArrayList<>();
         drugArrayList = new ArrayList<>();
@@ -81,7 +76,7 @@ public class WriteDrugUnitActivity extends AppCompatActivity implements DatePick
 
         for (int i = 0; i < drugNames.length; i++) {
             myList.add(drugNames[i]);
-            drugArrayList.add(new Drug("0", "unknown"));
+            drugArrayList.add(new Drug("1", drugNames[i]));
         }
 
         layoutManager = new LinearLayoutManager(this);
@@ -105,58 +100,76 @@ public class WriteDrugUnitActivity extends AppCompatActivity implements DatePick
 
         String year = String.valueOf(now.get(Calendar.YEAR));
         int tempMonth = now.get(Calendar.MONTH);
+        int iDayOfMonth = now.get(Calendar.DAY_OF_MONTH);
         tempMonth = tempMonth + 1;
-        String month = String.valueOf(tempMonth);
+        String month;
+        String sDayOfMonth;
+        if (tempMonth < 10) {
+            month = "0" + String.valueOf(tempMonth);
+        } else {
+            month = String.valueOf(tempMonth);
+        }
+
+        if (iDayOfMonth < 10){
+            sDayOfMonth = "0" + String.valueOf(iDayOfMonth);
+        }else {
+            sDayOfMonth = String.valueOf(iDayOfMonth);
+        }
         String day = String.valueOf(now.get(Calendar.DAY_OF_MONTH));
         String hour = String.valueOf(now.get(Calendar.HOUR));
         String minutes = String.valueOf(now.get(Calendar.MINUTE));
         // TODO: 2018-02-07 default로 현재의시간값을 넣음 구분자 필요없음
-        dateValue = year + "-" + month + "-" + day;
+       // dateValue = year + "-" + month + "-" + day;
+        dateValue = year + "-" + month + "-" + sDayOfMonth;
         timeValue = hour + ":" + minutes;
         dateTextView.setText(dateValue);
         timeTextView.setText(timeValue);
 
-        dateTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.e(TAG, "onClick: dateValueText ");
-                datePickerDialog.show(getFragmentManager(), "fit_date");
-            }
+        dateTextView.setOnClickListener(v -> {
+            Log.e(TAG, "onClick: dateValueText ");
+            datePickerDialog.show(getFragmentManager(), "fit_date");
         });
-        timeTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.e(TAG, "onClick: dateValueText ");
-                timePickerDialog.show(getFragmentManager(), "fit_time");
-            }
+        timeTextView.setOnClickListener(v -> {
+            Log.e(TAG, "onClick: dateValueText ");
+            timePickerDialog.show(getFragmentManager(), "fit_time");
         });
-        doneTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new PromptDialog(WriteDrugUnitActivity.this)
-                        .setDialogType(PromptDialog.DIALOG_TYPE_INFO)
-                        .setAnimationEnable(true)
-                        .setTitleText("알림")
-                        .setContentText("기록하시겠어요?")
-                        .setPositiveListener("응", new PromptDialog.OnPositiveListener() {
-                            @Override
-                            public void onClick(PromptDialog dialog) {
-                                for (int i = 0; i < drugArrayList.size(); i++) {
-                                    if (!drugArrayList.isEmpty()) {
-                                        drugDBHelper.insertDrugData(drugArrayList.get(i).getDrugName(), drugArrayList.get(i).getValueUnit(), dateValue, timeValue);
-                                    }
-                                }
-                                dialog.dismiss();
-                                finish();
-                            }
-                        }).show();
-            }
-        });
+
+        doneTextView.setOnClickListener(v -> new PromptDialog(WriteDrugUnitActivity.this)
+                .setDialogType(PromptDialog.DIALOG_TYPE_INFO)
+                .setAnimationEnable(true)
+                .setTitleText("알림")
+                .setContentText("기록하시겠어요?")
+                .setPositiveListener("응", dialog -> {
+                    for (int i = 0; i < drugArrayList.size(); i++) {
+                        if (!drugArrayList.isEmpty()) {
+                            drugDBHelper.insertDrugData(drugArrayList.get(i).getDrugName(), drugArrayList.get(i).getValueUnit(), dateValue, timeValue);
+                        }
+                    }
+                    dialog.dismiss();
+                    finish();
+                }).show());
     }
 
     @Override
     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
-        String date = year + "-" + (monthOfYear + 1) + "-" + dayOfMonth;
+        int tempMonth = monthOfYear + 1;
+        String month;
+
+        int iDayOfMonth = dayOfMonth;
+        String sDayOfMonth;
+        if (tempMonth < 10) {
+            month = "0" + String.valueOf(tempMonth);
+        } else {
+            month = String.valueOf(tempMonth);
+        }
+        if (iDayOfMonth < 10){
+            sDayOfMonth = "0" + String.valueOf(iDayOfMonth);
+        }else {
+            sDayOfMonth = String.valueOf(iDayOfMonth);
+        }
+        //String date = year + "-" + (monthOfYear + 1) + "-" + dayOfMonth;
+//        String date = year + "-" + month + "-" + dayOfMonth;
+        String date = year + "-" + month + "-" + sDayOfMonth;
         dateValue = date;
         dateTextView.setText(date);
     }
@@ -168,6 +181,13 @@ public class WriteDrugUnitActivity extends AppCompatActivity implements DatePick
         timeValue = time;
     }
 
+    /**
+     * EventBus 이벤트를 받아오는 부분.
+     * Unit Value는 Adapter에서 받아 옴.
+     *
+     * @param event
+     * @Author JAICHANGPARK
+     */
     @Subscribe
     public void onEvent(DrugWriteEvent event) {
         String valueString;

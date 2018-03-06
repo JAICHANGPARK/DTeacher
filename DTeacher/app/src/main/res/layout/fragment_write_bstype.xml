@@ -264,8 +264,8 @@
 
                             <Button
                                 android:id="@+id/typeButton8"
-                                android:layout_width="80dp"
-                                android:layout_height="80dp"
+                                android:layout_width="70dp"
+                                android:layout_height="70dp"
                                 android:layout_margin="6dp"
                                 android:background="@drawable/round_shape_button_uncheck"
                                 android:text="운동전"
@@ -273,8 +273,8 @@
 
                             <Button
                                 android:id="@+id/typeButton9"
-                                android:layout_width="80dp"
-                                android:layout_height="80dp"
+                                android:layout_width="70dp"
+                                android:layout_height="70dp"
                                 android:layout_margin="6dp"
                                 android:background="@drawable/round_shape_button_uncheck"
                                 android:text="운동후"
@@ -282,11 +282,20 @@
 
                             <Button
                                 android:id="@+id/typeButton10"
-                                android:layout_width="80dp"
-                                android:layout_height="80dp"
+                                android:layout_width="70dp"
+                                android:layout_height="70dp"
                                 android:layout_margin="6dp"
                                 android:background="@drawable/round_shape_button_uncheck"
                                 android:text="아픈날"
+                                android:textSize="16dp" />
+
+                            <Button
+                                android:id="@+id/typeButton11"
+                                android:layout_width="70dp"
+                                android:layout_height="70dp"
+                                android:layout_margin="6dp"
+                                android:background="@drawable/round_shape_button_uncheck"
+                                android:text="취침전"
                                 android:textSize="16dp" />
                         </LinearLayout>
                     </LinearLayout>

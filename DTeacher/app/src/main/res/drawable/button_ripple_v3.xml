@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:color="@color/theme_accent"
+    tools:targetApi="lollipop">
+    <item>
+    <!--<item android:id="@android:id/mask">-->
+        <shape android:shape="rectangle">
+            <!--버튼의 색상을 이곳에서 수정하면 된다.-->
+            <solid android:color="#ffffff" />
+            <stroke android:color="#ffffff" android:width="2dp"/>
+        </shape>
+    </item>
+</ripple>

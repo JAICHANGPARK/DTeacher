@@ -1,7 +1,6 @@
 package com.dreamwalker.knu2018.dteacher.Fragment;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -16,7 +15,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.dreamwalker.knu2018.dteacher.R;
-import com.dreamwalker.knu2018.dteacher.Utils.TextChangedEvent;
 import com.dreamwalker.knu2018.dteacher.Utils.ValueChangedEvent;
 import com.stepstone.stepper.Step;
 import com.stepstone.stepper.VerificationError;
@@ -26,7 +24,9 @@ import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Locale;
 
 /**
  * 운동시간을 입력하는 프레그먼트
@@ -53,6 +53,8 @@ public class WriteFitTimeFragment extends Fragment implements Step, DatePickerDi
     String dateValue;
     String timeValue;
     float METs;
+
+    String strDate;
 
     private OnFitnessDateTimeSetListener onFitnessDateTimeSetListener;
 
@@ -116,7 +118,11 @@ public class WriteFitTimeFragment extends Fragment implements Step, DatePickerDi
         );
         timePickerDialog = TimePickerDialog.newInstance(this, now.get(Calendar.HOUR_OF_DAY), now.get(Calendar.MINUTE), true);
 
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
+        strDate = simpleDateFormat.format(now.getTime());
+
         String year = String.valueOf(now.get(Calendar.YEAR));
+
         int tempMonth = now.get(Calendar.MONTH);
         tempMonth = tempMonth + 1;
         String month = String.valueOf(tempMonth);
@@ -124,7 +130,8 @@ public class WriteFitTimeFragment extends Fragment implements Step, DatePickerDi
         String hour = String.valueOf(now.get(Calendar.HOUR));
         String minutes = String.valueOf(now.get(Calendar.MINUTE));
         // TODO: 2018-02-07 default로 현재의시간값을 넣음 구분자 필요없음
-        dateValue = year + "-" + month + "-" + day;
+        //dateValue = year + "-" + month + "-" + day;
+        dateValue = strDate;
         timeValue = hour + ":" + minutes;
         // TODO: 2018-02-08  default 운동시간 30분으로 설정
         FIT_TIME = "30";
@@ -133,20 +140,14 @@ public class WriteFitTimeFragment extends Fragment implements Step, DatePickerDi
         timeValueText.setText(hour + "시" + minutes + "분");
 
 
-        dateValueText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.e(TAG, "onClick: dateValueText ");
-                datePickerDialog.show(getActivity().getFragmentManager(), "fit_date");
-            }
+        dateValueText.setOnClickListener(v -> {
+            Log.e(TAG, "onClick: dateValueText ");
+            datePickerDialog.show(getActivity().getFragmentManager(), "fit_date");
         });
 
-        timeValueText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.e(TAG, "onClick: dateValueText ");
-                timePickerDialog.show(getActivity().getFragmentManager(), "fit_time");
-            }
+        timeValueText.setOnClickListener(v -> {
+            Log.e(TAG, "onClick: dateValueText ");
+            timePickerDialog.show(getActivity().getFragmentManager(), "fit_time");
         });
         valueEdt.addTextChangedListener(new TextWatcher() {
             @Override
@@ -208,7 +209,23 @@ public class WriteFitTimeFragment extends Fragment implements Step, DatePickerDi
 
     @Override
     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
-        String date = year + "-" + (monthOfYear + 1) + "-" + dayOfMonth;
+        int tempMonth = monthOfYear + 1;
+        int iDayOfMonth = dayOfMonth;
+        String tempStrMonth;
+        String sDayOfMonth;
+        if (tempMonth < 10){
+            tempStrMonth = "0" + String.valueOf(tempMonth);
+        }else {
+            tempStrMonth = String.valueOf(tempMonth);
+        }
+        if (iDayOfMonth < 10){
+            sDayOfMonth = "0" + String.valueOf(iDayOfMonth);
+        }else {
+            sDayOfMonth = String.valueOf(iDayOfMonth);
+        }
+        //String date = year + "-" + (monthOfYear + 1) + "-" + dayOfMonth;
+        //String date = year + "-" + tempStrMonth + "-" + dayOfMonth;
+        String date = year + "-" + tempStrMonth + "-" + sDayOfMonth;
         dateValue = date;
         dateValueText.setText(date);
         // TODO: 2018-02-07 액티비티로 보내는 인터페이스

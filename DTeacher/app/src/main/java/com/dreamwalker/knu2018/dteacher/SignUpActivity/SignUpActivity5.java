@@ -20,7 +20,13 @@ import butterknife.ButterKnife;
 import info.hoang8f.widget.FButton;
 
 /**
+ * @author JAICHANGPARK
  * 당뇨 목표 구간 선택 뷰
+ *
+ * userMax = "200"; //default
+   userMin = "50"; // default
+   userDanger = "50"; // default
+ *
  */
 
 public class SignUpActivity5 extends AppCompatActivity {

@@ -1,18 +1,37 @@
 package com.dreamwalker.knu2018.dteacher.Fragment;
 
-import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.AdapterView;
+import android.widget.Button;
 
+import com.dreamwalker.knu2018.dteacher.Adapter.DiaryDrugAdapter;
 import com.dreamwalker.knu2018.dteacher.DBHelper.DrugDBHelper;
-import com.dreamwalker.knu2018.dteacher.DBHelper.FitnessDBHelper;
+import com.dreamwalker.knu2018.dteacher.Model.Drug;
 import com.dreamwalker.knu2018.dteacher.R;
+
+import org.angmarch.views.NiceSpinner;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import jp.wasabeef.recyclerview.adapters.AlphaInAnimationAdapter;
+
+import static android.content.ContentValues.TAG;
 
 public class DiaryDrugFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
@@ -20,13 +39,27 @@ public class DiaryDrugFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
+    @BindView(R.id.button_graph_show)
+    Button buttonGraphShow;
+    @BindView(R.id.recycler_view)
+    RecyclerView recyclerView;
+
+    @BindView(R.id.nice_spinner)
+    NiceSpinner niceSpinner;
+
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
-    private DrugDBHelper drugDBHelper;
-    TextView dbText;
+
+    //TextView dbText;
     private OnFragmentInteractionListener mListener;
+    private DrugDBHelper drugDBHelper;
+
+    LinearLayoutManager layoutManager;
+    DiaryDrugAdapter adapter;
+    ArrayList<Drug> drugArrayList;
+
 
     public DiaryDrugFragment() {
         // Required empty public constructor
@@ -54,8 +87,13 @@ public class DiaryDrugFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-       View view =  inflater.inflate(R.layout.fragment_diary_drug, container, false);
-        dbText = (TextView)view.findViewById(R.id.dbTextView);
+        View view = inflater.inflate(R.layout.fragment_diary_drug, container, false);
+        ButterKnife.bind(this, view);
+
+        List<String> dataset = new LinkedList<>(Arrays.asList("오름차순", "내림차순", "최대값", "최소값"));
+        niceSpinner.attachDataSource(dataset);
+
+        //dbText = (TextView)view.findViewById(R.id.dbTextView);
         return view;
     }
 
@@ -70,9 +108,59 @@ public class DiaryDrugFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        drugDBHelper = new DrugDBHelper(getActivity(),"drug.db", null,1);
-        String dbResult = drugDBHelper.selectAllData();
-        dbText.setText(dbResult);
+        drugDBHelper = new DrugDBHelper(getActivity(), "drug.db", null, 1);
+        drugArrayList = new ArrayList<>();
+        drugArrayList = drugDBHelper.selectDiaryAll();
+
+        adapter = new DiaryDrugAdapter(getActivity(), drugArrayList);
+        layoutManager = new LinearLayoutManager(getActivity());
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(layoutManager);
+
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),layoutManager.getOrientation());
+        recyclerView.addItemDecoration(dividerItemDecoration);
+        recyclerView.setAdapter(new AlphaInAnimationAdapter(adapter));
+
+        niceSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Log.e(TAG, "onItemSelected: " + parent.toString() + "- " + position + "- "+id );
+                switch (position){
+                    case 0:
+                        drugArrayList.clear();
+                        adapter.notifyDataSetChanged();
+                        drugArrayList = drugDBHelper.selectDiaryAll();
+                        adapter = new DiaryDrugAdapter(getActivity(), drugArrayList);
+                        recyclerView.setAdapter(adapter);
+                        adapter.notifyDataSetChanged();
+                        break;
+                    case 1:
+                        drugArrayList.clear();
+
+                        adapter.notifyDataSetChanged();
+                        drugArrayList = drugDBHelper.selectDiaryDESC();
+                        adapter = new DiaryDrugAdapter(getActivity(), drugArrayList);
+                        recyclerView.setAdapter(adapter);
+                        adapter.notifyDataSetChanged();
+                        break;
+                    case 2:
+                        break;
+                    case 3:
+                        break;
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+        //String dbResult = drugDBHelper.selectAllData();
+        //dbText.setText(dbResult);
+    }
+
+    @OnClick(R.id.button_graph_show)
+    public void onButtonGraphShowClicked(){
+
     }
 
     /*    @Override

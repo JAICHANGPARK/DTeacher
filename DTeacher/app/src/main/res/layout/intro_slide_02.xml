@@ -13,9 +13,9 @@
         android:layout_height="250dp"
         android:layout_gravity="center"
         app:lottie_autoPlay="true"
-        app:lottie_fileName="cycle_animation.json"
+        app:lottie_fileName="bikingiscool.json"
         app:lottie_loop="true" />
-
+    <!--bikingiscool cycle_animation-->
     <LinearLayout
         android:gravity="center_vertical"
         android:orientation="vertical"

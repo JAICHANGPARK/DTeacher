@@ -116,42 +116,42 @@ public class WriteDrugFragment extends Fragment {
         boolean success;
         int index = 0;
         if (isSelected) {
-            if (mParam1.equals("1")){
+            if (mParam1.equals("1")) {
                 rrapid.set(position, "unknown");
-                bus.post(new DrugDataEvent(rrapid,rapid,neutral,longtime,mixed, index,1));
-            } else if (mParam1.equals("2")){
+                bus.post(new DrugDataEvent(rrapid, rapid, neutral, longtime, mixed, index, 1));
+            } else if (mParam1.equals("2")) {
                 rapid.set(position, "unknown");
-                bus.post(new DrugDataEvent(rrapid,rapid,neutral,longtime,mixed, index,2));
-            } else if (mParam1.equals("3")){
+                bus.post(new DrugDataEvent(rrapid, rapid, neutral, longtime, mixed, index, 2));
+            } else if (mParam1.equals("3")) {
                 neutral.set(position, "unknown");
-                bus.post(new DrugDataEvent(rrapid,rapid,neutral,longtime,mixed, index,3));
-            } else if (mParam1.equals("4")){
+                bus.post(new DrugDataEvent(rrapid, rapid, neutral, longtime, mixed, index, 3));
+            } else if (mParam1.equals("4")) {
                 longtime.set(position, "unknown");
-                bus.post(new DrugDataEvent(rrapid,rapid,neutral,longtime,mixed, index,4));
-            } else if (mParam1.equals("5")){
+                bus.post(new DrugDataEvent(rrapid, rapid, neutral, longtime, mixed, index, 4));
+            } else if (mParam1.equals("5")) {
                 mixed.set(position, "unknown");
-                bus.post(new DrugDataEvent(rrapid,rapid,neutral,longtime,mixed, index,5));
+                bus.post(new DrugDataEvent(rrapid, rapid, neutral, longtime, mixed, index, 5));
             }
 
             Log.e(TAG, "itemListClicked: removeLabel " + person.getAge() + ", " + person.getName() + "position :" + position);
             success = mAutoLabel.removeLabel(position);
         } else {
 
-            if (mParam1.equals("1")){
+            if (mParam1.equals("1")) {
                 rrapid.set(position, person.getName());
-                bus.post(new DrugDataEvent(rrapid,rapid,neutral,longtime,mixed, index,1));
-            }else if (mParam1.equals("2")){
+                bus.post(new DrugDataEvent(rrapid, rapid, neutral, longtime, mixed, index, 1));
+            } else if (mParam1.equals("2")) {
                 rapid.set(position, person.getName());
-                bus.post(new DrugDataEvent(rrapid,rapid,neutral,longtime,mixed, index,2));
-            }else if (mParam1.equals("3")){
+                bus.post(new DrugDataEvent(rrapid, rapid, neutral, longtime, mixed, index, 2));
+            } else if (mParam1.equals("3")) {
                 neutral.set(position, person.getName());
-                bus.post(new DrugDataEvent(rrapid,rapid,neutral,longtime,mixed, index,3));
-            }else if (mParam1.equals("4")){
+                bus.post(new DrugDataEvent(rrapid, rapid, neutral, longtime, mixed, index, 3));
+            } else if (mParam1.equals("4")) {
                 longtime.set(position, person.getName());
-                bus.post(new DrugDataEvent(rrapid,rapid,neutral,longtime,mixed, index,4));
-            }else if (mParam1.equals("5")){
+                bus.post(new DrugDataEvent(rrapid, rapid, neutral, longtime, mixed, index, 4));
+            } else if (mParam1.equals("5")) {
                 mixed.set(position, person.getName());
-                bus.post(new DrugDataEvent(rrapid,rapid,neutral,longtime,mixed, index,5));
+                bus.post(new DrugDataEvent(rrapid, rapid, neutral, longtime, mixed, index, 5));
             }
 
             Log.e(TAG, "itemListClicked:  addLabel " + person.getAge() + ", " + person.getName() + "position :" + position);

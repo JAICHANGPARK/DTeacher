@@ -1,19 +1,16 @@
 package com.dreamwalker.knu2018.dteacher.Activity;
 
 import android.database.sqlite.SQLiteDatabase;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 
-import com.dreamwalker.knu2018.dteacher.Adapter.StepSampleAdapter;
 import com.dreamwalker.knu2018.dteacher.Adapter.WriteFitnessAdapter;
-import com.dreamwalker.knu2018.dteacher.DBHelper.BSDBHelper;
 import com.dreamwalker.knu2018.dteacher.DBHelper.FitnessDBHelper;
 import com.dreamwalker.knu2018.dteacher.Fragment.WriteFitTimeFragment;
 import com.dreamwalker.knu2018.dteacher.Fragment.WriteFitnessTypeFragment;
 import com.dreamwalker.knu2018.dteacher.R;
-import com.dreamwalker.knu2018.dteacher.SignUpActivity.SignUpActivity0;
 import com.stepstone.stepper.StepperLayout;
 import com.stepstone.stepper.VerificationError;
 
@@ -40,7 +37,7 @@ public class WriteFitnessActivity extends AppCompatActivity implements
     int fitnessTime;
     float temp_kcal;
     String parseKcal;
-
+    String strMonth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +48,12 @@ public class WriteFitnessActivity extends AppCompatActivity implements
         String year = String.valueOf(now.get(Calendar.YEAR));
         int tempMonth = now.get(Calendar.MONTH);
         tempMonth = tempMonth + 1;
+
+        if (tempMonth < 10) {
+            strMonth = "0" + String.valueOf(tempMonth);
+        } else {
+            strMonth = String.valueOf(tempMonth);
+        }
         String month = String.valueOf(tempMonth);
         String day = String.valueOf(now.get(Calendar.DAY_OF_MONTH));
         String hour = String.valueOf(now.get(Calendar.HOUR));
@@ -58,6 +61,7 @@ public class WriteFitnessActivity extends AppCompatActivity implements
 
         DATE_VALUE = year + "-" + month + "-" + day;
         TIME_VALUE = hour + ":" + minutes;
+        fitnessTime = 30;
 
         mStepperLayout = (StepperLayout) findViewById(R.id.stepperLayout);
         mStepperLayout.setAdapter(new WriteFitnessAdapter(getSupportFragmentManager(), this));
@@ -78,13 +82,15 @@ public class WriteFitnessActivity extends AppCompatActivity implements
                     @Override
                     public void onClick(PromptDialog dialog) {
                         if (!FIT_TYPE.equals("") || !FIT_STRENGTH.equals("") || !FIT_TIME.equals("")) {
-                            fitnessDBHelper.insertFitnessData(FIT_TYPE, FIT_STRENGTH, FIT_TIME, parseKcal, DATE_VALUE, TIME_VALUE);
-                        }else {
+                            //fitnessDBHelper.insertFitnessData(FIT_TYPE, FIT_STRENGTH, FIT_TIME, parseKcal, DATE_VALUE, TIME_VALUE);
+                            fitnessDBHelper.insertFitnessData(FIT_TYPE, FIT_STRENGTH, FIT_TIME, parseKcal, strMonth, TIME_VALUE);
+                        } else {
                             FIT_TYPE = "UNKNOWN";
                             FIT_STRENGTH = "UNKNOWN";
                             FIT_TIME = "UNKNOWN";
                             parseKcal = "UNKNOWN";
-                            fitnessDBHelper.insertFitnessData(FIT_TYPE, FIT_STRENGTH, FIT_TIME, parseKcal, DATE_VALUE, TIME_VALUE);
+                            fitnessDBHelper.insertFitnessData(FIT_TYPE, FIT_STRENGTH, FIT_TIME, parseKcal, strMonth, TIME_VALUE);
+                            //fitnessDBHelper.insertFitnessData(FIT_TYPE, FIT_STRENGTH, FIT_TIME, parseKcal, DATE_VALUE, TIME_VALUE);
                         }
                         dialog.dismiss();
                         finish();
@@ -112,6 +118,18 @@ public class WriteFitnessActivity extends AppCompatActivity implements
 
     }
 
+
+    /**
+     * @param fitType
+     * @param fitStrength
+     * @param mets
+     * @param fitTime
+     * @param date
+     * @param time
+     * @Author JAICHANGPARK
+     * Fragment에서 Callback 이벤트를 받아 오는 인터페이스 리스너.
+     * 프레그먼트에 데이터 변화가 있으면 이곳에 이벤트 발생
+     */
     @Override
     public void onFitnessDateTimeSet(String fitType, String fitStrength, float mets, String fitTime, String date, String time) {
         Log.e(TAG, "onFitnessDateTimeSet: 받은 데이터 " + fitType + "," +
@@ -120,7 +138,8 @@ public class WriteFitnessActivity extends AppCompatActivity implements
         FIT_TYPE = fitType;
         FIT_STRENGTH = fitStrength;
         FIT_TIME = fitTime;
-        DATE_VALUE = date;
+        //DATE_VALUE = date;
+        strMonth = date;
         TIME_VALUE = time;
 
         met = mets;

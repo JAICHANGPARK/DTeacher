@@ -19,11 +19,7 @@ import com.stepstone.stepper.VerificationError;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.Locale;
 
 import io.paperdb.Paper;
 
@@ -98,6 +94,7 @@ public class WriteDateTimeFragment extends Fragment implements Step, DatePickerD
         super.onActivityCreated(savedInstanceState);
 
         Calendar now = Calendar.getInstance();
+
         datePickerDialog = DatePickerDialog.newInstance(
                 this,
                 now.get(Calendar.YEAR),
@@ -105,36 +102,44 @@ public class WriteDateTimeFragment extends Fragment implements Step, DatePickerD
                 now.get(Calendar.DAY_OF_MONTH)
         );
         timePickerDialog = TimePickerDialog.newInstance(this, now.get(Calendar.HOUR_OF_DAY), now.get(Calendar.MINUTE), true);
-
         String year = String.valueOf(now.get(Calendar.YEAR));
+        // TODO: 2018-03-05 월 처리  
         int tempMonth = now.get(Calendar.MONTH);
         tempMonth = tempMonth + 1;
-        String month = String.valueOf(tempMonth);
+        String month;
+        String sDayOfMonth;
+        if (tempMonth < 10) {
+            month = "0" + String.valueOf(tempMonth);
+        } else {
+            month = String.valueOf(tempMonth);
+        }
+        // TODO: 2018-03-05 일자 처리
+        int iDayOfMonth = now.get(Calendar.DAY_OF_MONTH);
+        if (iDayOfMonth < 10){
+            sDayOfMonth =  "0" + String.valueOf(iDayOfMonth);
+        }else {
+            sDayOfMonth =  String.valueOf(iDayOfMonth);
+        }
+
         String day = String.valueOf(now.get(Calendar.DAY_OF_MONTH));
         String hour = String.valueOf(now.get(Calendar.HOUR));
         String minutes = String.valueOf(now.get(Calendar.MINUTE));
         // TODO: 2018-02-07 default로 현재의시간값을 넣음 구분자 필요없음
 
-        dateValue = year + "-" + month + "-" + day;
+        //dateValue = year + "-" + month + "-" + day;
+        dateValue = year + "-" + month + "-" + sDayOfMonth;
         timeValue = hour + ":" + minutes;
         Log.e(TAG, "onActivityCreated: " + year + (month + 1) + day + "," + hour + ": " + minutes);
-        dateTextView.setText(year + "년" + month + "월" + day +"일");
+        String dateText = year + "년" + month + "월" + sDayOfMonth + "일";
+        dateTextView.setText(dateText);
         timeTextView.setText(hour + "시" + minutes + "분");
 
-        dateTextLabel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                datePickerDialog.show(getActivity().getFragmentManager(), "dialog_date");
-                //dpd.show(getFragmentManager(),"Datepickerdialog");
-                //dateTimeDialogFragment.show(getFragmentManager(), "dialog_time");
-            }
+        dateTextLabel.setOnClickListener(v -> {
+            datePickerDialog.show(getActivity().getFragmentManager(), "dialog_date");
+            //dpd.show(getFragmentManager(),"Datepickerdialog");
+            //dateTimeDialogFragment.show(getFragmentManager(), "dialog_time");
         });
-        timeTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                timePickerDialog.show(getActivity().getFragmentManager(), "dialog_time");
-            }
-        });
+        timeTextView.setOnClickListener(v -> timePickerDialog.show(getActivity().getFragmentManager(), "dialog_time"));
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -187,9 +192,26 @@ public class WriteDateTimeFragment extends Fragment implements Step, DatePickerD
     @Override
     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
 //        String date = dayOfMonth+"-"+(monthOfYear+1)+"-"+year;
-        String date = year + "-" + (monthOfYear + 1) + "-" + dayOfMonth;
+        int months = monthOfYear + 1;
+        int iDayOfMonth = dayOfMonth;
+        String sMonth;
+        String sDayOfMonth;
+        // TODO: 2018-02-28 앞의 0값ㅇ르 추가해주기 위한 코드에영 
+        if (months < 10) {
+            sMonth = "0" + String.valueOf(months);
+        } else {
+            sMonth = String.valueOf(months);
+        }
+        if (iDayOfMonth < 10){
+            sDayOfMonth = "0" + String.valueOf(iDayOfMonth);
+        }else {
+            sDayOfMonth = String.valueOf(iDayOfMonth);
+        }
+        String date = year + "-" + sMonth + "-" + sDayOfMonth;
         dateValue = date;
-        dateTextView.setText(date);
+        Log.e(TAG, "onDateSet: dayOfMonth - " + dayOfMonth );
+//        dateTextView.setText(year + "년 " + sMonth + "월 " + dayOfMonth + "일");
+        dateTextView.setText(year + "년 " + sMonth + "월 " + sDayOfMonth + "일");
         // TODO: 2018-02-07 액티비티로 보내는 인터페이스
         onBSDateTimeSetListener.onBsDateTimeSet(dateValue, timeValue);
     }
