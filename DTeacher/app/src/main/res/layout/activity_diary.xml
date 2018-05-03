@@ -27,7 +27,7 @@
                 android:background="?attr/colorPrimary"
                 app:layout_scrollFlags="scroll|enterAlways"
                 app:popupTheme="@style/AppTheme.PopupOverlay"
-                app:title="@string/app_name"></android.support.v7.widget.Toolbar>
+                app:title="나만의 다이어리"></android.support.v7.widget.Toolbar>
 
             <android.support.design.widget.TabLayout
                 android:id="@+id/tabs"

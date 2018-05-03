@@ -148,7 +148,11 @@
             android:name=".BSMSync.SyncBMSResultActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".Activity.AnalysisBSActivity" />
-        <activity android:name=".Activity.DiaryDangGraphActivity"></activity>
+        <activity android:name=".Activity.DiaryDangGraphActivity" />
+        <activity
+            android:name=".Activity.TotalWriteActivity"
+            android:label="@string/title_activity_total_write"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

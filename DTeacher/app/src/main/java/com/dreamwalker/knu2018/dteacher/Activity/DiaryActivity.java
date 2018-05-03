@@ -2,14 +2,11 @@ package com.dreamwalker.knu2018.dteacher.Activity;
 
 import android.content.Intent;
 import android.os.Build;
+import android.os.Bundle;
 import android.support.design.widget.TabLayout;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-
-import android.support.v4.view.ViewPager;
-import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -140,6 +137,7 @@ public class DiaryActivity extends AppCompatActivity implements View.OnClickList
         switch (v.getId()){
             // TODO: 2018-02-08 식사 입력 클릭 이벤트 처리
             case R.id.fab_sheet_item_food:
+
                 Toast.makeText(this, "습식 버튼 눌렀어요 ", Toast.LENGTH_SHORT).show();
                 break;
             // TODO: 2018-02-08 운동 입력 클릭 이벤트 처리
@@ -159,6 +157,7 @@ public class DiaryActivity extends AppCompatActivity implements View.OnClickList
                 break;
             // TODO: 2018-02-08 종합 입력 클릭 이벤트 처리
             case R.id.fab_sheet_item_note:
+                startActivity(new Intent(DiaryActivity.this, TotalWriteActivity.class));
                 Toast.makeText(this, "종합입력 버튼 눌렀어요 ", Toast.LENGTH_SHORT).show();
                 break;
         }

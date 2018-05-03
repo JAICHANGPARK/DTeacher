@@ -382,5 +382,6 @@
         OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
         SOFTWARE.
     </string>
+    <string name="title_activity_total_write">TotalWriteActivity</string>
 
 </resources>
