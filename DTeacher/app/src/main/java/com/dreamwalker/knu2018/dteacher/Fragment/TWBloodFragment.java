@@ -156,21 +156,27 @@ public class TWBloodFragment extends Fragment implements DatePickerDialog.OnDate
                     case 0:
                         inputType = "공복";
                         bus.post(new TWDataEvent(strDate, timeValue, inputType,bsValue,"null", "null", PAGE_NUM));
+                        break;
                     case 1:
                         inputType = "식전";
                         bus.post(new TWDataEvent(strDate, timeValue, inputType,bsValue,"null", "null", PAGE_NUM));
+                        break;
                     case 2:
                         inputType = "식후";
                         bus.post(new TWDataEvent(strDate, timeValue, inputType,bsValue,"null", "null", PAGE_NUM));
+                        break;
                     case 3:
                         inputType = "운동전";
                         bus.post(new TWDataEvent(strDate, timeValue, inputType,bsValue,"null", "null", PAGE_NUM));
+                        break;
                     case 4:
                         inputType = "운동후";
                         bus.post(new TWDataEvent(strDate, timeValue, inputType,bsValue,"null", "null", PAGE_NUM));
+                        break;
                     case 5:
                         inputType = "취침전";
                         bus.post(new TWDataEvent(strDate, timeValue, inputType,bsValue,"null", "null", PAGE_NUM));
+                        break;
                     default:
                         break;
 
@@ -257,8 +263,9 @@ public class TWBloodFragment extends Fragment implements DatePickerDialog.OnDate
     @Override
     public void onTimeSet(TimePickerDialog view, int hourOfDay, int minute, int second) {
         String time = hourOfDay + ":" + minute;
+        String textTmp = hourOfDay + "시 " + minute +"분";
         timeValue = time;
-        timeText.setText(time);
+        timeText.setText(textTmp);
 
         // TODO: 2018-05-04 상위 activity로 보내지는 이벤트 버스
         bus.post(new TWDataEvent(strDate, timeValue, inputType, bsValue,"null", "null", PAGE_NUM));

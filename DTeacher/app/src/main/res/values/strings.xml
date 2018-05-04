@@ -17,6 +17,7 @@
     <string name="roboto_medium">sans-serif-medium</string>
 
     <string name="number_picker_formatter">%04d</string>
+    <string name="number_picker_formatter2">%03d</string>
 
     <string name="diabetes_pill">당뇨약</string>
 

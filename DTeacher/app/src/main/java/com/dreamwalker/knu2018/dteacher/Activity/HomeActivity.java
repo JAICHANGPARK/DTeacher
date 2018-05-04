@@ -358,10 +358,11 @@ public class HomeActivity extends AppCompatActivity {
 
     private void initBottomFloating() {
 
-        MultiChoicesCircleButton.Item item1 = new MultiChoicesCircleButton.Item("혈당기록", getResources().getDrawable(R.drawable.ic_loyalty_black_24dp), 20);
-        MultiChoicesCircleButton.Item item2 = new MultiChoicesCircleButton.Item("운동기록", getResources().getDrawable(R.drawable.ic_directions_run_black_24dp), 65);
-        MultiChoicesCircleButton.Item item3 = new MultiChoicesCircleButton.Item("습식기록", getResources().getDrawable(R.drawable.ic_local_dining_black_24dp), 110);
-        MultiChoicesCircleButton.Item item4 = new MultiChoicesCircleButton.Item("투약기록", getResources().getDrawable(R.drawable.ic_local_drink_black_24dp), 155);
+        MultiChoicesCircleButton.Item item1 = new MultiChoicesCircleButton.Item("혈당기록", getResources().getDrawable(R.drawable.ic_loyalty_black_24dp), 30);
+        MultiChoicesCircleButton.Item item2 = new MultiChoicesCircleButton.Item("운동기록", getResources().getDrawable(R.drawable.ic_directions_run_black_24dp), 60);
+        MultiChoicesCircleButton.Item item3 = new MultiChoicesCircleButton.Item("종합기록", getResources().getDrawable(R.drawable.ic_apps_black_24dp), 90);
+        MultiChoicesCircleButton.Item item4 = new MultiChoicesCircleButton.Item("습식기록", getResources().getDrawable(R.drawable.ic_local_dining_black_24dp), 120);
+        MultiChoicesCircleButton.Item item5 = new MultiChoicesCircleButton.Item("투약기록", getResources().getDrawable(R.drawable.ic_local_drink_black_24dp), 150);
 
         // TODO: 2018-02-04 생성한 아이템을 이곳에  buttonItems리스트에 넣는다.
         List<MultiChoicesCircleButton.Item> buttonItems = new ArrayList<>();
@@ -369,6 +370,7 @@ public class HomeActivity extends AppCompatActivity {
         buttonItems.add(item2);
         buttonItems.add(item3);
         buttonItems.add(item4);
+        buttonItems.add(item5);
 
         multiChoicesCircleButton = (MultiChoicesCircleButton) findViewById(R.id.multiChoicesCircleButton);
         multiChoicesCircleButton.setButtonItems(buttonItems);
@@ -395,10 +397,14 @@ public class HomeActivity extends AppCompatActivity {
                     startActivity(new Intent(HomeActivity.this, WriteFitnessActivity.class));
                     break;
                 case 2:
-                    Toast.makeText(HomeActivity.this, "아직 미구현 , 곧 추가할게요", Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(HomeActivity.this, TotalWriteActivity.class));
                     //startActivity(new Intent(HomeActivity.this, WriteDrugActivity.class));
                     break;
                 case 3:
+                    Toast.makeText(HomeActivity.this, "아직 미구현 , 곧 추가할게요", Toast.LENGTH_SHORT).show();
+
+                    break;
+                case 4:
                     startActivity(new Intent(HomeActivity.this, WriteDrugActivity.class));
                     break;
 

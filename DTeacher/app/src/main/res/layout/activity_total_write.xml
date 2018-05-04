@@ -55,6 +55,7 @@
         android:background="@color/fbutton_color_sun_flower">
 
         <TextView
+            android:id="@+id/textSave"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="15dp"

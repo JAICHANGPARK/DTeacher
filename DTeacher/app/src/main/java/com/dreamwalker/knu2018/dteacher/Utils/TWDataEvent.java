@@ -11,7 +11,19 @@ public class TWDataEvent {
     public String value;
     public String extraValue1;
     public String extraValue2;
+    public String extraValue3;
     public int pageNumber;
+
+    public TWDataEvent(String date, String time, String type, String value, String extraValue1, String extraValue2, String extraValue3, int pageNumber) {
+        this.date = date;
+        this.time = time;
+        this.type = type;
+        this.value = value;
+        this.extraValue1 = extraValue1;
+        this.extraValue2 = extraValue2;
+        this.extraValue3 = extraValue3;
+        this.pageNumber = pageNumber;
+    }
 
     public TWDataEvent(String date, String time, String type, String value, String extraValue1, String extraValue2, int pageNumber) {
         this.date = date;
