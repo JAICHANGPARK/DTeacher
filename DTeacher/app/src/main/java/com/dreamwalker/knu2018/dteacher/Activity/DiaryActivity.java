@@ -137,7 +137,7 @@ public class DiaryActivity extends AppCompatActivity implements View.OnClickList
         switch (v.getId()){
             // TODO: 2018-02-08 식사 입력 클릭 이벤트 처리
             case R.id.fab_sheet_item_food:
-
+                startActivity(new Intent(DiaryActivity.this, WriteMealActivity.class));
                 Toast.makeText(this, "습식 버튼 눌렀어요 ", Toast.LENGTH_SHORT).show();
                 break;
             // TODO: 2018-02-08 운동 입력 클릭 이벤트 처리

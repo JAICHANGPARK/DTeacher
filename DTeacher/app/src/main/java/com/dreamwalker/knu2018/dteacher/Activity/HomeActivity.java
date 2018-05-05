@@ -21,7 +21,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.andremion.floatingnavigationview.FloatingNavigationView;
@@ -401,7 +400,8 @@ public class HomeActivity extends AppCompatActivity {
                     //startActivity(new Intent(HomeActivity.this, WriteDrugActivity.class));
                     break;
                 case 3:
-                    Toast.makeText(HomeActivity.this, "아직 미구현 , 곧 추가할게요", Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(HomeActivity.this, WriteMealActivity.class));
+                    //Toast.makeText(HomeActivity.this, "아직 미구현 , 곧 추가할게요", Toast.LENGTH_SHORT).show();
 
                     break;
                 case 4:

@@ -211,6 +211,10 @@ public class TWMealFragment extends Fragment implements DatePickerDialog.OnDateS
                         inputType = "저녁";
                         bus.post(new TWDataEvent(dateValue, timeValue, inputType, exchangeValue, startTime, endTime, satisfaction, PAGE_NUM));
                         break;
+                    case 3:
+                        inputType = "간식";
+                        bus.post(new TWDataEvent(dateValue, timeValue, inputType, exchangeValue, startTime, endTime, satisfaction, PAGE_NUM));
+                        break;
                     default:
                         break;
                 }
