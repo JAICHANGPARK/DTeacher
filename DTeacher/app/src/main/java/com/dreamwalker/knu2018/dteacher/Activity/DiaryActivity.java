@@ -31,7 +31,7 @@ import butterknife.ButterKnife;
  * 2018.02.05
  */
 
-public class DiaryActivity extends AppCompatActivity implements View.OnClickListener{
+public class DiaryActivity extends AppCompatActivity implements View.OnClickListener {
     private static final String TAG = "DiaryActivity";
     private static int PAGE_NUM = 0;
     /**
@@ -96,6 +96,7 @@ public class DiaryActivity extends AppCompatActivity implements View.OnClickList
         adapter.addFragment(new DiaryDrugFragment(), "투약");
         viewPager.setAdapter(adapter);
     }
+
     private void setupFab() {
 
         Fab fab = (Fab) findViewById(R.id.fab);
@@ -125,6 +126,7 @@ public class DiaryActivity extends AppCompatActivity implements View.OnClickList
         });
 
         // Set material sheet item click listeners
+        findViewById(R.id.fab_sheet_item_sleep).setOnClickListener(this); //종합
         findViewById(R.id.fab_sheet_item_food).setOnClickListener(this); // 식사
         findViewById(R.id.fab_sheet_item_recording).setOnClickListener(this);  //운동
         findViewById(R.id.fab_sheet_item_reminder).setOnClickListener(this); //투약
@@ -134,7 +136,13 @@ public class DiaryActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
+
+            // TODO: 2018-05-05 수면 입력 클릭 이벤트 처리  
+            case R.id.fab_sheet_item_sleep:
+                startActivity(new Intent(DiaryActivity.this, WriteSleepActivity.class));
+                Toast.makeText(this, "sleep 버튼 눌렀어요 ", Toast.LENGTH_SHORT).show();
+                break;
             // TODO: 2018-02-08 식사 입력 클릭 이벤트 처리
             case R.id.fab_sheet_item_food:
                 startActivity(new Intent(DiaryActivity.this, WriteMealActivity.class));

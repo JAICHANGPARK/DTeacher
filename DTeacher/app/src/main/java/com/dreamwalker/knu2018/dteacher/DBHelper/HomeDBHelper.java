@@ -22,10 +22,14 @@ public class HomeDBHelper extends SQLiteOpenHelper {
     BSDBHelper bsdbHelper;
     DrugDBHelper drugDBHelper;
     FitnessDBHelper fitnessDBHelper;
+    MealDBHelper mealDBHelper;
 
     ArrayList<Global> homeList;
     ArrayList<Global> drugList;
     ArrayList<Global> fitnessList;
+    ArrayList<Global> mealList;
+    ArrayList<Global> sleepList;
+
     String readDate;
 
     public HomeDBHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
@@ -36,10 +40,13 @@ public class HomeDBHelper extends SQLiteOpenHelper {
         homeList = new ArrayList<>();
         drugList = new ArrayList<>();
         fitnessList = new ArrayList<>();
+        mealList = new ArrayList<>();
+        sleepList  = new ArrayList<>();
 
         bsdbHelper = new BSDBHelper(mContext, "bs.db", null, 1);
         drugDBHelper = new DrugDBHelper(mContext, "drug.db", null, 1);
         fitnessDBHelper = new FitnessDBHelper(mContext, "fitness.db", null, 1);
+        mealDBHelper = new MealDBHelper(mContext, "meal.db",null,1);
     }
 
     @Override

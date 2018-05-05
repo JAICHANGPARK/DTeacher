@@ -122,7 +122,7 @@
                     android:text="시작"
                     android:textSize="18sp"
                     android:textStyle="bold"
-                    app:fButtonColor="@color/fbutton_color_orange" />
+                    app:fButtonColor="@color/fbutton_color_emerald" />
 
                 <info.hoang8f.widget.FButton
                     android:id="@+id/endTimeButton"
@@ -133,7 +133,7 @@
                     android:text="종료"
                     android:textSize="18sp"
                     android:textStyle="bold"
-                    app:fButtonColor="@color/fbutton_color_orange" />
+                    app:fButtonColor="@color/fbutton_color_pumpkin" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -346,9 +346,9 @@
                 app:bsb_second_track_color="@color/blue_400"
                 app:bsb_section_count="10"
                 app:bsb_section_text_position="below_section_mark"
-                app:bsb_seek_by_section="true"
-                app:bsb_show_section_mark="true"
-                app:bsb_touch_to_seek="true" />
+                app:bsb_seek_by_section="false"
+                app:bsb_show_section_mark="false"
+                app:bsb_touch_to_seek="false" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -362,16 +362,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                app:bsb_auto_adjust_section_mark="true"
                 app:bsb_max="10"
                 app:bsb_min="0"
                 app:bsb_progress="0"
                 app:bsb_second_track_color="@color/blue_400"
                 app:bsb_section_count="10"
                 app:bsb_section_text_position="below_section_mark"
-                app:bsb_seek_by_section="true"
-                app:bsb_show_section_mark="true"
-                app:bsb_touch_to_seek="true" />
+                app:bsb_auto_adjust_section_mark="true"
+                app:bsb_seek_by_section="false"
+                app:bsb_show_section_mark="false"
+                app:bsb_touch_to_seek="false" />
 
             <View
                 android:layout_width="match_parent"

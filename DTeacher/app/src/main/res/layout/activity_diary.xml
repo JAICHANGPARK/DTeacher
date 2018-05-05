@@ -77,6 +77,14 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
+                <!-- Recording sleep-->
+                <TextView
+                    android:id="@+id/fab_sheet_item_sleep"
+                    style="@style/TextAppearance.MaterialSheetFab.Sheet.Item"
+                    android:drawableLeft="@drawable/ic_local_hotel_black_24dp"
+                    android:drawableStart="@drawable/ic_local_hotel_black_24dp"
+                    android:text="수면 기록" />
+
                 <!-- Recording Fooddd-->
                 <TextView
                     android:id="@+id/fab_sheet_item_food"

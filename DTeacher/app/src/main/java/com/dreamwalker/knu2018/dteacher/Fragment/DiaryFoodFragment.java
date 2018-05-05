@@ -1,14 +1,19 @@
 package com.dreamwalker.knu2018.dteacher.Fragment;
 
-import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
+import com.dreamwalker.knu2018.dteacher.DBHelper.MealDBHelper;
 import com.dreamwalker.knu2018.dteacher.R;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -24,11 +29,22 @@ public class DiaryFoodFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
+    private static final String TAG = "DiaryFoodFragment";
+
+    String dbName = "meal.db";
+    int dbVersion = 1; // 데이터베이스 버전
+
+    MealDBHelper mealDBHelper;
+
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+
+    @BindView(R.id.tmpText)
+    TextView tmpTextView;
+    String result;
 
     public DiaryFoodFragment() {
         // Required empty public constructor
@@ -65,7 +81,19 @@ public class DiaryFoodFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_diary_food, container, false);
+        View view = inflater.inflate(R.layout.fragment_diary_food, container, false);
+        ButterKnife.bind(this, view);
+        return view;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        mealDBHelper = new MealDBHelper(getActivity(), dbName, null, dbVersion);
+
+        result  = mealDBHelper.selectAllData();
+        tmpTextView.setText(result);
+
     }
 
     // TODO: Rename method, update argument and hook method into UI event
