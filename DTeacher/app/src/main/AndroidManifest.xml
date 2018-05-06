@@ -154,7 +154,7 @@
             android:label="@string/title_activity_total_write"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".Activity.WriteMealActivity" />
-        <activity android:name=".Activity.WriteSleepActivity"></activity>
+        <activity android:name=".Activity.WriteSleepActivity" android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

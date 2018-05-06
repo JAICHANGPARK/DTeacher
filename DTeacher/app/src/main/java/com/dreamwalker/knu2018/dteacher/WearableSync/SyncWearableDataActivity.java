@@ -6,12 +6,11 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
-import android.support.annotation.NonNull;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import com.dreamwalker.knu2018.dteacher.R;
@@ -243,6 +242,8 @@ public class SyncWearableDataActivity extends BlunoLibrary {
                         }
                     });
                     builder.show();
+
+
                 }
                 return;
             }

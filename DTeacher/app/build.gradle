@@ -83,7 +83,7 @@ dependencies {
     implementation 'devs.mulham.horizontalcalendar:horizontalcalendar:1.3.4'
     // horizontal Timeline Calander
 
-    implementation 'org.jsoup:jsoup:1.11.2' // jsoup
+    implementation 'org.jsoup:jsoup:1.11.3' // jsoup
     implementation 'com.getkeepsafe.taptargetview:taptargetview:1.11.0' //taptargetview
     implementation 'com.stepstone.stepper:material-stepper:4.3.1' // material-stepper
     implementation 'com.github.badoualy:stepper-indicator:1.0.7' // stepper-indicator
@@ -120,11 +120,15 @@ dependencies {
     implementation 'com.github.arcadefire:nice-spinner:1.3.1' //nice-spinner
 
     implementation 'com.geniusforapp.fancydialog:FancyDialog:0.1.4'
+    implementation 'com.github.Kunzisoft:Android-SwitchDateTimePicker:1.9'
+    implementation 'org.zeroturnaround:zt-zip:1.13'
 
-    implementation 'com.savvi.datepicker:rangepicker:1.2.0'
-
+    implementation 'com.google.firebase:firebase-core:15.0.0'
+    implementation 'com.google.firebase:firebase-config:15.0.2'
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
 }
+
+apply plugin: 'com.google.gms.google-services'

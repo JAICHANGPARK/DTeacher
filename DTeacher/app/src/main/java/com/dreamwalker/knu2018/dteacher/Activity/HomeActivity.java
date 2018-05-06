@@ -581,6 +581,12 @@ public class HomeActivity extends AppCompatActivity {
                     startActivity(intent);
                     break;
 
+                case R.id.nav_sleep:
+                    mFloatingNavigationView.close();
+                    intent = new Intent(HomeActivity.this, WriteSleepActivity.class);
+                    //intent.putExtra(IntentConst.DIARY_PAGE_FRAGMENT_NUM, 3);
+                    startActivity(intent);
+
                 case R.id.nav_setting:
                     mFloatingNavigationView.close();
                     intent = new Intent(HomeActivity.this, SettingActivity.class);

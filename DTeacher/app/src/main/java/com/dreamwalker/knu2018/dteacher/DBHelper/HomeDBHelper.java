@@ -23,6 +23,7 @@ public class HomeDBHelper extends SQLiteOpenHelper {
     DrugDBHelper drugDBHelper;
     FitnessDBHelper fitnessDBHelper;
     MealDBHelper mealDBHelper;
+    SleepDBHelper sleepDBHelper;
 
     ArrayList<Global> homeList;
     ArrayList<Global> drugList;
@@ -47,6 +48,8 @@ public class HomeDBHelper extends SQLiteOpenHelper {
         drugDBHelper = new DrugDBHelper(mContext, "drug.db", null, 1);
         fitnessDBHelper = new FitnessDBHelper(mContext, "fitness.db", null, 1);
         mealDBHelper = new MealDBHelper(mContext, "meal.db",null,1);
+        sleepDBHelper = new SleepDBHelper(mContext,"sleep.db", null,1);
+
     }
 
     @Override
