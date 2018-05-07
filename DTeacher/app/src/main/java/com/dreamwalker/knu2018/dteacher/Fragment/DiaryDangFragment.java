@@ -1,19 +1,40 @@
 package com.dreamwalker.knu2018.dteacher.Fragment;
 
-import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.Toast;
 
+import com.dreamwalker.knu2018.dteacher.Adapter.DiaryDangAdapter;
 import com.dreamwalker.knu2018.dteacher.DBHelper.BSDBHelper;
+import com.dreamwalker.knu2018.dteacher.Model.BloodSugar;
 import com.dreamwalker.knu2018.dteacher.R;
+
+import org.angmarch.views.NiceSpinner;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import jp.wasabeef.recyclerview.adapters.AlphaInAnimationAdapter;
+
+import static android.content.ContentValues.TAG;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -25,6 +46,14 @@ import com.dreamwalker.knu2018.dteacher.R;
  */
 public class DiaryDangFragment extends Fragment {
 
+    @BindView(R.id.button_graph_show)
+    Button buttonGraphShow;
+    @BindView(R.id.recycler_view)
+    RecyclerView recyclerView;
+
+    @BindView(R.id.nice_spinner)
+    NiceSpinner niceSpinner;
+
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     private String mParam1;
@@ -34,8 +63,12 @@ public class DiaryDangFragment extends Fragment {
     private BSDBHelper bsdbHelper;
     private SQLiteDatabase db;
 
+//    private TextView dbResult;
 
-    private TextView dbResult;
+    LinearLayoutManager layoutManager;
+    DiaryDangAdapter adapter;
+    ArrayList<BloodSugar> bloodSugarArrayList;
+
 
     public DiaryDangFragment() {
         // Required empty public constructor
@@ -64,7 +97,11 @@ public class DiaryDangFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_diary_dang, container, false);
-        dbResult = (TextView)view.findViewById(R.id.label);
+        ButterKnife.bind(this, view);
+
+        List<String> dataset = new LinkedList<>(Arrays.asList("오름차순", "내림차순", "최대값", "최소값"));
+        niceSpinner.attachDataSource(dataset);
+        //dbResult = (TextView) view.findViewById(R.id.label);
         return view;
     }
 
@@ -79,11 +116,80 @@ public class DiaryDangFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        bsdbHelper = new BSDBHelper(getActivity(),"bs.db", null,1);
-        String dbText = bsdbHelper.selectAllData();
-        dbResult.setText(dbText);
+        bloodSugarArrayList = new ArrayList<>();
+        bsdbHelper = new BSDBHelper(getActivity(), "bs.db", null, 1);
+        bloodSugarArrayList = bsdbHelper.selectDiaryAll();
+
+        adapter = new DiaryDangAdapter(getActivity(), bloodSugarArrayList);
+        layoutManager = new LinearLayoutManager(getActivity());
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(layoutManager);
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),layoutManager.getOrientation());
+        recyclerView.addItemDecoration(dividerItemDecoration);
+        recyclerView.setAdapter(new AlphaInAnimationAdapter(adapter));
+
+        niceSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Log.e(TAG, "onItemSelected: " + parent.toString() + "- " + position + "- "+id );
+                switch (position){
+                    case 0:
+                        bloodSugarArrayList.clear();
+                        adapter.notifyDataSetChanged();
+                        bloodSugarArrayList = bsdbHelper.selectDiaryAll();
+                        adapter = new DiaryDangAdapter(getActivity(), bloodSugarArrayList);
+                        recyclerView.setAdapter(adapter);
+                        adapter.notifyDataSetChanged();
+                        break;
+                    case 1:
+                        bloodSugarArrayList.clear();
+                        adapter.notifyDataSetChanged();
+                        bloodSugarArrayList = bsdbHelper.selectDiaryDESC();
+                        adapter = new DiaryDangAdapter(getActivity(), bloodSugarArrayList);
+                        recyclerView.setAdapter(adapter);
+                        adapter.notifyDataSetChanged();
+                        break;
+                    case 2:
+                        bloodSugarArrayList.clear();
+                        adapter.notifyDataSetChanged();
+                        bloodSugarArrayList = bsdbHelper.selectDiaryMax();
+                        adapter = new DiaryDangAdapter(getActivity(), bloodSugarArrayList);
+                        recyclerView.setAdapter(adapter);
+                        adapter.notifyDataSetChanged();
+                        break;
+                    case 3:
+                        bloodSugarArrayList.clear();
+                        adapter.notifyDataSetChanged();
+                        bloodSugarArrayList = bsdbHelper.selectDiaryMin();
+                        adapter = new DiaryDangAdapter(getActivity(), bloodSugarArrayList);
+                        recyclerView.setAdapter(adapter);
+                        adapter.notifyDataSetChanged();
+                        break;
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+
+        //String dbText = bsdbHelper.selectAllData();
+        //dbResult.setText(dbText);
     }
 
+    @OnClick(R.id.button_graph_show)
+    public void onButtonGraphShowClicked(){
+
+        Toast.makeText(getActivity(), "공사중: 업데이트 예정", Toast.LENGTH_SHORT).show();
+
+    }
+
+    /**
+     * 다른 곳으로 무엇가 요청하고 리턴받을때 이걸 사용하..
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

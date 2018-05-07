@@ -19,11 +19,12 @@ import java.util.ArrayList;
  * Created by KNU2017 on 2018-02-11.
  */
 
-class HomeViewHolder extends RecyclerView.ViewHolder{
+class HomeViewHolder extends RecyclerView.ViewHolder {
     TextView valueTypeTv;
     TextView valueTv;
     TextView timeTv;
     ImageView imageView;
+
     public HomeViewHolder(View itemView) {
         super(itemView);
         valueTypeTv = itemView.findViewById(R.id.valueTypeTextView);
@@ -33,7 +34,7 @@ class HomeViewHolder extends RecyclerView.ViewHolder{
     }
 }
 
-public class HomeTimeLineAdapter  extends RecyclerView.Adapter<HomeViewHolder>{
+public class HomeTimeLineAdapter extends RecyclerView.Adapter<HomeViewHolder> {
     Context context;
     ArrayList<Global> bloodSugarArrayList;
 
@@ -45,7 +46,7 @@ public class HomeTimeLineAdapter  extends RecyclerView.Adapter<HomeViewHolder>{
     @Override
     public HomeViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-        View itemView = layoutInflater.inflate(R.layout.item_home_card,parent,false);
+        View itemView = layoutInflater.inflate(R.layout.item_home_card, parent, false);
         HomeViewHolder homeViewHolder = new HomeViewHolder(itemView);
         return homeViewHolder;
     }
@@ -53,28 +54,39 @@ public class HomeTimeLineAdapter  extends RecyclerView.Adapter<HomeViewHolder>{
     @Override
     public void onBindViewHolder(HomeViewHolder holder, int position) {
 
-        if (bloodSugarArrayList.get(position).getHead().equals("0")){
+        float bsValue = Float.valueOf(bloodSugarArrayList.get(position).getValue());
+
+        if (bloodSugarArrayList.get(position).getHead().equals("0")) {
+            if (bsValue < 200f) {
+                if (bsValue > 60) {
+                    holder.imageView.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.good_bloodsugar));
+                }
+            } else if (bsValue > 200f) {
+                holder.imageView.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.worn_bloodsugar));
+            } else if (bsValue < 50f) {
+                holder.imageView.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.danger_bloodsugar));
+            } else {
+                holder.imageView.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.good_bloodsugar));
+            }
             String value = "혈당 값 :" + bloodSugarArrayList.get(position).getValue();
-            holder.imageView.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.good_bloodsugar));
             holder.valueTypeTv.setText(bloodSugarArrayList.get(position).getType());
             holder.valueTv.setText(value);
             holder.timeTv.setText(bloodSugarArrayList.get(position).getTime());
-        }else if (bloodSugarArrayList.get(position).getHead().equals("1")){
+        } else if (bloodSugarArrayList.get(position).getHead().equals("1")) {
             String value = "칼로리 :" + bloodSugarArrayList.get(position).getValue();
-            holder.imageView.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.good_fitness));
+            holder.imageView.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.good_fitness));
             holder.valueTypeTv.setText(bloodSugarArrayList.get(position).getType());
             holder.valueTv.setText(value);
             holder.timeTv.setText(bloodSugarArrayList.get(position).getTime());
-        }else if (bloodSugarArrayList.get(position).getHead().equals("2")){
+        } else if (bloodSugarArrayList.get(position).getHead().equals("2")) {
             // TODO: 2018-02-11 식사 처리 추가해야해요 여기에
-        }else if (bloodSugarArrayList.get(position).getHead().equals("3")){
+        } else if (bloodSugarArrayList.get(position).getHead().equals("3")) {
             String value = "투약단위 :" + bloodSugarArrayList.get(position).getValue();
-            holder.imageView.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.fix_syringe));
+            holder.imageView.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.fix_syringe));
             holder.valueTypeTv.setText(bloodSugarArrayList.get(position).getType());
             holder.valueTv.setText(value);
             holder.timeTv.setText(bloodSugarArrayList.get(position).getTime());
         }
-
     }
 
     @Override

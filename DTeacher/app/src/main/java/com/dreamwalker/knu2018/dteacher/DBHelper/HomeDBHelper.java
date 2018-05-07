@@ -18,30 +18,43 @@ import java.util.ArrayList;
 public class HomeDBHelper extends SQLiteOpenHelper {
     private static final String TAG = "HomeDBHelper";
     Context mContext;
+
     BSDBHelper bsdbHelper;
     DrugDBHelper drugDBHelper;
     FitnessDBHelper fitnessDBHelper;
+    MealDBHelper mealDBHelper;
+    SleepDBHelper sleepDBHelper;
 
     ArrayList<Global> homeList;
     ArrayList<Global> drugList;
     ArrayList<Global> fitnessList;
+    ArrayList<Global> mealList;
+    ArrayList<Global> sleepList;
+
+    String readDate;
 
     public HomeDBHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
         this.mContext = context;
+
+        Log.e(TAG, "HomeDBHelper:  생성자 호출 됭서요 "  );
         homeList = new ArrayList<>();
         drugList = new ArrayList<>();
         fitnessList = new ArrayList<>();
+        mealList = new ArrayList<>();
+        sleepList  = new ArrayList<>();
 
-        bsdbHelper = new BSDBHelper(mContext,"bs.db",null,1);
-        drugDBHelper = new DrugDBHelper(mContext, "drug.db", null,1);
-        fitnessDBHelper = new FitnessDBHelper(mContext, "fitness.db", null,1);
+        bsdbHelper = new BSDBHelper(mContext, "bs.db", null, 1);
+        drugDBHelper = new DrugDBHelper(mContext, "drug.db", null, 1);
+        fitnessDBHelper = new FitnessDBHelper(mContext, "fitness.db", null, 1);
+        mealDBHelper = new MealDBHelper(mContext, "meal.db",null,1);
+        sleepDBHelper = new SleepDBHelper(mContext,"sleep.db", null,1);
 
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-
+        Log.e(TAG, "HomeDBHelper: onCreate 호출 됬어요 "  );
     }
 
     @Override
@@ -77,15 +90,15 @@ public class HomeDBHelper extends SQLiteOpenHelper {
         }
         Log.e(TAG, "selectDateAllData: " + dateStringBuiler);
 
-        if (!dateStringBuiler.toString().equals("")){
+        if (!dateStringBuiler.toString().equals("")) {
             return dateStringBuiler.toString();
-        }else {
+        } else {
             dateStringBuiler.append("null");
             return dateStringBuiler.toString();
         }
     }
 
-    public ArrayList<BloodSugar> selectAll(String date){
+    public ArrayList<BloodSugar> selectAll(String date) {
         SQLiteDatabase db = getWritableDatabase();
         ArrayList<BloodSugar> bloodSugars = new ArrayList<>();
         StringBuffer sb = new StringBuffer();
@@ -101,21 +114,21 @@ public class HomeDBHelper extends SQLiteOpenHelper {
         String value;
         String timeValue;
 
-        while (cursor.moveToNext()){
+        while (cursor.moveToNext()) {
             valueType = cursor.getString(1);
             value = cursor.getString(2);
             timeValue = cursor.getString(4);
-            bloodSugars.add(new BloodSugar(valueType, value,timeValue));
+            bloodSugars.add(new BloodSugar(valueType, value, timeValue));
         }
 
-        for (int i = 0 ; i < bloodSugars.size(); i++){
+        for (int i = 0; i < bloodSugars.size(); i++) {
             Log.e(TAG, "selectDateAllData: " + bloodSugars.get(i).getBsType() + ","
-            + bloodSugars.get(i).getBsValue() + "," + bloodSugars.get(i).getBsTime());
+                    + bloodSugars.get(i).getBsValue() + "," + bloodSugars.get(i).getBsTime());
         }
 
-        if (bloodSugars.size() != 0){
+        if (bloodSugars.size() != 0) {
             return bloodSugars;
-        }else {
+        } else {
             bloodSugars.add(new BloodSugar("null", "null", "null"));
             return bloodSugars;
         }
@@ -126,25 +139,30 @@ public class HomeDBHelper extends SQLiteOpenHelper {
      * 투약 테이블 : DRUG
      * 운동 테이블 : FITNESS
      * 식사 테이블 : 아직 구현 x
+     *
      * @param date
      * @return ArrayList<BloodSugar>
      * @author JAICHANGPARK
      */
-    public ArrayList<Global> allReadData(String date){
+    public ArrayList<Global> allReadData(String date) {
         SQLiteDatabase db = getWritableDatabase();
-        StringBuffer sb = new StringBuffer();
-        String readDate = date;
-
-        homeList = bsdbHelper.readHomeDate(readDate);
-        drugList = drugDBHelper.readHomeDate(readDate);
-        if (!drugList.isEmpty()) homeList.addAll(drugList);
-        fitnessList = fitnessDBHelper.readHomeDate(readDate);
-        if (!fitnessList.isEmpty()) homeList.addAll(fitnessList);
-
-        if (homeList.size() != 0){
-            return homeList;
+        if (date != null){
+            Log.e(TAG, "allReadData: 데이터 들어왔네요   "  );
+            readDate = date;
+            homeList = bsdbHelper.readHomeDate(readDate);
+            drugList = drugDBHelper.readHomeDate(readDate);
+            if (!drugList.isEmpty()) homeList.addAll(drugList);
+            fitnessList = fitnessDBHelper.readHomeDate(readDate);
+            if (!fitnessList.isEmpty()) homeList.addAll(fitnessList);
         }else {
-            homeList.add(new Global("null","null", "null", "null"));
+            Log.e(TAG, "allReadData: 널값이네요  "  );
+        }
+
+
+        if (homeList.size() != 0) {
+            return homeList;
+        } else {
+            homeList.add(new Global("null", "null", "null", "null"));
             return homeList;
         }
     }

@@ -6,10 +6,8 @@ import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Rect;
-import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.design.widget.NavigationView;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -19,11 +17,10 @@ import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
-import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.andremion.floatingnavigationview.FloatingNavigationView;
@@ -32,24 +29,24 @@ import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
 import com.dreamwalker.knu2018.dteacher.Adapter.HomeTimeLineAdapter;
 import com.dreamwalker.knu2018.dteacher.Const.IntentConst;
 import com.dreamwalker.knu2018.dteacher.DBHelper.HomeDBHelper;
-import com.dreamwalker.knu2018.dteacher.Model.BloodSugar;
 import com.dreamwalker.knu2018.dteacher.Model.Global;
 import com.dreamwalker.knu2018.dteacher.R;
+import com.dreamwalker.knu2018.dteacher.Utils.AndroidUtils;
 import com.getkeepsafe.taptargetview.TapTarget;
 import com.getkeepsafe.taptargetview.TapTargetSequence;
 import com.getkeepsafe.taptargetview.TapTargetView;
 import com.gjiazhe.multichoicescirclebutton.MultiChoicesCircleButton;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import de.cketti.library.changelog.ChangeLog;
 import devs.mulham.horizontalcalendar.HorizontalCalendar;
 import devs.mulham.horizontalcalendar.HorizontalCalendarView;
 import devs.mulham.horizontalcalendar.utils.HorizontalCalendarListener;
@@ -82,12 +79,20 @@ public class HomeActivity extends AppCompatActivity {
     @BindView(R.id.homeRecyclerView)
     RecyclerView recyclerView;
 
+    //@BindView(R.id.navImageView)
+    ImageView navImageView;
+    //@BindView(R.id.navUserNameTv)
+    TextView navUserNameTv;
+    //@BindView(R.id.navUserEmailTv)
+    TextView navUserEmailTv;
+
     RecyclerView.LayoutManager layoutManager;
     HomeTimeLineAdapter adapter;
     ArrayList<Global> bloodSugarArrayList;
 
     HashMap<String, String> tempMap;
     String today;
+    String strToday;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,11 +103,13 @@ public class HomeActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         Paper.init(this);
 
-        sharedPreferences = getSharedPreferences("userinfo",MODE_PRIVATE);
-        userID = sharedPreferences.getString("userID","");
-        userPassword = sharedPreferences.getString("userPassword","");
-        Log.e(TAG, "onCreate: " + userID  + "," + userPassword );
-        homeDBHelper = new HomeDBHelper(this, "bs.db", null, 1);
+        homeDBHelper = new HomeDBHelper(this, "home.db", null, 1);
+
+        sharedPreferences = getSharedPreferences("userinfo", MODE_PRIVATE);
+        userID = sharedPreferences.getString("userID", "");
+        userPassword = sharedPreferences.getString("userPassword", "");
+        Log.e(TAG, "onCreate: " + userID + "," + userPassword);
+
         bloodSugarArrayList = new ArrayList<>();
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
@@ -111,6 +118,10 @@ public class HomeActivity extends AppCompatActivity {
         tempMap = new HashMap<>();
 
         Calendar now = Calendar.getInstance();
+        Log.e(TAG, "onCreate: " + now.getTime().toString());
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()); // HH=24h, hh=12h
+        strToday = df.format(now.getTime());
+        Log.e(TAG, "onCreate: " + strToday);
         String year = String.valueOf(now.get(Calendar.YEAR));
         int tempMonth = now.get(Calendar.MONTH);
         tempMonth = tempMonth + 1;
@@ -201,7 +212,10 @@ public class HomeActivity extends AppCompatActivity {
 //            dbTextView.setVisibility(View.VISIBLE);
 //            dbTextView.setText(result);
 //        }
-        bloodSugarArrayList = homeDBHelper.allReadData(today);
+
+        // TODO: 2018-02-20 잠깐 주석처리
+        //bloodSugarArrayList = homeDBHelper.allReadData(today);
+        bloodSugarArrayList = homeDBHelper.allReadData(strToday);
 
         for (int i = 0; i < bloodSugarArrayList.size(); i++) {
 
@@ -272,6 +286,18 @@ public class HomeActivity extends AppCompatActivity {
 
     }
 
+//    @OnClick(R.id.navImageView)
+//    public void onNavImageViewClicked(){
+//        sharedPreferences = getSharedPreferences("userinfo", MODE_PRIVATE);
+//        userID = sharedPreferences.getString("userID", "");
+//
+//        if (userID.equals("GUEST")) {
+//            startActivity(new Intent(HomeActivity.this, SignUpCheckActivity.class));
+//        } else {
+//            startActivity(new Intent(HomeActivity.this, AboutUserActivity.class));
+//        }
+//    }
+
     @Override
     public void onBackPressed() {
         if (mFloatingNavigationView.isOpened()) {
@@ -295,55 +321,50 @@ public class HomeActivity extends AppCompatActivity {
         bottomNavigation.addItem(bitem3);
 
         // Set listeners
-        bottomNavigation.setOnTabSelectedListener(new AHBottomNavigation.OnTabSelectedListener() {
-            @Override
-            public boolean onTabSelected(int position, boolean wasSelected) {
-                // Do something cool here...
-                Intent intent;
-                switch (position) {
-                    case 0:
-                        break;
-                    case 1:
-                        intent = new Intent(HomeActivity.this, DiaryActivity.class);
-                        intent.putExtra(IntentConst.DIARY_PAGE_FRAGMENT_NUM, 0);
-                        startActivity(intent);
-                        break;
-                    case 2:
+        bottomNavigation.setOnTabSelectedListener((position, wasSelected) -> {
+            // Do something cool here...
+            Intent intent;
+            switch (position) {
+                case 0:
+                    break;
+                case 1:
+                    intent = new Intent(HomeActivity.this, DiaryActivity.class);
+                    intent.putExtra(IntentConst.DIARY_PAGE_FRAGMENT_NUM, 0);
+                    startActivity(intent);
+                    break;
+                case 2:
 
-                        sharedPreferences = getSharedPreferences("userinfo", MODE_PRIVATE);
-                        userID = sharedPreferences.getString("userID","");
+                    sharedPreferences = getSharedPreferences("userinfo", MODE_PRIVATE);
+                    userID = sharedPreferences.getString("userID", "");
 
-                        if (userID.equals("GUEST")) {
-                            startActivity(new Intent(HomeActivity.this, SignUpCheckActivity.class));
-                        }else {
-                            startActivity(new Intent(HomeActivity.this, AboutUserActivity.class));
-                        }
+                    if (userID.equals("GUEST")) {
+                        startActivity(new Intent(HomeActivity.this, SignUpCheckActivity.class));
+                    } else {
+                        startActivity(new Intent(HomeActivity.this, AboutUserActivity.class));
+                    }
 
-                        break;
+                    break;
 
-                }
-                Log.e(TAG, "bottomNavigation : onTabSelected: " + position + ", " + wasSelected);
-                return true;
             }
+            Log.e(TAG, "bottomNavigation : onTabSelected: " + position + ", " + wasSelected);
+            return true;
         });
 
-        bottomNavigation.setOnNavigationPositionListener(new AHBottomNavigation.OnNavigationPositionListener() {
-            @Override
-            public void onPositionChange(int y) {
-                // Manage the new y position
-                Log.e(TAG, "bottomNavigation : onPositionChange: " + y);
+        bottomNavigation.setOnNavigationPositionListener(y -> {
+            // Manage the new y position
+            Log.e(TAG, "bottomNavigation : onPositionChange: " + y);
 
-            }
         });
 
     }
 
     private void initBottomFloating() {
 
-        MultiChoicesCircleButton.Item item1 = new MultiChoicesCircleButton.Item("혈당기록", getResources().getDrawable(R.drawable.ic_loyalty_black_24dp), 20);
-        MultiChoicesCircleButton.Item item2 = new MultiChoicesCircleButton.Item("운동기록", getResources().getDrawable(R.drawable.ic_directions_run_black_24dp), 65);
-        MultiChoicesCircleButton.Item item3 = new MultiChoicesCircleButton.Item("습식기록", getResources().getDrawable(R.drawable.ic_local_dining_black_24dp), 110);
-        MultiChoicesCircleButton.Item item4 = new MultiChoicesCircleButton.Item("투약기록", getResources().getDrawable(R.drawable.ic_local_drink_black_24dp), 155);
+        MultiChoicesCircleButton.Item item1 = new MultiChoicesCircleButton.Item("혈당기록", getResources().getDrawable(R.drawable.ic_loyalty_black_24dp), 30);
+        MultiChoicesCircleButton.Item item2 = new MultiChoicesCircleButton.Item("운동기록", getResources().getDrawable(R.drawable.ic_directions_run_black_24dp), 60);
+        MultiChoicesCircleButton.Item item3 = new MultiChoicesCircleButton.Item("종합기록", getResources().getDrawable(R.drawable.ic_apps_black_24dp), 90);
+        MultiChoicesCircleButton.Item item4 = new MultiChoicesCircleButton.Item("습식기록", getResources().getDrawable(R.drawable.ic_local_dining_black_24dp), 120);
+        MultiChoicesCircleButton.Item item5 = new MultiChoicesCircleButton.Item("투약기록", getResources().getDrawable(R.drawable.ic_local_drink_black_24dp), 150);
 
         // TODO: 2018-02-04 생성한 아이템을 이곳에  buttonItems리스트에 넣는다.
         List<MultiChoicesCircleButton.Item> buttonItems = new ArrayList<>();
@@ -351,46 +372,54 @@ public class HomeActivity extends AppCompatActivity {
         buttonItems.add(item2);
         buttonItems.add(item3);
         buttonItems.add(item4);
+        buttonItems.add(item5);
 
         multiChoicesCircleButton = (MultiChoicesCircleButton) findViewById(R.id.multiChoicesCircleButton);
         multiChoicesCircleButton.setButtonItems(buttonItems);
 
-        // TODO: 2018-02-04 하단 플로팅 리스너
-        multiChoicesCircleButton.setOnSelectedItemListener(new MultiChoicesCircleButton.OnSelectedItemListener() {
-            @Override
-            public void onSelected(MultiChoicesCircleButton.Item item, int index) {
-                // Do something
-                switch (index) {
-                    case 0:
-                        // TODO: 2018-02-07 1차
-                        //startActivity(new Intent(HomeActivity.this, DangActivity.class));
-                        // TODO: 2018-02-07 2차
-                        startActivity(new Intent(HomeActivity.this, WriteBSActivity.class));
-                        break;
-                    case 1:
-                        startActivity(new Intent(HomeActivity.this, WriteFitnessActivity.class));
-                        break;
-                    case 2:
-                        Toast.makeText(HomeActivity.this, "아직 미구현 , 곧 추가할게요", Toast.LENGTH_SHORT).show();
-                        //startActivity(new Intent(HomeActivity.this, WriteDrugActivity.class));
-                        break;
-                    case 3:
-                        startActivity(new Intent(HomeActivity.this, WriteDrugActivity.class));
-                        break;
 
-                }
-                Log.e(TAG, "onSelected: " + index + ", " + item.getText());
-                //Toast.makeText(HomeActivity.this, "onSelected" , Toast.LENGTH_SHORT).show();
+//         navImageView.setOnClickListener(new View.OnClickListener() {
+//             @Override
+//             public void onClick(View v) {
+//                 Log.e(TAG, "onClick: " + "clicked " );
+//             }
+//         });
+
+        // TODO: 2018-02-04 하단 플로팅 리스너
+        multiChoicesCircleButton.setOnSelectedItemListener((item, index) -> {
+            // Do something
+            switch (index) {
+                case 0:
+                    // TODO: 2018-02-07 1차
+                    //startActivity(new Intent(HomeActivity.this, DangActivity.class));
+                    // TODO: 2018-02-07 2차
+                    startActivity(new Intent(HomeActivity.this, WriteBSActivity.class));
+                    break;
+                case 1:
+                    startActivity(new Intent(HomeActivity.this, WriteFitnessActivity.class));
+                    break;
+                case 2:
+                    startActivity(new Intent(HomeActivity.this, TotalWriteActivity.class));
+                    //startActivity(new Intent(HomeActivity.this, WriteDrugActivity.class));
+                    break;
+                case 3:
+                    startActivity(new Intent(HomeActivity.this, WriteMealActivity.class));
+                    //Toast.makeText(HomeActivity.this, "아직 미구현 , 곧 추가할게요", Toast.LENGTH_SHORT).show();
+
+                    break;
+                case 4:
+                    startActivity(new Intent(HomeActivity.this, WriteDrugActivity.class));
+                    break;
+
             }
+            //Log.e(TAG, "onSelected: " + index + ", " + item.getText());
+            //Toast.makeText(HomeActivity.this, "onSelected" , Toast.LENGTH_SHORT).show();
         });
 
-        multiChoicesCircleButton.setOnHoverItemListener(new MultiChoicesCircleButton.OnHoverItemListener() {
-            @Override
-            public void onHovered(MultiChoicesCircleButton.Item item, int index) {
-                // Do something
-                Log.e(TAG, "onHovered: " + index + ", " + item.getText());
-                //Toast.makeText(HomeActivity.this, "onHovered" + index + item.getText(), Toast.LENGTH_SHORT).show();
-            }
+        multiChoicesCircleButton.setOnHoverItemListener((item, index) -> {
+            // Do something
+            //Log.e(TAG, "onHovered: " + index + ", " + item.getText());
+            //Toast.makeText(HomeActivity.this, "onHovered" + index + item.getText(), Toast.LENGTH_SHORT).show();
         });
 
     }
@@ -438,6 +467,10 @@ public class HomeActivity extends AppCompatActivity {
             public void onDateSelected(Calendar date, int position) {
                 // TODO: 2018-02-04 데이터가 처리됬을때 데이터 값을받아 하단에 표기할 처리 메소드가 들어가면됨.
 
+                SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()); // HH=24h, hh=12h
+                String selectStringDate = df.format(date.getTime());
+                Log.e(TAG, "onDateSelected: " + selectStringDate);
+
                 String year = String.valueOf(date.get(Calendar.YEAR));
                 int tempMonth = date.get(Calendar.MONTH) + 1;
                 String month = String.valueOf(tempMonth);
@@ -462,7 +495,8 @@ public class HomeActivity extends AppCompatActivity {
 
                 // TODO: 2018-02-11 이제 리사이클러뷰 적용
                 bloodSugarArrayList.clear();
-                bloodSugarArrayList = homeDBHelper.allReadData(selectDate);
+                //bloodSugarArrayList = homeDBHelper.allReadData(selectDate);
+                bloodSugarArrayList = homeDBHelper.allReadData(selectStringDate);
                 // TODO: 2018-02-11 혼합된 데이터를 나눠 시간 내림차순으로 정렬해야 한다.
 
                 //bloodSugarArrayList = homeDBHelper.selectAll(selectDate);
@@ -521,50 +555,86 @@ public class HomeActivity extends AppCompatActivity {
         //mFloatingNavigationView.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.green_A200)));
 
         // TODO: 2018-02-04  mFloatingNavigationView 상단 네비게이션 드로우 리스너 
-        mFloatingNavigationView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mFloatingNavigationView.open();
-            }
-        });
-        mFloatingNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(MenuItem item) {
-                Intent intent;
-                switch (item.getItemId()) {
-                    case R.id.nav_diabetes:
-                        mFloatingNavigationView.close();
-                        intent = new Intent(HomeActivity.this, DiaryActivity.class);
-                        intent.putExtra(IntentConst.DIARY_PAGE_FRAGMENT_NUM, 0);
-                        startActivity(intent);
-                        break;
-                    case R.id.nav_workout:
-                        mFloatingNavigationView.close();
-                        intent = new Intent(HomeActivity.this, DiaryActivity.class);
-                        intent.putExtra(IntentConst.DIARY_PAGE_FRAGMENT_NUM, 1);
-                        startActivity(intent);
-                        break;
-                    case R.id.nav_food:
-                        mFloatingNavigationView.close();
-                        intent = new Intent(HomeActivity.this, DiaryActivity.class);
-                        intent.putExtra(IntentConst.DIARY_PAGE_FRAGMENT_NUM, 2);
-                        startActivity(intent);
-                        break;
-                    case R.id.nav_drug:
-                        mFloatingNavigationView.close();
-                        intent = new Intent(HomeActivity.this, DiaryActivity.class);
-                        intent.putExtra(IntentConst.DIARY_PAGE_FRAGMENT_NUM, 3);
-                        startActivity(intent);
-                        break;
+        mFloatingNavigationView.setOnClickListener(view -> mFloatingNavigationView.open());
+        mFloatingNavigationView.setNavigationItemSelectedListener(item -> {
+            Intent intent;
+            switch (item.getItemId()) {
+                case R.id.nav_diabetes:
+                    mFloatingNavigationView.close();
+                    intent = new Intent(HomeActivity.this, DiaryActivity.class);
+                    intent.putExtra(IntentConst.DIARY_PAGE_FRAGMENT_NUM, 0);
+                    startActivity(intent);
+                    break;
+                case R.id.nav_workout:
+                    mFloatingNavigationView.close();
+                    intent = new Intent(HomeActivity.this, DiaryActivity.class);
+                    intent.putExtra(IntentConst.DIARY_PAGE_FRAGMENT_NUM, 1);
+                    startActivity(intent);
+                    break;
+                case R.id.nav_food:
+                    mFloatingNavigationView.close();
+                    intent = new Intent(HomeActivity.this, DiaryActivity.class);
+                    intent.putExtra(IntentConst.DIARY_PAGE_FRAGMENT_NUM, 2);
+                    startActivity(intent);
+                    break;
+                case R.id.nav_drug:
+                    mFloatingNavigationView.close();
+                    intent = new Intent(HomeActivity.this, DiaryActivity.class);
+                    intent.putExtra(IntentConst.DIARY_PAGE_FRAGMENT_NUM, 3);
+                    startActivity(intent);
+                    break;
 
-                    case R.id.nav_setting:
-                        mFloatingNavigationView.close();
-                        intent = new Intent(HomeActivity.this, SettingActivity.class);
-                        startActivity(intent);
-                        break;
-                }
-                //Snackbar.make((View) mFloatingNavigationView.getParent(), item.getTitle() + " Selected!" + item.getItemId(), Snackbar.LENGTH_SHORT).show();
-                return true;
+                case R.id.nav_sleep:
+                    mFloatingNavigationView.close();
+                    intent = new Intent(HomeActivity.this, WriteSleepActivity.class);
+                    //intent.putExtra(IntentConst.DIARY_PAGE_FRAGMENT_NUM, 3);
+                    startActivity(intent);
+                    break;
+
+                case R.id.nav_setting:
+                    mFloatingNavigationView.close();
+                    intent = new Intent(HomeActivity.this, SettingActivity.class);
+                    startActivity(intent);
+                    break;
+                case R.id.nav_about:
+                    // TODO: 2018-02-28 임시 확인을 위한 인텐트
+                    mFloatingNavigationView.close();
+
+                    ChangeLog cl = createChangeLog();
+                    cl.getFullLogDialog().show();
+                    //intent = new Intent(HomeActivity.this, AnalysisBSActivity.class);
+                    //startActivity(intent);
+                    break;
+            }
+            //Snackbar.make((View) mFloatingNavigationView.getParent(), item.getTitle() + " Selected!" + item.getItemId(), Snackbar.LENGTH_SHORT).show();
+            return true;
+        });
+
+        View headerView = mFloatingNavigationView.getHeaderView(0);
+        navImageView = (ImageView) headerView.findViewById(R.id.navImageView);
+        navUserNameTv = (TextView) headerView.findViewById(R.id.navUserNameTv);
+        navUserEmailTv = (TextView) headerView.findViewById(R.id.navUserEmailTv);
+
+        sharedPreferences = getSharedPreferences("userinfo", MODE_PRIVATE);
+        userID = sharedPreferences.getString("userID", "");
+
+        if (userID.equals("GUEST")) {
+            navUserNameTv.setText("GUEST");
+            navUserEmailTv.setText("등록된 이메일 없음.");
+        } else {
+            navUserNameTv.setText(userID);
+            navUserEmailTv.setText("공사중");
+        }
+
+        headerView.setOnClickListener(v -> {
+
+            sharedPreferences = getSharedPreferences("userinfo", MODE_PRIVATE);
+            userID = sharedPreferences.getString("userID", "");
+
+            if (userID.equals("GUEST")) {
+                startActivity(new Intent(HomeActivity.this, SignUpCheckActivity.class));
+            } else {
+                startActivity(new Intent(HomeActivity.this, AboutUserActivity.class));
             }
         });
     }
@@ -576,7 +646,7 @@ public class HomeActivity extends AppCompatActivity {
 
         // TODO: 2018-02-11 이제 리사이클러뷰 적용
         bloodSugarArrayList.clear();
-        bloodSugarArrayList = homeDBHelper.allReadData(today);
+        bloodSugarArrayList = homeDBHelper.allReadData(strToday);
         // TODO: 2018-02-11 혼합된 데이터를 나눠 시간 내림차순으로 정렬해야 한다.
 
         //bloodSugarArrayList = homeDBHelper.selectAll(selectDate);
@@ -605,5 +675,14 @@ public class HomeActivity extends AppCompatActivity {
 
     private void readDatabaseData() {
 
+    }
+
+    private ChangeLog createChangeLog() {
+        String css = ChangeLog.DEFAULT_CSS;
+        css += "body { "
+                + "color: " + AndroidUtils.getTextColorHex(getBaseContext()) + "; "
+                + "background-color: " + AndroidUtils.getBackgroundColorHex(getBaseContext()) + ";" +
+                "}";
+        return new ChangeLog(this, css);
     }
 }

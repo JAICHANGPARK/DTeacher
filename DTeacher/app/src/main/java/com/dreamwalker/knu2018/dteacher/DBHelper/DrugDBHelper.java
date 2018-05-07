@@ -4,10 +4,9 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 import android.widget.Toast;
 
-import com.dreamwalker.knu2018.dteacher.Model.BloodSugar;
+import com.dreamwalker.knu2018.dteacher.Model.Drug;
 import com.dreamwalker.knu2018.dteacher.Model.Global;
 
 import java.util.ArrayList;
@@ -30,7 +29,7 @@ public class DrugDBHelper extends SQLiteOpenHelper {
 
         // String 보다 StringBuffer가 Query 만들기 편하다.
         StringBuffer sb = new StringBuffer();
-        sb.append(" CREATE TABLE DRUG ( ");
+        sb.append(" CREATE TABLE IF NOT EXISTS DRUG ( ");
         sb.append(" _ID INTEGER PRIMARY KEY AUTOINCREMENT, ");
         sb.append(" DRUGNAME TEXT, ");
         sb.append(" UNIT TEXT, ");
@@ -43,7 +42,7 @@ public class DrugDBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        String sql = "drop table DRUG;"; // 테이블 드랍
+        String sql = "drop table IF EXISTS DRUG;"; // 테이블 드랍
         db.execSQL(sql);
         onCreate(db); // 다시 테이블 생성
     }
@@ -93,11 +92,17 @@ public class DrugDBHelper extends SQLiteOpenHelper {
         String value;
         String timeValue;
 
+        Cursor cursor = null;
         // TODO: 2018-02-11 혈당 값 가져오기
         sb.append(" SELECT DRUGNAME, UNIT, TIME FROM DRUG");
         sb.append(" WHERE");
         sb.append(" DATE='" + date + "'");
-        Cursor cursor = db.rawQuery(sb.toString(), null);
+
+        if (db.rawQuery(sb.toString(), null) != null) {
+            cursor = db.rawQuery(sb.toString(), null);
+        } else {
+            onCreate(db);
+        }
 
         while (cursor.moveToNext()) {
             valueType = cursor.getString(0);
@@ -105,6 +110,69 @@ public class DrugDBHelper extends SQLiteOpenHelper {
             timeValue = cursor.getString(2);
             drugList.add(new Global("3", valueType, value, timeValue));
         }
+        return drugList;
+    }
+
+
+    /**
+     * @author : JAICHANGPARK
+     * 다이터리에 사용될 메소드 .
+     * 오름차순으로 가져옴.
+     *
+     * @return
+     */
+
+    public ArrayList<Drug> selectDiaryAll(){
+
+        ArrayList<Drug> drugList = new ArrayList<>();
+        StringBuffer sb = new StringBuffer();
+        SQLiteDatabase db = getReadableDatabase();
+        String valueType;
+        String value;
+        String dateValue;
+        String timeValue;
+
+        sb.append(" SELECT DRUGNAME, UNIT, DATE, TIME FROM DRUG");
+        sb.append(" ORDER BY ");
+        sb.append(" DATE ASC");
+
+        Cursor cursor = db.rawQuery(sb.toString(), null);
+
+        while (cursor.moveToNext()) {
+            valueType = cursor.getString(0);
+            value = cursor.getString(1);
+            dateValue = cursor.getString(2);
+            timeValue = cursor.getString(3);
+            drugList.add(new Drug(valueType, value, dateValue, timeValue));
+        }
+
+        return drugList;
+    }
+
+    public ArrayList<Drug> selectDiaryDESC(){
+
+        ArrayList<Drug> drugList = new ArrayList<>();
+        StringBuffer sb = new StringBuffer();
+        SQLiteDatabase db = getReadableDatabase();
+        String valueType;
+        String value;
+        String dateValue;
+        String timeValue;
+
+        sb.append(" SELECT DRUGNAME, UNIT, DATE, TIME FROM DRUG");
+        sb.append(" ORDER BY ");
+        sb.append(" DATE DESC,TIME DESC");
+
+        Cursor cursor = db.rawQuery(sb.toString(), null);
+
+        while (cursor.moveToNext()) {
+            valueType = cursor.getString(0);
+            value = cursor.getString(1);
+            dateValue = cursor.getString(2);
+            timeValue = cursor.getString(3);
+            drugList.add(new Drug(valueType, value, dateValue, timeValue));
+        }
+
         return drugList;
     }
 }

@@ -27,7 +27,7 @@
                 android:background="?attr/colorPrimary"
                 app:layout_scrollFlags="scroll|enterAlways"
                 app:popupTheme="@style/AppTheme.PopupOverlay"
-                app:title="@string/app_name"></android.support.v7.widget.Toolbar>
+                app:title="나만의 다이어리"></android.support.v7.widget.Toolbar>
 
             <android.support.design.widget.TabLayout
                 android:id="@+id/tabs"
@@ -76,6 +76,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
+
+                <!-- Recording sleep-->
+                <TextView
+                    android:id="@+id/fab_sheet_item_sleep"
+                    style="@style/TextAppearance.MaterialSheetFab.Sheet.Item"
+                    android:drawableLeft="@drawable/ic_local_hotel_black_24dp"
+                    android:drawableStart="@drawable/ic_local_hotel_black_24dp"
+                    android:text="수면 기록" />
 
                 <!-- Recording Fooddd-->
                 <TextView

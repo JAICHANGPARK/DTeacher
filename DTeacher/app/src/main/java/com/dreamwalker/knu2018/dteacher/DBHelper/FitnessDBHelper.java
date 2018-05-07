@@ -32,7 +32,7 @@ public class FitnessDBHelper extends SQLiteOpenHelper {
 
         // String 보다 StringBuffer가 Query 만들기 편하다.
         StringBuffer sb = new StringBuffer();
-        sb.append(" CREATE TABLE FITNESS ( ");
+        sb.append(" CREATE TABLE IF NOT EXISTS FITNESS ( ");
         sb.append(" _ID INTEGER PRIMARY KEY AUTOINCREMENT, ");
         sb.append(" TYPE TEXT, ");
         sb.append(" STRENGTH TEXT, ");
@@ -48,7 +48,7 @@ public class FitnessDBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        String sql = "drop table FITNESS;"; // 테이블 드랍
+        String sql = "drop table IF EXISTS FITNESS;"; // 테이블 드랍
         db.execSQL(sql);
         onCreate(db); // 다시 테이블 생성
     }

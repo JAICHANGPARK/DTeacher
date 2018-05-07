@@ -102,126 +102,123 @@ public class SignUpActivity0 extends AppCompatActivity {
         lottieAnimationView.loop(true);
         lottieAnimationView.playAnimation();
 
-        registerButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        registerButton.setOnClickListener(view -> {
 
-                userID = userName.getText().toString();
-                userPassword = password.getText().toString();
-                userEmail = email.getText().toString();
+            userID = userName.getText().toString();
+            userPassword = password.getText().toString();
+            userEmail = email.getText().toString();
 
-                if (!validate) {
-                    new PromptDialog(SignUpActivity0.this)
-                            .setDialogType(PromptDialog.DIALOG_TYPE_WRONG)
-                            .setAnimationEnable(true)
-                            .setTitleText("알림")
-                            .setContentText("먼저 중복체크를 해주세요.")
-                            .setPositiveListener("응", new PromptDialog.OnPositiveListener() {
-                                @Override
-                                public void onClick(PromptDialog dialog) {
-                                    dialog.dismiss();
-                                }
-                            }).show();
+            if (!validate) {
+                new PromptDialog(SignUpActivity0.this)
+                        .setDialogType(PromptDialog.DIALOG_TYPE_WRONG)
+                        .setAnimationEnable(true)
+                        .setTitleText("알림")
+                        .setContentText("먼저 중복체크를 해주세요.")
+                        .setPositiveListener("응", new PromptDialog.OnPositiveListener() {
+                            @Override
+                            public void onClick(PromptDialog dialog) {
+                                dialog.dismiss();
+                            }
+                        }).show();
 //                    AlertDialog.Builder builder = new AlertDialog.Builder(SignUpActivity0.this);
 //                    dialog = builder.setMessage("먼저 중복체크를 해주세요.").setNegativeButton("확인", null)
 //                            .create();
 //                    dialog.show();
-                    return;
-                }
+                return;
+            }
 
-                if (userID.equals("") || userPassword.equals("") || userEmail.equals("")) {
+            if (userID.equals("") || userPassword.equals("") || userEmail.equals("")) {
 
-                    new PromptDialog(SignUpActivity0.this)
-                            .setDialogType(PromptDialog.DIALOG_TYPE_WRONG)
-                            .setAnimationEnable(true)
-                            .setTitleText("경고")
-                            .setContentText("필수 정보는 빈 칸 없이 입력해주세요.")
-                            .setPositiveListener("응", new PromptDialog.OnPositiveListener() {
-                                @Override
-                                public void onClick(PromptDialog dialog) {
-                                    dialog.dismiss();
-                                }
-                            }).show();
+                new PromptDialog(SignUpActivity0.this)
+                        .setDialogType(PromptDialog.DIALOG_TYPE_WRONG)
+                        .setAnimationEnable(true)
+                        .setTitleText("경고")
+                        .setContentText("필수 정보는 빈 칸 없이 입력해주세요.")
+                        .setPositiveListener("응", new PromptDialog.OnPositiveListener() {
+                            @Override
+                            public void onClick(PromptDialog dialog) {
+                                dialog.dismiss();
+                            }
+                        }).show();
 //                    AlertDialog.Builder builder = new AlertDialog.Builder(SignUpActivity0.this);
 //                    dialog = builder.setMessage("필수 정보는 빈 칸 없이 입력해주세요.").setNegativeButton("확인", null)
 //                            .create();
 //                    dialog.show();
-                    return;
-                }
+                return;
+            }
 
-                if (userPassword.length() < 8) {
-                    new PromptDialog(SignUpActivity0.this)
-                            .setDialogType(PromptDialog.DIALOG_TYPE_WRONG)
-                            .setAnimationEnable(true)
-                            .setTitleText("경고")
-                            .setContentText("보안을 높이기 위해 8자리 이상의 비밀번호로 구성해주세요")
-                            .setPositiveListener("응", new PromptDialog.OnPositiveListener() {
-                                @Override
-                                public void onClick(PromptDialog dialog) {
-                                    dialog.dismiss();
-                                }
-                            }).show();
+            if (userPassword.length() < 8) {
+                new PromptDialog(SignUpActivity0.this)
+                        .setDialogType(PromptDialog.DIALOG_TYPE_WRONG)
+                        .setAnimationEnable(true)
+                        .setTitleText("경고")
+                        .setContentText("보안을 높이기 위해 8자리 이상의 비밀번호로 구성해주세요")
+                        .setPositiveListener("응", new PromptDialog.OnPositiveListener() {
+                            @Override
+                            public void onClick(PromptDialog dialog) {
+                                dialog.dismiss();
+                            }
+                        }).show();
 //                    AlertDialog.Builder builder = new AlertDialog.Builder(SignUpActivity0.this);
 //                    dialog = builder.setMessage("보안을 높이기 위해 8자리 이상의 비밀번호로 구성해주세요").setNegativeButton("확인", null)
 //                            .create();
 //                    dialog.show();
-                    return;
-                }
-                if (!checkEmail(userEmail)) {
+                return;
+            }
+            if (!checkEmail(userEmail)) {
 
-                    new PromptDialog(SignUpActivity0.this)
-                            .setDialogType(PromptDialog.DIALOG_TYPE_WRONG)
-                            .setAnimationEnable(true)
-                            .setTitleText("경고")
-                            .setContentText("정확한 이메일을 입력해주세요")
-                            .setPositiveListener("응", new PromptDialog.OnPositiveListener() {
-                                @Override
-                                public void onClick(PromptDialog dialog) {
-                                    dialog.dismiss();
-                                }
-                            }).show();
-                    return;
-                }
-
-                //new PanterDialog(SignUpActivity0.this)
-                panterDialog.setHeaderBackground(R.drawable.pattern_bg_blue)
-                        .setTitle("알림")
-                        .setPositive("좋아요", new View.OnClickListener() {
+                new PromptDialog(SignUpActivity0.this)
+                        .setDialogType(PromptDialog.DIALOG_TYPE_WRONG)
+                        .setAnimationEnable(true)
+                        .setTitleText("경고")
+                        .setContentText("정확한 이메일을 입력해주세요")
+                        .setPositiveListener("응", new PromptDialog.OnPositiveListener() {
                             @Override
-                            public void onClick(View v) {
-                                userInfo.add(userID);
-                                userInfo.add(userPassword);
-                                userInfo.add(userEmail);
-                                Intent intent = new Intent(getApplicationContext(), SignUpActivity1.class);
-                                intent.putStringArrayListExtra(IntentConst.SIGNUP_EXTRA_DATA_0, userInfo);
-                                startActivity(intent);
-                                finish();
+                            public void onClick(PromptDialog dialog) {
+                                dialog.dismiss();
                             }
-                        }) // You can pass also View.OnClickListener as second param
-                        .setNegative("괜찮아요.이정도면 충분해요", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                userInfo.add(userID);
-                                userInfo.add(userPassword);
-                                userInfo.add(userEmail);
-                                Intent intent = new Intent(getApplicationContext(), SignUpDoneActivity.class);
-                                intent.putStringArrayListExtra(IntentConst.SIGNUP_EXTRA_DATA_0, userInfo);
-                                intent.putExtra(IntentConst.SIGNUP_REGISTER_TYPE, 0);
-                                startActivity(intent);
-                                finish();
-                            }
-                        })
-                        .setMessage("조금더 많은 정보를 입력해주시면 당뇨 관리 및 데이터 제공에 도움이 되요. 좀 더 입력하시겠어요?")
-                        .isCancelable(false)
-                        .show();
+                        }).show();
+                return;
+            }
+
+            //new PanterDialog(SignUpActivity0.this)
+            panterDialog.setHeaderBackground(R.drawable.pattern_bg_blue)
+                    .setTitle("알림")
+                    .setPositive("좋아요", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            userInfo.add(userID);
+                            userInfo.add(userPassword);
+                            userInfo.add(userEmail);
+                            Intent intent = new Intent(getApplicationContext(), SignUpActivity1.class);
+                            intent.putStringArrayListExtra(IntentConst.SIGNUP_EXTRA_DATA_0, userInfo);
+                            startActivity(intent);
+                            finish();
+                        }
+                    }) // You can pass also View.OnClickListener as second param
+                    .setNegative("괜찮아요.이정도면 충분해요", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            userInfo.add(userID);
+                            userInfo.add(userPassword);
+                            userInfo.add(userEmail);
+                            Intent intent = new Intent(getApplicationContext(), SignUpDoneActivity.class);
+                            intent.putStringArrayListExtra(IntentConst.SIGNUP_EXTRA_DATA_0, userInfo);
+                            intent.putExtra(IntentConst.SIGNUP_REGISTER_TYPE, 0);
+                            startActivity(intent);
+                            finish();
+                        }
+                    })
+                    .setMessage("조금더 많은 정보를 입력해주시면 당뇨 관리 및 데이터 제공에 도움이 되요. 좀 더 입력하시겠어요?")
+                    .isCancelable(false)
+                    .show();
 
 
-                // TODO: 2018-02-01 입력 받은데이터를 다음 액티비티로 전달한다.
+            // TODO: 2018-02-01 입력 받은데이터를 다음 액티비티로 전달한다.
 //                Intent intent = new Intent(getApplicationContext(), SignUpActivity1.class);
 //                intent.putStringArrayListExtra(IntentConst.SIGNUP_EXTRA_DATA_0, userInfo);
 //                startActivity(intent);
 //                finish();
-            }
         });
     }
 

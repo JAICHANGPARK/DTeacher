@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<changelog>
+
+    <release version="1.0.5" versioncode="6">
+        <change>Date: 2018-05-05</change>
+        <change>종합 기록 추가</change>
+        <change>식사 기록 추가</change>
+        <change>수면 기록 추가</change>
+        <change>데이터베이스 압축 및 공유 기능 추가</change>
+        <change>기타버그 수정</change>
+        <change>Maker : DREAMWALKER</change>
+        <change>Contributors : None</change>
+    </release>
+    <release version="1.0.4" versioncode="5">
+        <change>Date: 2018-03-05</change>
+        <change>홈 화면 UI 개선</change>
+        <change>다이어리 화면 UI 개선</change>
+        <change>Maker : DREAMWALKER</change>
+        <change>Contributors : None</change>
+    </release>
+    <release version="1.0.3" versioncode="4">
+        <change>Date: 2018-02-05</change>
+        <change>블루투스 안정성 향상 및 기타 버그 수정</change>
+        <change>Maker : DREAMWALKER</change>
+        <change>Contributors : None</change>
+    </release>
+    <release version="1.0.2" versioncode="3">
+        <change>Date: 2018-02-04</change>
+        <change>케어센스 N : 혈당계 무선 연결 및 연동 추가</change>
+        <change>기록 디자인 수정</change>
+        <change>기타 버그 수정</change>
+        <change>Maker : DREAMWALKER</change>
+        <change>Contributors : None</change>
+    </release>
+    <release version="1.0.1" versioncode="2">
+        <change>Date: 2018-02-03</change>
+        <change>디자인 수정</change>
+        <change>Hexiwear : 웨어러블 데이터 연동 기능 추가</change>
+        <change>블루투스 안정성 향상</change>
+        <change>기타 버그 수정</change>
+        <change>Maker : DREAMWALKER</change>
+        <change>Contributors : None</change>
+    </release>
+    <release version="1.0.0" versioncode="1">
+        <change>Date: 2018-02-01</change>
+        <change>초기 앱 출시</change>
+        <change>Maker : DREAMWALKER</change>
+        <change>Contributors : None</change>
+    </release>
+</changelog>

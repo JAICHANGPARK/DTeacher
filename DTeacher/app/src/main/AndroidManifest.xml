@@ -11,6 +11,9 @@
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -20,6 +23,22 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:icon">
+        <activity
+            android:name=".Activity.StartKenBurnsActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.app.shortcuts"
+                android:resource="@xml/shortcuts" />
+        </activity>
+        <activity
+            android:name=".Activity.IntroActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Activity.LoginActivity"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -37,22 +56,6 @@
         <activity android:name=".SignUpActivity.SignUpActivity4" />
         <activity android:name=".SignUpActivity.SignUpActivity5" />
         <activity android:name=".SignUpActivity.SignUpDoneActivity" />
-        <activity
-            android:name=".Activity.StartKenBurnsActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-
-            <meta-data
-                android:name="android.app.shortcuts"
-                android:resource="@xml/shortcuts" />
-        </activity>
-        <activity
-            android:name=".Activity.IntroActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".Activity.DangActivity" />
         <activity android:name=".Activity.WorkoutActivity" />
         <activity
@@ -92,7 +95,13 @@
         </activity>
         <activity android:name=".Activity.AboutUserActivity" />
         <activity android:name=".Activity.SyncWearableActivity" />
-        <activity android:name=".Activity.SyncBSMActivity" />
+        <activity
+            android:name=".Activity.SyncBSMActivity"
+            android:parentActivityName=".Activity.SettingActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".Activity.SettingActivity" />
+        </activity>
         <activity android:name=".Activity.SyncFEActivity" />
         <activity
             android:name=".Activity.WebActivity"
@@ -103,7 +112,49 @@
             android:name=".Activity.WriteDrugActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".Activity.WriteDrugUnitActivity" />
-        <activity android:name=".Activity.SignUpCheckActivity"></activity>
+        <activity android:name=".Activity.SignUpCheckActivity" />
+        <activity
+            android:name=".Activity.AboutUserInfoActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".WearableSync.SyncWearableDataActivity" />
+        <activity android:name=".WearableSync.SyncWearableResultActivity" />
+        <activity
+            android:name=".WearableSync.WearableRealTimeActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".BSMSync.SyncBSMDataActivity"
+            android:parentActivityName=".Activity.SyncBSMActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".Activity.SyncBSMActivity" />
+        </activity>
+        <activity
+            android:name=".Activity.GraphAnalysisActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <service
+            android:name=".WearableSync.BluetoothLeService"
+            android:enabled="true" />
+
+        <activity android:name=".Activity.DetailListActivity" />
+        <activity
+            android:name=".Activity.FilePickedActivity"
+            android:parentActivityName=".Activity.SyncWearableActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".Activity.SyncWearableActivity" />
+        </activity>
+        <activity
+            android:name=".BSMSync.SyncBMSResultActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".Activity.AnalysisBSActivity" />
+        <activity android:name=".Activity.DiaryDangGraphActivity" />
+        <activity
+            android:name=".Activity.TotalWriteActivity"
+            android:label="@string/title_activity_total_write"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".Activity.WriteMealActivity" />
+        <activity android:name=".Activity.WriteSleepActivity" android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
